@@ -25,7 +25,7 @@
 3. 用例工具：Excel
 
 测试用例如下图：
-![testcase](https://github.com/tonglei100/sweetest/blob/master/testcase.png)
+![testcase](https://github.com/tonglei100/sweetest/blob/master/snapshot/testcase.png?raw=true)
 
 
 # 安装
@@ -49,10 +49,9 @@ cd sweetest_sample
 python start.py
 ```
 
-![install](https://github.com/tonglei100/sweetest/blob/master/install.png)
+![install](https://github.com/tonglei100/sweetest/blob/master/snapshot/install.png?raw=true)
 
 OK，如果一切顺利的话，sweetest 已经跑起来了
 
 ## 目录结构
-![dir](https://github.com/tonglei100/sweetest/blob/master/dir.png)
-
+![dir](https://github.com/tonglei100/sweetest/blob/master/snapshot/dir.png?raw=true)

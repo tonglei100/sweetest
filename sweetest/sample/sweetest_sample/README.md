@@ -25,7 +25,7 @@
 3. 用例工具：Excel
 
 测试用例如下图：
-![testcase](https://github.com/tonglei100/sweetest/blob/master/testcase.png?raw=true)
+![testcase](https://github.com/tonglei100/sweetest/blob/master/snapshot/testcase.png?raw=true)
 
 
 # 安装
@@ -39,48 +39,19 @@
 - Chrome 驱动: chromedriver
 
 ## 安装 sweetest
-
 `pip install sweetest`
 
 ## 快速体验
-
 打开 cmd 命令窗口，切换到某个目录，如：D:\Autotest
-
 ```
 sweetest
 cd sweetest_sample
 python start.py
 ```
 
-![install](https://github.com/tonglei100/sweetest/blob/master/install.png?raw=tru)
+![install](https://github.com/tonglei100/sweetest/blob/master/snapshot/install.png?raw=true)
 
 OK，如果一切顺利的话，sweetest 已经跑起来了
 
 ## 目录结构
-![dir](https://github.com/tonglei100/sweetest/blob/master/dir.png?raw=true)
-
-# 页面元素表
-
-## 元素定位
-
-## 元素表编写
-
-
-# 测试用例
-
-## 用例字段
-
-## 关键字
-
-## 高级特性
-
-
-# 用例模板
-
-## 二级联动菜单
-
-
-# 测试执行
-
-
-# 测试报告
+![dir](https://github.com/tonglei100/sweetest/blob/master/snapshot/dir.png?raw=true)
