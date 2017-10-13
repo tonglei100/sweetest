@@ -45,8 +45,8 @@
 打开 cmd 命令窗口，切换到某个目录，如：D:\Autotest
 
 > sweetest
-  cd sweetest_sample
-  python start.py
+> cd sweetest_sample
+> python start.py
 
 ![install](https://github.com/tonglei100/sweetest/blob/master/install.png)
 
