@@ -43,7 +43,6 @@
 
 ## 快速体验
 打开 cmd 命令窗口，切换到某个目录，如：D:\Autotest
-
 ```
 sweetest
 cd sweetest_sample
