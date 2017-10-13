@@ -39,14 +39,16 @@
 - Chrome 驱动: chromedriver
 
 ## 安装 sweetest
-> pip install sweetest
+`pip install sweetest`
 
 ## 快速体验
 打开 cmd 命令窗口，切换到某个目录，如：D:\Autotest
 
-> sweetest
-> cd sweetest_sample
-> python start.py
+```
+sweetest
+cd sweetest_sample
+python start.py
+```
 
 ![install](https://github.com/tonglei100/sweetest/blob/master/install.png)
 
