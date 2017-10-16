@@ -65,3 +65,5 @@ OK，如果一切顺利的话，sweetest 已经跑起来了
 
 ## 目录结构
 ![dir](https://github.com/tonglei100/sweetest/blob/master/snapshot/dir.png?raw=true)
+
+QQ交流群：158755338
