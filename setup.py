@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="sweetest",
-    version="0.1.8",
+    version="0.1.10",
     author="Leo Tong",
     author_email="tonglei@qq.com",
     description="Web UI Autotest with Selenium & Excel",

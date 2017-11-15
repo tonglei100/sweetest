@@ -46,7 +46,7 @@ sweetest 是一款 Web 自动化测试框架，或者说是解决方案，名字
 - Python 版本：3.6+
 - Selenium
 - 浏览器：Chrome
-- Chrome 驱动: chromedriver
+- Chrome 驱动: chromedriver (需和 Chrome 版本匹配)
 
 ## 安装 sweetest
 `pip install sweetest`
@@ -301,7 +301,7 @@ value    | Selenium 定义的值
 
     步骤编号 | 操作  | 页面       | 元素           | 测试数据
     ------- | ----- | ---------- | ------------- | --------
-    ^3      | 检查  | 通用       | 页面标题        |*知乎
+    \^3      | 检查  | 通用       | 页面标题        |*知乎
     \>4      | 点击  | 通用      | link#登录      |
     \<5      | 点击  | 通用      | link#注册机构号 |
 
