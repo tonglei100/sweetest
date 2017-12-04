@@ -1,0 +1,336 @@
+2017-12-04 16:00:39,619 [DEBUG] autotest.py line:73: Testsuite imported from Excle:
+[{'id': 'HOME_001', 'title': '打开百度', 'condition': 'SETUP', 'priority': 'H', 'designer': '', 'flag': '', 'result': '', 'remark': '', 'steps': [{'control': '', 'no': 1, 'action': '打开', 'page': '通用', 'elements': '百度搜索链接', 'data': '新窗口=百度搜索窗口', 'output': '', 'result': '', 'remark': '', '元素': '百度搜索链接', '测试数据': '新窗口=百度搜索窗口', '输出数据': ''}, {'control': '', 'no': 2, 'action': '检查', 'page': '百度搜索页面', 'elements': '页面title', 'data': '百度一下\\，你就知道', 'output': '', 'result': '', 'remark': '', '元素': '页面title', '测试数据': '百度一下\\，你就知道', '输出数据': ''}]}, {'id': 'BAIDU_001', 'title': '搜索：自动化测试', 'condition': '', 'priority': 'H', 'designer': '', 'flag': '', 'result': '', 'remark': '', 'steps': [{'control': '', 'no': 1, 'action': '输入', 'page': '百度搜索页面', 'elements': '搜索框', 'data': '自动化测试', 'output': '', 'result': '', 'remark': '', '元素': '搜索框', '测试数据': '自动化测试', '输出数据': ''}, {'control': '', 'no': 2, 'action': '点击', 'page': '百度搜索页面', 'elements': '搜索按钮', 'data': '', 'output': '', 'result': '', 'remark': '', '元素': '搜索按钮', '测试数据': '', '输出数据': ''}, {'control': '', 'no': 3, 'action': '检查', 'page': '通用', 'elements': '页面title', 'data': '自动化测试_百度搜索', 'output': '', 'result': '', 'remark': '', '元素': '页面title', '测试数据': '自动化测试_百度搜索', '输出数据': ''}]}, {'id': 'SNIPPET_001', 'title': '搜索：<keywords>', 'condition': 'SNIPPET', 'priority': 'M', 'designer': '', 'flag': '', 'result': '', 'remark': '', 'steps': [{'control': '', 'no': 1, 'action': '输入', 'page': '百度搜索页面', 'elements': '搜索框', 'data': '<keywords>', 'output': '', 'result': '', 'remark': '', '元素': '搜索框', '测试数据': '<keywords>', '输出数据': ''}, {'control': '', 'no': 2, 'action': '点击', 'page': '百度搜索页面', 'elements': '搜索按钮', 'data': '', 'output': '', 'result': '', 'remark': '', '元素': '搜索按钮', '测试数据': '', '输出数据': ''}, {'control': '', 'no': 3, 'action': '检查', 'page': '通用', 'elements': '页面title', 'data': '<keywords>_百度搜索', 'output': '', 'result': '', 'remark': '', '元素': '页面title', '测试数据': '<keywords>_百度搜索', '输出数据': ''}]}, {'id': 'BAIDU_002', 'title': '搜索：搜狗', 'condition': '', 'priority': 'M', 'designer': '', 'flag': '', 'result': '', 'remark': '', 'steps': [{'control': '', 'no': 1, 'action': '执行', 'page': '用例片段', 'elements': 'SNIPPET_001', 'data': 'keywords=搜狗', 'output': '', 'result': '', 'remark': '', '元素': 'SNIPPET_001', '测试数据': 'keywords=搜狗', '输出数据': ''}, {'control': '', 'no': 2, 'action': '点击', 'page': '百度搜索页面', 'elements': '搜索结果#1', 'data': '', 'output': 'title=text', 'result': '', 'remark': '', '元素': '搜索结果#1', '测试数据': '', '输出数据': 'title=text'}, {'control': '', 'no': 3, 'action': '检查', 'page': '通用', 'elements': '页面title', 'data': '<title>', 'output': '', 'result': '', 'remark': '', '元素': '页面title', '测试数据': '<title>', '输出数据': ''}]}, {'id': 'BAIDU_003', 'title': '搜索：知乎', 'condition': '', 'priority': 'M', 'designer': '', 'flag': '', 'result': '', 'remark': '', 'steps': [{'control': '', 'no': 1, 'action': '执行', 'page': '用例片段', 'elements': 'SNIPPET_001', 'data': 'keywords=知乎', 'output': '', 'result': '', 'remark': '', '元素': 'SNIPPET_001', '测试数据': 'keywords=知乎', '输出数据': ''}, {'control': '', 'no': 2, 'action': '点击', 'page': '百度搜索页面', 'elements': '搜索结果#1', 'data': '', 'output': '', 'result': '', 'remark': '', '元素': '搜索结果#1', '测试数据': '', '输出数据': ''}, {'control': '^', 'no': '^3', 'action': '检查', 'page': '知乎', 'elements': '页面title', 'data': '*知乎', 'output': '', 'result': '', 'remark': '', '元素': '页面title', '测试数据': '*知乎', '输出数据': ''}, {'control': '>', 'no': '>4', 'action': '点击', 'page': '知乎', 'elements': 'link#登录', 'data': '', 'output': '', 'result': '', 'remark': '', '元素': 'link#登录', '测试数据': '', '输出数据': ''}, {'control': '<', 'no': '<5', 'action': '点击', 'page': '知乎', 'elements': 'link#注册机构号', 'data': '', 'output': '', 'result': '', 'remark': '', '元素': 'link#注册机构号', '测试数据': '', '输出数据': ''}]}, {'id': 'BAIDU_004', 'title': '搜索：雪球行情中心', 'condition': '', 'priority': 'M', 'designer': '', 'flag': '', 'result': '', 'remark': '', 'steps': [{'control': '', 'no': 1, 'action': '执行', 'page': '用例片段', 'elements': 'SNIPPET_001', 'data': 'keywords=雪球行情中心', 'output': '', 'result': '', 'remark': '', '元素': 'SNIPPET_001', '测试数据': 'keywords=雪球行情中心', '输出数据': ''}, {'control': '', 'no': 2, 'action': '点击', 'page': '百度搜索页面', 'elements': '搜索结果#1', 'data': '', 'output': 'title=text', 'result': '', 'remark': '', '元素': '搜索结果#1', '测试数据': '', '输出数据': 'title=text'}, {'control': '', 'no': 3, 'action': '检查', 'page': '通用', 'elements': '页面title', 'data': '*<title>', 'output': '', 'result': '', 'remark': '', '元素': '页面title', '测试数据': '*<title>', '输出数据': ''}, {'control': '', 'no': 4, 'action': '检查', 'page': '雪球行情中心', 'elements': '新股预告表格#2#2', 'data': '', 'output': 'code=text', 'result': '', 'remark': '', '元素': '新股预告表格#2#2', '测试数据': '', '输出数据': 'code=text'}, {'control': '', 'no': 4, 'action': '点击', 'page': '雪球行情中心', 'elements': '新股预告表格#2#1', 'data': '', 'output': 'name=text', 'result': '', 'remark': '', '元素': '新股预告表格#2#1', '测试数据': '', '输出数据': 'name=text'}, {'control': '', 'no': 5, 'action': '检查', 'page': '股票详情页', 'elements': '页面title', 'data': '*<name>', 'output': '', 'result': '', 'remark': '', '元素': '页面title', '测试数据': '*<name>', '输出数据': ''}]}]
+2017-12-04 16:00:39,636 [INFO] autotest.py line:74: From Excel import testsuite success
+2017-12-04 16:00:41,691 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session {"capabilities": {"firstMatch": [], "alwaysMatch": {"browserName": "chrome", "version": "", "platform": "ANY", "chromeOptions": {"prefs": {"": "", "credentials_enable_service": false, "profile.password_manager_enabled": false}, "excludeSwitches": ["ignore-certificate-errors"], "extensions": [], "args": ["--start-maximized", "disable-infobars"]}}}, "desiredCapabilities": {"browserName": "chrome", "version": "", "platform": "ANY", "chromeOptions": {"prefs": {"": "", "credentials_enable_service": false, "profile.password_manager_enabled": false}, "excludeSwitches": ["ignore-certificate-errors"], "extensions": [], "args": ["--start-maximized", "disable-infobars"]}}}
+2017-12-04 16:00:44,431 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:44,431 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/timeouts/implicit_wait {"ms": 30000.0, "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:44,431 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:44,431 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/timeouts {"pageLoad": 90000, "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:44,431 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:44,431 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/timeouts {"ms": 90000.0, "type": "page load", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:44,431 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:44,431 [DEBUG] autotest.py line:94: testsuite has been parsed:
+[{'id': 'HOME_001', 'title': '打开百度', 'condition': 'SETUP', 'priority': 'H', 'designer': '', 'flag': '', 'result': '', 'remark': '', 'steps': [{'control': '', 'no': 1, 'action': '打开', 'page': '通用', 'elements': ['通用-百度搜索链接'], 'data': {'新窗口': '百度搜索窗口'}, 'output': {}, 'result': '', 'remark': '', '元素': '百度搜索链接', '测试数据': '新窗口=百度搜索窗口', '输出数据': '', 'keyword': 'OPEN', 'frames': ['']}, {'control': '', 'no': 2, 'action': '检查', 'page': '百度搜索页面', 'elements': ['通用-页面title'], 'data': {'text': '百度一下，你就知道'}, 'output': {}, 'result': '', 'remark': '', '元素': '页面title', '测试数据': '百度一下\\，你就知道', '输出数据': '', 'keyword': 'CHECK', 'frames': ['']}]}, {'id': 'BAIDU_001', 'title': '搜索：自动化测试', 'condition': '', 'priority': 'H', 'designer': '', 'flag': '', 'result': '', 'remark': '', 'steps': [{'control': '', 'no': 1, 'action': '输入', 'page': '百度搜索页面', 'elements': ['百度搜索页面-搜索框'], 'data': {'text': '自动化测试'}, 'output': {}, 'result': '', 'remark': '', '元素': '搜索框', '测试数据': '自动化测试', '输出数据': '', 'keyword': 'INPUT', 'frames': ['']}, {'control': '', 'no': 2, 'action': '点击', 'page': '百度搜索页面', 'elements': ['百度搜索页面-搜索按钮'], 'data': {}, 'output': {}, 'result': '', 'remark': '', '元素': '搜索按钮', '测试数据': '', '输出数据': '', 'keyword': 'CLICK', 'frames': ['']}, {'control': '', 'no': 3, 'action': '检查', 'page': '通用', 'elements': ['通用-页面title'], 'data': {'text': '自动化测试_百度搜索'}, 'output': {}, 'result': '', 'remark': '', '元素': '页面title', '测试数据': '自动化测试_百度搜索', '输出数据': '', 'keyword': 'CHECK', 'frames': ['']}]}, {'id': 'SNIPPET_001', 'title': '搜索：<keywords>', 'condition': 'SNIPPET', 'priority': 'M', 'designer': '', 'flag': '', 'result': '', 'remark': '', 'steps': [{'control': '', 'no': 1, 'action': '输入', 'page': '百度搜索页面', 'elements': ['百度搜索页面-搜索框'], 'data': {'text': '<keywords>'}, 'output': {}, 'result': '', 'remark': '', '元素': '搜索框', '测试数据': '<keywords>', '输出数据': '', 'keyword': 'INPUT', 'frames': ['']}, {'control': '', 'no': 2, 'action': '点击', 'page': '百度搜索页面', 'elements': ['百度搜索页面-搜索按钮'], 'data': {}, 'output': {}, 'result': '', 'remark': '', '元素': '搜索按钮', '测试数据': '', '输出数据': '', 'keyword': 'CLICK', 'frames': ['']}, {'control': '', 'no': 3, 'action': '检查', 'page': '通用', 'elements': ['通用-页面title'], 'data': {'text': '<keywords>_百度搜索'}, 'output': {}, 'result': '', 'remark': '', '元素': '页面title', '测试数据': '<keywords>_百度搜索', '输出数据': '', 'keyword': 'CHECK', 'frames': ['']}]}, {'id': 'BAIDU_002', 'title': '搜索：搜狗', 'condition': '', 'priority': 'M', 'designer': '', 'flag': '', 'result': '', 'remark': '', 'steps': [{'control': '', 'no': 1, 'action': '执行', 'page': '用例片段', 'elements': ['SNIPPET_001'], 'data': {'keywords': '搜狗'}, 'output': {}, 'result': '', 'remark': '', '元素': 'SNIPPET_001', '测试数据': 'keywords=搜狗', '输出数据': '', 'keyword': 'EXECUTE', 'frames': ['']}, {'control': '', 'no': 2, 'action': '点击', 'page': '百度搜索页面', 'elements': ['百度搜索页面-搜索结果#1'], 'data': {}, 'output': {'title': 'text'}, 'result': '', 'remark': '', '元素': '搜索结果#1', '测试数据': '', '输出数据': 'title=text', 'keyword': 'CLICK', 'frames': ['']}, {'control': '', 'no': 3, 'action': '检查', 'page': '通用', 'elements': ['通用-页面title'], 'data': {'text': '<title>'}, 'output': {}, 'result': '', 'remark': '', '元素': '页面title', '测试数据': '<title>', '输出数据': '', 'keyword': 'CHECK', 'frames': ['']}]}, {'id': 'BAIDU_003', 'title': '搜索：知乎', 'condition': '', 'priority': 'M', 'designer': '', 'flag': '', 'result': '', 'remark': '', 'steps': [{'control': '', 'no': 1, 'action': '执行', 'page': '用例片段', 'elements': ['SNIPPET_001'], 'data': {'keywords': '知乎'}, 'output': {}, 'result': '', 'remark': '', '元素': 'SNIPPET_001', '测试数据': 'keywords=知乎', '输出数据': '', 'keyword': 'EXECUTE', 'frames': ['']}, {'control': '', 'no': 2, 'action': '点击', 'page': '百度搜索页面', 'elements': ['百度搜索页面-搜索结果#1'], 'data': {}, 'output': {}, 'result': '', 'remark': '', '元素': '搜索结果#1', '测试数据': '', '输出数据': '', 'keyword': 'CLICK', 'frames': ['']}, {'control': '^', 'no': '^3', 'action': '检查', 'page': '知乎', 'elements': ['通用-页面title'], 'data': {'text': '*知乎'}, 'output': {}, 'result': '', 'remark': '', '元素': '页面title', '测试数据': '*知乎', '输出数据': '', 'keyword': 'CHECK', 'frames': ['']}, {'control': '>', 'no': '>4', 'action': '点击', 'page': '知乎', 'elements': ['通用-link#登录'], 'data': {}, 'output': {}, 'result': '', 'remark': '', '元素': 'link#登录', '测试数据': '', '输出数据': '', 'keyword': 'CLICK', 'frames': ['']}, {'control': '<', 'no': '<5', 'action': '点击', 'page': '知乎', 'elements': ['通用-link#注册机构号'], 'data': {}, 'output': {}, 'result': '', 'remark': '', '元素': 'link#注册机构号', '测试数据': '', '输出数据': '', 'keyword': 'CLICK', 'frames': ['']}]}, {'id': 'BAIDU_004', 'title': '搜索：雪球行情中心', 'condition': '', 'priority': 'M', 'designer': '', 'flag': '', 'result': '', 'remark': '', 'steps': [{'control': '', 'no': 1, 'action': '执行', 'page': '用例片段', 'elements': ['SNIPPET_001'], 'data': {'keywords': '雪球行情中心'}, 'output': {}, 'result': '', 'remark': '', '元素': 'SNIPPET_001', '测试数据': 'keywords=雪球行情中心', '输出数据': '', 'keyword': 'EXECUTE', 'frames': ['']}, {'control': '', 'no': 2, 'action': '点击', 'page': '百度搜索页面', 'elements': ['百度搜索页面-搜索结果#1'], 'data': {}, 'output': {'title': 'text'}, 'result': '', 'remark': '', '元素': '搜索结果#1', '测试数据': '', '输出数据': 'title=text', 'keyword': 'CLICK', 'frames': ['']}, {'control': '', 'no': 3, 'action': '检查', 'page': '通用', 'elements': ['通用-页面title'], 'data': {'text': '*<title>'}, 'output': {}, 'result': '', 'remark': '', '元素': '页面title', '测试数据': '*<title>', '输出数据': '', 'keyword': 'CHECK', 'frames': ['']}, {'control': '', 'no': 4, 'action': '检查', 'page': '雪球行情中心', 'elements': ['雪球行情中心-新股预告表格#2#2'], 'data': {}, 'output': {'code': 'text'}, 'result': '', 'remark': '', '元素': '新股预告表格#2#2', '测试数据': '', '输出数据': 'code=text', 'keyword': 'CHECK', 'frames': ['']}, {'control': '', 'no': 4, 'action': '点击', 'page': '雪球行情中心', 'elements': ['雪球行情中心-新股预告表格#2#1'], 'data': {}, 'output': {'name': 'text'}, 'result': '', 'remark': '', '元素': '新股预告表格#2#1', '测试数据': '', '输出数据': 'name=text', 'keyword': 'CLICK', 'frames': ['']}, {'control': '', 'no': 5, 'action': '检查', 'page': '股票详情页', 'elements': ['通用-页面title'], 'data': {'text': '*<name>'}, 'output': {}, 'result': '', 'remark': '', '元素': '页面title', '测试数据': '*<name>', '输出数据': '', 'keyword': 'CHECK', 'frames': ['']}]}]
+2017-12-04 16:00:44,483 [WARNING] testsuite.py line:81: Run the testcase: HOME_001|打开百度 Skipped, because the flag=N or the condition=snippet
+2017-12-04 16:00:44,483 [INFO] testsuite.py line:27: Start running the SETUP testcase...
+2017-12-04 16:00:44,483 [INFO] testcase.py line:20: Run the TestCase: HOME_001|打开百度
+2017-12-04 16:00:44,483 [INFO] testcase.py line:36: Run the Step: 1|OPEN|['通用-百度搜索链接']
+2017-12-04 16:00:44,483 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/url {"url": "https://www.baidu.com/", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:47,656 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:47,657 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window_handle {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:47,659 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:47,659 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window {"name": "CDwindow-98e24ba4-a9a0-4523-9075-aa1b4d1ab747", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:47,666 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:48,206 [INFO] testcase.py line:50: Run the Step: 1|OPEN|['通用-百度搜索链接'] is Pass
+2017-12-04 16:00:48,419 [INFO] testcase.py line:36: Run the Step: 2|CHECK|['通用-页面title']
+2017-12-04 16:00:48,419 [INFO] keywords.py line:14: DATA:百度一下，你就知道
+2017-12-04 16:00:48,419 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/title {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:48,452 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:48,452 [INFO] keywords.py line:15: REAL: 百度一下，你就知道
+2017-12-04 16:00:48,452 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/title {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:48,498 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:48,498 [INFO] testcase.py line:50: Run the Step: 2|CHECK|['通用-页面title'] is Pass
+2017-12-04 16:00:48,670 [INFO] testcase.py line:20: Run the TestCase: BAIDU_001|搜索：自动化测试
+2017-12-04 16:00:48,670 [INFO] testcase.py line:36: Run the Step: 1|INPUT|['百度搜索页面-搜索框']
+2017-12-04 16:00:48,671 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element {"using": "id", "value": "kw", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:48,934 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:48,935 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.6574641476212495-1/value {"text": "\u81ea\u52a8\u5316\u6d4b\u8bd5", "value": ["\u81ea", "\u52a8", "\u5316", "\u6d4b", "\u8bd5"], "id": "0.6574641476212495-1", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:49,510 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:49,510 [INFO] testcase.py line:50: Run the Step: 1|INPUT|['百度搜索页面-搜索框'] is Pass
+2017-12-04 16:00:49,750 [INFO] testcase.py line:36: Run the Step: 2|CLICK|['百度搜索页面-搜索按钮']
+2017-12-04 16:00:49,750 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element {"using": "id", "value": "su", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:49,766 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:49,766 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.6574641476212495-2/displayed {"id": "0.6574641476212495-2", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:49,782 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:49,782 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.6574641476212495-2/enabled {"id": "0.6574641476212495-2", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:49,797 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:49,797 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.6574641476212495-2/click {"id": "0.6574641476212495-2", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:49,863 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:50,364 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window_handles {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:50,413 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:50,414 [INFO] testcase.py line:50: Run the Step: 2|CLICK|['百度搜索页面-搜索按钮'] is Pass
+2017-12-04 16:00:50,615 [INFO] testcase.py line:36: Run the Step: 3|CHECK|['通用-页面title']
+2017-12-04 16:00:50,617 [INFO] keywords.py line:14: DATA:自动化测试_百度搜索
+2017-12-04 16:00:50,620 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/title {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:50,672 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:50,672 [INFO] keywords.py line:15: REAL: 自动化测试_百度搜索
+2017-12-04 16:00:50,673 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/title {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:50,696 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:50,696 [INFO] testcase.py line:50: Run the Step: 3|CHECK|['通用-页面title'] is Pass
+2017-12-04 16:00:50,920 [WARNING] testsuite.py line:81: Run the testcase: SNIPPET_001|搜索：<keywords> Skipped, because the flag=N or the condition=snippet
+2017-12-04 16:00:50,920 [INFO] testsuite.py line:27: Start running the SETUP testcase...
+2017-12-04 16:00:50,920 [INFO] testcase.py line:20: Run the TestCase: HOME_001|打开百度
+2017-12-04 16:00:50,920 [INFO] testcase.py line:36: Run the Step: 1|OPEN|['通用-百度搜索链接']
+2017-12-04 16:00:50,920 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/url {"url": "https://www.baidu.com/", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:51,104 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:51,104 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window_handle {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:51,105 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:51,106 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window {"name": "CDwindow-98e24ba4-a9a0-4523-9075-aa1b4d1ab747", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:51,109 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:51,609 [INFO] testcase.py line:50: Run the Step: 1|OPEN|['通用-百度搜索链接'] is Pass
+2017-12-04 16:00:51,838 [INFO] testcase.py line:36: Run the Step: 2|CHECK|['通用-页面title']
+2017-12-04 16:00:51,854 [INFO] keywords.py line:14: DATA:百度一下，你就知道
+2017-12-04 16:00:51,854 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/title {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:51,854 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:51,854 [INFO] keywords.py line:15: REAL: 百度一下，你就知道
+2017-12-04 16:00:51,854 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/title {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:51,854 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:51,854 [INFO] testcase.py line:50: Run the Step: 2|CHECK|['通用-页面title'] is Pass
+2017-12-04 16:00:52,057 [INFO] testcase.py line:20: Run the TestCase: BAIDU_002|搜索：搜狗
+2017-12-04 16:00:52,057 [INFO] testcase.py line:36: Run the Step: 1|EXECUTE|['SNIPPET_001']
+2017-12-04 16:00:52,057 [INFO] testcase.py line:20: Run the TestCase: SNIPPET_001|搜索：<keywords>
+2017-12-04 16:00:52,057 [INFO] testcase.py line:36: Run the Step: 1|INPUT|['百度搜索页面-搜索框']
+2017-12-04 16:00:52,057 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element {"using": "id", "value": "kw", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:52,057 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:52,057 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.13020103209160983-1/value {"text": "\u641c\u72d7", "value": ["\u641c", "\u72d7"], "id": "0.13020103209160983-1", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:52,120 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:52,120 [INFO] testcase.py line:50: Run the Step: 1|INPUT|['百度搜索页面-搜索框'] is Pass
+2017-12-04 16:00:52,325 [INFO] testcase.py line:36: Run the Step: 2|CLICK|['百度搜索页面-搜索按钮']
+2017-12-04 16:00:52,326 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element {"using": "id", "value": "su", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:52,338 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:52,338 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.13020103209160983-2/displayed {"id": "0.13020103209160983-2", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:52,357 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:52,357 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.13020103209160983-2/enabled {"id": "0.13020103209160983-2", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:52,368 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:52,369 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.13020103209160983-2/click {"id": "0.13020103209160983-2", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:52,445 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:52,947 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window_handles {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:52,951 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:52,951 [INFO] testcase.py line:50: Run the Step: 2|CLICK|['百度搜索页面-搜索按钮'] is Pass
+2017-12-04 16:00:53,152 [INFO] testcase.py line:36: Run the Step: 3|CHECK|['通用-页面title']
+2017-12-04 16:00:53,152 [INFO] keywords.py line:14: DATA:搜狗_百度搜索
+2017-12-04 16:00:53,153 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/title {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:53,160 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:53,160 [INFO] keywords.py line:15: REAL: 搜狗_百度搜索
+2017-12-04 16:00:53,160 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/title {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:53,163 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:53,164 [INFO] testcase.py line:50: Run the Step: 3|CHECK|['通用-页面title'] is Pass
+2017-12-04 16:00:53,409 [INFO] testcase.py line:50: Run the Step: 1|EXECUTE|['SNIPPET_001'] is Pass
+2017-12-04 16:00:53,612 [INFO] testcase.py line:36: Run the Step: 2|CLICK|['百度搜索页面-搜索结果#1']
+2017-12-04 16:00:53,612 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element {"using": "xpath", "value": "//*[@id=\"1\"]/h3/a", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:53,628 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:53,628 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.13020103209160983-3/displayed {"id": "0.13020103209160983-3", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:53,643 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:53,643 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.13020103209160983-3/enabled {"id": "0.13020103209160983-3", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:53,644 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:53,644 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.13020103209160983-3/click {"id": "0.13020103209160983-3", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:53,882 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:54,382 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.13020103209160983-3/text {"id": "0.13020103209160983-3", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:54,499 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:54,500 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window_handles {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:54,506 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:54,506 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window {"name": "CDwindow-d2f00eda-95f6-4693-9208-f1b11af1f813", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:54,510 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:54,510 [INFO] testcase.py line:50: Run the Step: 2|CLICK|['百度搜索页面-搜索结果#1'] is Pass
+2017-12-04 16:00:54,711 [INFO] testcase.py line:36: Run the Step: 3|CHECK|['通用-页面title']
+2017-12-04 16:00:54,711 [INFO] keywords.py line:14: DATA:搜狗搜索引擎 - 上网从搜狗开始
+2017-12-04 16:00:54,712 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/title {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:57,500 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:57,500 [INFO] keywords.py line:15: REAL: 搜狗搜索引擎 - 上网从搜狗开始
+2017-12-04 16:00:57,501 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/title {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:57,549 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:57,550 [INFO] testcase.py line:50: Run the Step: 3|CHECK|['通用-页面title'] is Pass
+2017-12-04 16:00:57,750 [INFO] testsuite.py line:27: Start running the SETUP testcase...
+2017-12-04 16:00:57,750 [INFO] testcase.py line:20: Run the TestCase: HOME_001|打开百度
+2017-12-04 16:00:57,750 [INFO] testcase.py line:36: Run the Step: 1|OPEN|['通用-百度搜索链接']
+2017-12-04 16:00:57,751 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/url {"url": "https://www.baidu.com/", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:58,074 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:58,074 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window_handle {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:58,090 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:58,091 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window {"name": "CDwindow-98e24ba4-a9a0-4523-9075-aa1b4d1ab747", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:58,190 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:58,191 [DEBUG] remote_connection.py line:478: DELETE http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:58,367 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:58,367 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window {"name": "CDwindow-d2f00eda-95f6-4693-9208-f1b11af1f813", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:58,370 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:58,902 [INFO] testcase.py line:50: Run the Step: 1|OPEN|['通用-百度搜索链接'] is Pass
+2017-12-04 16:00:59,122 [INFO] testcase.py line:36: Run the Step: 2|CHECK|['通用-页面title']
+2017-12-04 16:00:59,122 [INFO] keywords.py line:14: DATA:百度一下，你就知道
+2017-12-04 16:00:59,122 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/title {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:59,314 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:59,314 [INFO] keywords.py line:15: REAL: 百度一下，你就知道
+2017-12-04 16:00:59,314 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/title {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:59,391 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:59,391 [INFO] testcase.py line:50: Run the Step: 2|CHECK|['通用-页面title'] is Pass
+2017-12-04 16:00:59,605 [INFO] testcase.py line:20: Run the TestCase: BAIDU_003|搜索：知乎
+2017-12-04 16:00:59,605 [INFO] testcase.py line:36: Run the Step: 1|EXECUTE|['SNIPPET_001']
+2017-12-04 16:00:59,605 [INFO] testcase.py line:20: Run the TestCase: SNIPPET_001|搜索：<keywords>
+2017-12-04 16:00:59,605 [INFO] testcase.py line:36: Run the Step: 1|INPUT|['百度搜索页面-搜索框']
+2017-12-04 16:00:59,605 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element {"using": "id", "value": "kw", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:59,852 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:59,852 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.8282849265943801-1/value {"text": "\u77e5\u4e4e", "value": ["\u77e5", "\u4e4e"], "id": "0.8282849265943801-1", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:00:59,974 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:00:59,974 [INFO] testcase.py line:50: Run the Step: 1|INPUT|['百度搜索页面-搜索框'] is Pass
+2017-12-04 16:01:00,188 [INFO] testcase.py line:36: Run the Step: 2|CLICK|['百度搜索页面-搜索按钮']
+2017-12-04 16:01:00,188 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element {"using": "id", "value": "su", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:00,291 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:00,291 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.8282849265943801-2/displayed {"id": "0.8282849265943801-2", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:00,317 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:00,317 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.8282849265943801-2/enabled {"id": "0.8282849265943801-2", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:00,341 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:00,341 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.8282849265943801-2/click {"id": "0.8282849265943801-2", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:00,488 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:00,988 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window_handles {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:00,990 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:00,990 [INFO] testcase.py line:50: Run the Step: 2|CLICK|['百度搜索页面-搜索按钮'] is Pass
+2017-12-04 16:01:01,226 [INFO] testcase.py line:36: Run the Step: 3|CHECK|['通用-页面title']
+2017-12-04 16:01:01,226 [INFO] keywords.py line:14: DATA:知乎_百度搜索
+2017-12-04 16:01:01,226 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/title {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:01,226 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:01,226 [INFO] keywords.py line:15: REAL: 知乎_百度搜索
+2017-12-04 16:01:01,226 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/title {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:01,226 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:01,226 [INFO] testcase.py line:50: Run the Step: 3|CHECK|['通用-页面title'] is Pass
+2017-12-04 16:01:01,397 [INFO] testcase.py line:50: Run the Step: 1|EXECUTE|['SNIPPET_001'] is Pass
+2017-12-04 16:01:01,597 [INFO] testcase.py line:36: Run the Step: 2|CLICK|['百度搜索页面-搜索结果#1']
+2017-12-04 16:01:01,597 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element {"using": "xpath", "value": "//*[@id=\"1\"]/h3/a", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:01,618 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:01,618 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.8282849265943801-3/displayed {"id": "0.8282849265943801-3", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:01,668 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:01,668 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.8282849265943801-3/enabled {"id": "0.8282849265943801-3", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:01,668 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:01,668 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.8282849265943801-3/click {"id": "0.8282849265943801-3", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:01,760 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:02,260 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window_handles {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:02,263 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:02,263 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window {"name": "CDwindow-13f0f0f1-225e-4c32-b5b2-8537c24a9c80", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:02,275 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:02,275 [INFO] testcase.py line:50: Run the Step: 2|CLICK|['百度搜索页面-搜索结果#1'] is Pass
+2017-12-04 16:01:02,476 [INFO] testcase.py line:36: Run the Step: ^3|CHECK|['通用-页面title']
+2017-12-04 16:01:02,476 [INFO] keywords.py line:14: DATA:*知乎
+2017-12-04 16:01:02,477 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/title {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:26,435 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:26,436 [INFO] keywords.py line:15: REAL: 知乎 - 发现更大的世界
+2017-12-04 16:01:26,436 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/title {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:26,487 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:26,488 [INFO] testcase.py line:50: Run the Step: ^3|CHECK|['通用-页面title'] is Pass
+2017-12-04 16:01:26,688 [INFO] testcase.py line:36: Run the Step: >4|CLICK|['通用-link#登录']
+2017-12-04 16:01:26,689 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element {"using": "link text", "value": "\u767b\u5f55", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:27,031 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:27,031 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.8779000079457993-1/displayed {"id": "0.8779000079457993-1", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:27,350 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:27,350 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.8779000079457993-1/enabled {"id": "0.8779000079457993-1", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:27,668 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:27,673 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.8779000079457993-1/click {"id": "0.8779000079457993-1", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:28,877 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:29,378 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window_handles {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:29,454 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:29,456 [INFO] testcase.py line:50: Run the Step: >4|CLICK|['通用-link#登录'] is Pass
+2017-12-04 16:01:29,658 [INFO] testsuite.py line:27: Start running the SETUP testcase...
+2017-12-04 16:01:29,658 [INFO] testcase.py line:20: Run the TestCase: HOME_001|打开百度
+2017-12-04 16:01:29,658 [INFO] testcase.py line:36: Run the Step: 1|OPEN|['通用-百度搜索链接']
+2017-12-04 16:01:29,659 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/url {"url": "https://www.baidu.com/", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:30,091 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:30,091 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window_handle {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:30,107 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:30,109 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window {"name": "CDwindow-d2f00eda-95f6-4693-9208-f1b11af1f813", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:30,175 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:30,175 [DEBUG] remote_connection.py line:478: DELETE http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:30,200 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:30,201 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window {"name": "CDwindow-13f0f0f1-225e-4c32-b5b2-8537c24a9c80", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:30,222 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:30,762 [INFO] testcase.py line:50: Run the Step: 1|OPEN|['通用-百度搜索链接'] is Pass
+2017-12-04 16:01:30,975 [INFO] testcase.py line:36: Run the Step: 2|CHECK|['通用-页面title']
+2017-12-04 16:01:30,975 [INFO] keywords.py line:14: DATA:百度一下，你就知道
+2017-12-04 16:01:30,975 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/title {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:30,975 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:30,975 [INFO] keywords.py line:15: REAL: 百度一下，你就知道
+2017-12-04 16:01:30,975 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/title {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:30,975 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:30,975 [INFO] testcase.py line:50: Run the Step: 2|CHECK|['通用-页面title'] is Pass
+2017-12-04 16:01:31,167 [INFO] testcase.py line:20: Run the TestCase: BAIDU_004|搜索：雪球行情中心
+2017-12-04 16:01:31,167 [INFO] testcase.py line:36: Run the Step: 1|EXECUTE|['SNIPPET_001']
+2017-12-04 16:01:31,167 [INFO] testcase.py line:20: Run the TestCase: SNIPPET_001|搜索：<keywords>
+2017-12-04 16:01:31,167 [INFO] testcase.py line:36: Run the Step: 1|INPUT|['百度搜索页面-搜索框']
+2017-12-04 16:01:31,167 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element {"using": "id", "value": "kw", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:31,171 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:31,172 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.27531122101490024-1/value {"text": "\u96ea\u7403\u884c\u60c5\u4e2d\u5fc3", "value": ["\u96ea", "\u7403", "\u884c", "\u60c5", "\u4e2d", "\u5fc3"], "id": "0.27531122101490024-1", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:31,308 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:31,309 [INFO] testcase.py line:50: Run the Step: 1|INPUT|['百度搜索页面-搜索框'] is Pass
+2017-12-04 16:01:31,553 [INFO] testcase.py line:36: Run the Step: 2|CLICK|['百度搜索页面-搜索按钮']
+2017-12-04 16:01:31,553 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element {"using": "id", "value": "su", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:31,554 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:31,554 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.27531122101490024-2/displayed {"id": "0.27531122101490024-2", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:31,585 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:31,585 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.27531122101490024-2/enabled {"id": "0.27531122101490024-2", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:31,601 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:31,601 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.27531122101490024-2/click {"id": "0.27531122101490024-2", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:31,670 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:32,171 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window_handles {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:32,173 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:32,173 [INFO] testcase.py line:50: Run the Step: 2|CLICK|['百度搜索页面-搜索按钮'] is Pass
+2017-12-04 16:01:32,392 [INFO] testcase.py line:36: Run the Step: 3|CHECK|['通用-页面title']
+2017-12-04 16:01:32,392 [INFO] keywords.py line:14: DATA:雪球行情中心_百度搜索
+2017-12-04 16:01:32,392 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/title {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:32,392 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:32,392 [INFO] keywords.py line:15: REAL: 雪球行情中心_百度搜索
+2017-12-04 16:01:32,392 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/title {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:32,392 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:32,392 [INFO] testcase.py line:50: Run the Step: 3|CHECK|['通用-页面title'] is Pass
+2017-12-04 16:01:32,619 [INFO] testcase.py line:50: Run the Step: 1|EXECUTE|['SNIPPET_001'] is Pass
+2017-12-04 16:01:32,825 [INFO] testcase.py line:36: Run the Step: 2|CLICK|['百度搜索页面-搜索结果#1']
+2017-12-04 16:01:32,825 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element {"using": "xpath", "value": "//*[@id=\"1\"]/h3/a", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:32,826 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:32,826 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.27531122101490024-3/displayed {"id": "0.27531122101490024-3", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:32,832 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:32,832 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.27531122101490024-3/enabled {"id": "0.27531122101490024-3", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:32,844 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:32,844 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.27531122101490024-3/click {"id": "0.27531122101490024-3", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:33,001 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:33,502 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.27531122101490024-3/text {"id": "0.27531122101490024-3", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:33,526 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:33,526 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window_handles {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:33,529 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:33,530 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window {"name": "CDwindow-f46cd5cb-e6f9-4609-b52a-f3fcc71bd97a", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:33,532 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:33,533 [INFO] testcase.py line:50: Run the Step: 2|CLICK|['百度搜索页面-搜索结果#1'] is Pass
+2017-12-04 16:01:33,733 [INFO] testcase.py line:36: Run the Step: 3|CHECK|['通用-页面title']
+2017-12-04 16:01:33,733 [INFO] keywords.py line:14: DATA:*行情中心
+2017-12-04 16:01:33,734 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/title {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:57,287 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:57,287 [INFO] keywords.py line:15: REAL: 行情中心 - 雪球
+2017-12-04 16:01:57,287 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/title {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:57,350 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:57,350 [INFO] testcase.py line:50: Run the Step: 3|CHECK|['通用-页面title'] is Pass
+2017-12-04 16:01:57,521 [INFO] testcase.py line:36: Run the Step: 4|CHECK|['雪球行情中心-新股预告表格#2#2']
+2017-12-04 16:01:57,521 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element {"using": "xpath", "value": "//table/tbody/tr[2]/td[2]", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:57,571 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:57,571 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.8279577962057874-1/text {"id": "0.8279577962057874-1", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:57,572 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:57,572 [INFO] testcase.py line:50: Run the Step: 4|CHECK|['雪球行情中心-新股预告表格#2#2'] is Pass
+2017-12-04 16:01:57,773 [INFO] testcase.py line:36: Run the Step: 4|CLICK|['雪球行情中心-新股预告表格#2#1']
+2017-12-04 16:01:57,773 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element {"using": "xpath", "value": "//table/tbody/tr[2]/td[1]", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:57,800 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:57,816 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.8279577962057874-2/displayed {"id": "0.8279577962057874-2", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:57,831 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:57,831 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.8279577962057874-2/enabled {"id": "0.8279577962057874-2", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:57,980 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:57,980 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.8279577962057874-2/click {"id": "0.8279577962057874-2", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:58,303 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:58,804 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/element/0.8279577962057874-2/text {"id": "0.8279577962057874-2", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:58,835 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:58,835 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window_handles {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:58,839 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:58,839 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window {"name": "CDwindow-f46cd5cb-e6f9-4609-b52a-f3fcc71bd97a", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:58,920 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:58,921 [DEBUG] remote_connection.py line:478: DELETE http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:59,022 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:59,027 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window {"name": "CDwindow-237fe993-3762-44da-b3d2-3a1c9c56c81a", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:01:59,040 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:01:59,040 [INFO] testcase.py line:50: Run the Step: 4|CLICK|['雪球行情中心-新股预告表格#2#1'] is Pass
+2017-12-04 16:01:59,241 [INFO] testcase.py line:36: Run the Step: 5|CHECK|['通用-页面title']
+2017-12-04 16:01:59,241 [INFO] keywords.py line:14: DATA:*鑫广绿环
+2017-12-04 16:01:59,242 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/title {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:02:05,385 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:02:05,386 [INFO] keywords.py line:15: REAL: 鑫广绿环 0.00 (0.00%) (SH603302)的股票股价,行情,新闻,财报,数据 - 雪球
+2017-12-04 16:02:05,387 [DEBUG] remote_connection.py line:478: GET http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/title {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:02:05,486 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:02:05,486 [INFO] testcase.py line:50: Run the Step: 5|CHECK|['通用-页面title'] is Pass
+2017-12-04 16:02:05,687 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window {"name": "CDwindow-13f0f0f1-225e-4c32-b5b2-8537c24a9c80", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:02:05,741 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:02:05,742 [DEBUG] remote_connection.py line:478: DELETE http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:02:05,815 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:02:05,815 [DEBUG] remote_connection.py line:478: POST http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window {"name": "CDwindow-237fe993-3762-44da-b3d2-3a1c9c56c81a", "sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:02:05,820 [DEBUG] remote_connection.py line:565: Finished Request
+2017-12-04 16:02:05,820 [DEBUG] remote_connection.py line:478: DELETE http://127.0.0.1:23075/session/ebd66565f2312cd199d8c3e139d35901/window {"sessionId": "ebd66565f2312cd199d8c3e139d35901"}
+2017-12-04 16:02:08,340 [DEBUG] remote_connection.py line:565: Finished Request
