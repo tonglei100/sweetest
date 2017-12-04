@@ -49,7 +49,12 @@ sweetest 是一款 Web 自动化测试框架，或者说是解决方案，名字
 - Chrome 驱动: chromedriver (需和 Chrome 版本匹配)
 
 ## 安装 sweetest
+
 `pip install sweetest`
+
+> 如果已安装了旧版本，先卸载：`pip uninstall sweetest`，再使用上面的命令安装
+
+
 
 ## 快速体验
 打开 cmd 命令窗口，切换到某个目录，如：D:\Autotest
