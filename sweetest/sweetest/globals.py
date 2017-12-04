@@ -7,6 +7,8 @@ from sweetest.config import element_wait_imeout, page_flash_timeout
 class Global:
     def __init__(self):
         self.start_time = ''
+        self.project_name = ''
+        self.sheet_name = ''
 
     def set_driver(self, platform, app):
         self.var = {}

@@ -17,14 +17,14 @@ from sweetest.config import _testcase, _elements, _report
 
 class Autotest:
     def __init__(self, file_name, sheet_name, platform='PC', app='Chrome'):
-        g.start_time = time.strftime("_%Y%m%d_%H%M%S", time.localtime())
+        g.start_time = time.strftime("@%Y%m%d_%H%M%S", time.localtime())
 
         self.platform = platform
         self.app = app
 
-        self.project_name = file_name.split('-')[0]
+        g.project_name = file_name.split('-')[0]
         self.testcase_file = path.join('testcase', file_name + '-' + _testcase + '.xlsx')
-        self.elements_file = path.join('element', self.project_name + '-' + _elements + '.xlsx')
+        self.elements_file = path.join('element', g.project_name + '-' + _elements + '.xlsx')
         self.report_file = path.join('report', file_name + '-' + _report + '.xlsx')
         self.report_xml = path.join('junit', file_name + '-' + _report + '.xml')
 
@@ -51,8 +51,9 @@ class Autotest:
 
         # 2.逐个执行测试套件
         for sheet_name in self.sheet_names:
+            g.sheet_name = sheet_name
             # xml 测试报告初始化
-            self.report_ts[sheet_name] = self.report.create_suite(self.project_name, sheet_name)
+            self.report_ts[sheet_name] = self.report.create_suite(g.project_name, sheet_name)
             self.report_ts[sheet_name].start()
 
             self.run(sheet_name)

@@ -57,7 +57,8 @@ class TestCase:
                 # 操作后，等待0.2秒
                 sleep(0.2)
             except Exception as exception:
-                snapshot_file = path.join('snapshot', g.start_time + '#' + self.testcase['id'] + '-' + str(step['no']) + '.png')
+                snapshot_file = path.join('snapshot', g.project_name + '-' + \
+                g.sheet_name + g.start_time + '#' + self.testcase['id'] + '-' + str(step['no']) + '.png')
                 g.driver.get_screenshot_as_file(snapshot_file)
                 logging.warn('Run the Step: %s|%s|%s is Failure' %
                              (step['no'], step['keyword'], step['elements']))
