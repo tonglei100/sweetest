@@ -24,7 +24,7 @@ class Common():
     @classmethod
     def current_url(cls, data, output):
         logging.info('DATA:%s' %data['text'])
-        logging.info('REAL: %s' %g.driver.current_url)        
+        logging.info('REAL: %s' %g.driver.current_url)
         if data['text'].startswith('*'):
             assert data['text'][1:] in g.driver.current_url
         else:
@@ -98,6 +98,7 @@ def input(step):
     elements_location = locating_elements(step['elements'])
 
     for element in elements_location:
+        elements_location[element].clear()
         elements_location[element].send_keys(data['text'])
 
 

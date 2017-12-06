@@ -5,7 +5,7 @@ from sweetest.elements import e
 from sweetest.globals import g
 from sweetest.exception import Error
 from sweetest.log import logging
-from sweetest.config import element_wait_imeout
+from sweetest.config import element_wait_timeout
 
 
 def locating_element(element, action=''):
@@ -19,7 +19,7 @@ def locating_element(element, action=''):
         raise Error(
             'Locating the element:%s is Failure, no element in define' % element)
 
-    wait = WebDriverWait(g.driver, element_wait_imeout)
+    wait = WebDriverWait(g.driver, element_wait_timeout)
 
     if el['by'].lower() in ('title', 'url', 'current_url'):
         return None
