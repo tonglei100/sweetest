@@ -52,7 +52,7 @@ sweetest 是一款 Web 自动化测试框架，或者说是解决方案，名字
 
 `pip install sweetest`
 
-> 如果已安装了旧版本，先卸载：`pip uninstall sweetest`，再使用上面的命令安装
+> 如果已安装了先卸载：`pip uninstall sweetest`，再使用上面的命令安装
 
 
 
@@ -94,7 +94,7 @@ start.py            | 启动脚本，`test = Autotest(project_name, sheet_name)`
 
 ![elements](https://github.com/tonglei100/sweetest/blob/master/snapshot/elements.png?raw=true)
 
-目录     | 注释
+字段      | 注释
 ---------|-----------------------------------------------------
 page     | element 所在的页面，在所有页面都可用的 element 放在“通用”下面，如 title
 frame    | element 所在的 frame id，如果是顶层 frame，可为空。
