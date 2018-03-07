@@ -36,7 +36,7 @@ def elements_format(page, elements):
 
 
     for element in es:
-        #把转义的'-'转换回来
+        # 把转义的'-'转换回来
         element = element.replace(vertical, '|')
         frame, el = e.have(page, element)
         frames.append(frame)
@@ -62,7 +62,7 @@ def data_format(data):
         data_list = data.split(',')
     data_dict = {}
     for data in data_list:
-        #只需要分割第一个'='号
+        # 只需要分割第一个'='号
         d = data.split('=', 1)
         d[-1] = recover(d[-1])  # 只有值需要转义恢复，<元素属性> or <变量名> 不应该出现转义字符
         if len(d) == 1:

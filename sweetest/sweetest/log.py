@@ -13,8 +13,8 @@ filehandler = logging.FileHandler(filename=logname,encoding="utf-8")
 fmter = logging.Formatter(fmt='%(asctime)s [%(levelname)s] %(filename)s line:%(lineno)d: %(message)s')
 filehandler.setFormatter(fmter)
 
-#logging.basicConfig(format='%(asctime)s [%(levelname)s] %(filename)s line:%(lineno)d %(funcName)s: %(message)s', filename=path.join(
-#    'log', '%s.log' % today()), level=logging.DEBUG)
+# logging.basicConfig(format='%(asctime)s [%(levelname)s] %(filename)s line:%(lineno)d %(funcName)s: %(message)s', filename=path.join(
+# 'log', '%s.log' % today()), level=logging.DEBUG)
 
 console = logging.StreamHandler()
 console.setLevel(logging.DEBUG)

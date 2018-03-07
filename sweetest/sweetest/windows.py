@@ -29,11 +29,11 @@ class Windows:
                 self.pages[page] = self.current_window
 
             elif self.pages[page] != self.current_window:
-                #如果当前窗口为 HOME，则关闭之
+                # 如果当前窗口为 HOME，则关闭之
                 if self.current_window == 'HOME':
                     g.driver.close()
                     self.windows.pop('HOME')
-                #再切换到需要操作的窗口
+                # 再切换到需要操作的窗口
                 g.driver.switch_to_window(self.windows[self.pages[page]])
                 self.current_window = self.pages[page]
 

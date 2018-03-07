@@ -60,7 +60,7 @@ class TestSuite:
 
     def run(self):
 
-        #当前测试用例
+        # 当前测试用例
         current = {'result': 'Pass'}
         # 上一个测试用例
         previous = {}
@@ -77,7 +77,7 @@ class TestSuite:
                 case.priority = testcase['priority']
             else:
                 testcase['result'] = 'Skip'
-                #case.skip('Skip', 'Autotest Flag is N')
+                # case.skip('Skip', 'Autotest Flag is N')
                 logging.warn('Run the testcase: %s|%s Skipped, because the flag=N or the condition=snippet' %(testcase['id'], testcase['title']))
                 continue
 

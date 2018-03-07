@@ -36,9 +36,9 @@ class TestCase:
                          (step['no'], step['keyword'], step['elements']))
 
             try:
-                #判断页面是否已和窗口做了关联，如果没有，就关联当前窗口，如果已关联，则判断是否需要切换
+                # 判断页面是否已和窗口做了关联，如果没有，就关联当前窗口，如果已关联，则判断是否需要切换
                 w.switch_window(step['page'])
-                #判断是否需要切换 frmae
+                # 判断是否需要切换 frmae
                 w.switch_frame(step['frames'][0])
                 # 变量替换
                 replace_dict(step['data'])

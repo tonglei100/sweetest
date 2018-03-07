@@ -36,7 +36,7 @@ class Autotest:
 
 
     def plan(self):
-        self.code = 0  #返回码
+        self.code = 0  # 返回码
         # 1.解析配置文件
         try:
             e.get_elements(self.elements_file)

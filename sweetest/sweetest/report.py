@@ -90,7 +90,6 @@ class TestSuite():
 						self.low_errors += 1
 				else:
 					pass
-					#print(status)
 			self.tests = len(self.cases)
 			self.output = output
 			self.error = error

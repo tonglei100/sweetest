@@ -122,7 +122,7 @@ def click(step):
         else:
             g.var[key] = element_location.get_attribute(output[key])
 
-    #判断是否打开了新的窗口，并将新窗口添加到所有窗口列表里
+    # 判断是否打开了新的窗口，并将新窗口添加到所有窗口列表里
     all_handles = g.driver.window_handles
     for handle in all_handles:
     	if handle not in w.windows.values():
@@ -143,7 +143,7 @@ def move(step):
 
 
 def execute(step):
-    #先执行赋值操作
+    # 先执行赋值操作
     data = step['data']
     for k, v in data.items():
         g.var[k] = v

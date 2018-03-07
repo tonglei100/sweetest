@@ -33,10 +33,10 @@ class Global:
             else:
                 raise Error(
                     'Error: this browser is not supported or mistake name：%s' % browser)
-            #等待元素超时时间
+            # 等待元素超时时间
             self.driver.implicitly_wait(element_wait_timeout)  # seconds
-            #页面刷新超时时间
-            self.driver.set_page_load_timeout(page_flash_timeout) #seconds
+            # 页面刷新超时时间
+            self.driver.set_page_load_timeout(page_flash_timeout) # seconds
 
         if platform.lower() == 'ios':
             print('Come soon...')

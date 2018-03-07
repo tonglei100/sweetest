@@ -42,15 +42,15 @@ class Elements:
             _el = ele[0] + '#'
         else:
             _el = element
-        #如果有<>,则不不判断了
+        # 如果有<>,则不不判断了
         if '<' in _el:
             return '', '通用' + '-' + element
-        #在元素定位表中查询
+        # 在元素定位表中查询
         elem = page + '-' + _el
         if self.elements.get(elem, ''):
             return self.elements[elem]['frame'], page + '-' + element
         else:
-            #查不到就在通用里查,还是查不到就报错
+            # 查不到就在通用里查,还是查不到就报错
             elem = '通用' + '-' + _el
             if self.elements.get(elem, ''):
                 return self.elements[elem]['frame'], '通用' + '-' + element
