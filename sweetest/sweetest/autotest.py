@@ -9,7 +9,7 @@ from sweetest.globals import g
 from sweetest.windows import w
 from sweetest.testsuite import TestSuite
 from sweetest.testcase import TestCase
-from sweetest.utility import Excel
+from sweetest.utility import Excel, get_record
 from sweetest.log import logging
 from sweetest.report import Report
 from sweetest.config import _testcase, _elements, _report
@@ -82,6 +82,10 @@ class Autotest:
         # 2.初始化全局对象
         try:
             g.set_driver(self.platform, self.app)
+            # 如果测试数据文件存在，则从该文件里读取一行数据，赋值到全局变量列表里
+            data_file = path.join('data', g.project_name + '-' + sheet_name + '.csv')
+            if path.exists(data_file):
+                g.var = get_record(data_file)
             w.init()
         except Exception as exception:
             logging.critical('Init global object fail')
