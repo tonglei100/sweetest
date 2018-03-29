@@ -133,4 +133,4 @@ def get_record(data_file):
 
             d[-1] = 'Y'
             write_csv(data_file, data)
-            return record
+    return record

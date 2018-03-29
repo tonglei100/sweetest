@@ -13,6 +13,7 @@ class Global:
     def set_driver(self, platform, app):
         self.var = {}
         self.snippet = {}
+        self.db = {}
 
         if platform.lower() == 'pc':
             if app.lower() == 'ie':

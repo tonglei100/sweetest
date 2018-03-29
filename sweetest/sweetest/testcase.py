@@ -19,6 +19,7 @@ class TestCase:
         logging.info('Run the TestCase: %s|%s' %
                      (self.testcase['id'], self.testcase['title']))
         self.testcase['result'] = 'Pass'
+        self.testcase['report'] = ''
         if_result = ''
 
         for step in self.testcase['steps']:
@@ -57,9 +58,12 @@ class TestCase:
                 # 操作后，等待0.2秒
                 sleep(0.2)
             except Exception as exception:
-                snapshot_file = path.join('snapshot', g.project_name + '-' + \
-                g.sheet_name + g.start_time + '#' + self.testcase['id'] + '-' + str(step['no']) + '.png')
-                g.driver.get_screenshot_as_file(snapshot_file)
+                snapshot_file = path.join('snapshot', g.project_name + '-' +
+                                          g.sheet_name + g.start_time + '#' + self.testcase['id'] + '-' + str(step['no']) + '.png')
+                try:
+                    g.driver.get_screenshot_as_file(snapshot_file)
+                except Exception as e:
+                    logging.debug(e)
                 logging.warn('Run the Step: %s|%s|%s is Failure' %
                              (step['no'], step['keyword'], step['elements']))
                 logging.debug(exception)
@@ -71,5 +75,7 @@ class TestCase:
                     continue
 
                 self.testcase['result'] = 'Fail'
+                self.testcase['report'] = 'step-%s|%s|%s: %s' % (
+                    step['no'], step['keyword'], step['elements'], exception)
                 step['remark'] = exception
                 break

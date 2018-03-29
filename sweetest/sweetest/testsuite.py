@@ -99,7 +99,7 @@ class TestSuite:
                 if testcase['result'] == 'Pass':
                     case.succeed()
                 elif testcase['result'] == 'Fail':
-                    case.fail('Fail' ,testcase['remark'])
+                    case.fail('Fail' ,testcase['report'])
                     if testcase['condition'].lower() == 'base':
                         logging.critical('Run the testcase: %s|%s Fail, BASE is not Pass. Break the AutoTest' %(testcase['id'], testcase['title']))
                         break

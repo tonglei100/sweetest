@@ -6,7 +6,8 @@ from sweetest.elements import e
 from sweetest.windows import w
 from sweetest.locator import locating_elements, locating_data, locating_element
 from sweetest.log import logging
-
+from sweetest.parse import data_format
+from sweetest.database import DB
 
 class Common():
     @classmethod
@@ -29,7 +30,7 @@ class Common():
             assert data['text'][1:] in g.driver.current_url
         else:
             assert data['text'] == g.driver.current_url
-        # 只能获取到元素URL
+        # 只能获取到元素 url
         for key in output:
             g.var[key] = g.driver.current_url
 
@@ -154,3 +155,39 @@ def execute(step):
             testcase = deepcopy(g.snippet[element])
             tc = TestCase(testcase)
             tc.run()
+
+
+def sql(step):
+    element = step['elements'][0]
+    el, _sql = e.get(element)
+
+    logging.info('SQL: %s' %_sql)
+    # 获取连接参数
+    el, value = e.get(step['page'] + '-' + '配置信息')
+    arg = data_format(value)
+
+    if step['page'] not in g.db.keys():
+        g.db[step['page']] = DB(arg)
+    row = g.db[step['page']].fetchone(_sql)
+    logging.info('SQL result: %s' %(row,))
+
+    result = {}
+    if _sql.lower().startswith('select') and '*' not in _sql:
+        keys = _sql[6:].split('FROM')[0].split('from')[0].strip().split(',')
+        result = dict(zip(keys, row))
+        logging.info('keys result: %s' %result)
+
+    data = step['data']
+    output = step['output']
+    if data:
+        for key in data:
+            logging.info('key: %s, expect: %s, real: %s' %(key,data[key], result[key]))
+            if data[key].startswith('*'):
+                assert data[key][1:] in result[key]
+            else:
+                assert data[key] == result[key]
+
+    if output:
+        logging.info('output: %s' %output)
+        for key in output:
+            g.var[key] = result[output[key]]

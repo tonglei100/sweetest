@@ -36,7 +36,7 @@ def elements_format(page, elements):
 
 
     for element in es:
-        # 把转义的'-'转换回来
+        # 把转义的'|'转换回来
         element = element.replace(vertical, '|')
         frame, el = e.have(page, element)
         frames.append(frame)

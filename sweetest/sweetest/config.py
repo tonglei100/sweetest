@@ -14,7 +14,8 @@ keywords_map = {
     '移动到': 'MOVE',
     'MOVE': 'MOVE',
     '执行': 'EXECUTE',
-    'EXECUTE': 'EXECUTE'
+    'EXECUTE': 'EXECUTE',
+    'SQL':'SQL'
 }
 
 # 文件名后缀
