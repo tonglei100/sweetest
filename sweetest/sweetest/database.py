@@ -20,7 +20,8 @@ class DB:
                 import cx_Oracle as oracle
                 # Oracle查询出的数据，中文输出问题解决
                 os.environ['NLS_LANG'] = 'SIMPLIFIED CHINESE_CHINA.UTF8'
-                self.connect = oracle.connect(arg['user'] + '/' + arg['password'] + '@' + arg['host'] + '/' + arg['sid'])
+                self.connect = oracle.connect(
+                    arg['user'] + '/' + arg['password'] + '@' + arg['host'] + '/' + arg['sid'])
                 self.cursor = self.connect.cursor()
                 sql = 'select * from v$version'
             elif arg['type'].lower() == 'sqlserver':
@@ -66,10 +67,11 @@ class DB:
     def __del__(self):
         self.connect.close()
 
+
 if __name__ == '__main__':
-    arg = {'type': 'Oracle', 'host': '10.1.50.125', 'port': '3306',\
-        'user': 'kims', 'password': '123456', 'dbname': 'test', 'sid':'jzdb'}
-    db =DB(arg)
+    arg = {'type': 'Oracle', 'host': '10.1.50.125', 'port': '3306',
+           'user': 'kims', 'password': '123456', 'dbname': 'test', 'sid': 'jzdb'}
+    db = DB(arg)
     sql = "select STKPOOLID,STKID,STKNAME,MARKETID,STARTDAY,ENDDAY,ISLOCK,\
         LOCKSTARTDAY,LOCKENDDAY,INVESTTYPE,UPDATER,UPDATETIME,REMARK,CREATER,\
         CREATETIME,SN from ir_stkpool_member_etl where stkpoolid = 'STR_GSYL'"

@@ -5,7 +5,6 @@ class Windows:
     def __init__(self):
         self.init()
 
-
     def init(self):
         # 当前窗口名字，如：'新版门户首页窗口', 'HOME'
         self.current_window = ''
@@ -16,7 +15,6 @@ class Windows:
         self.frame = 0
         # 所有页面--窗口名字映射表，如：{'门户首页': '新版门户首页窗口'}
         self.pages = {}
-
 
     def switch_window(self, page):
         if page != '通用':
@@ -37,7 +35,6 @@ class Windows:
                 g.driver.switch_to_window(self.windows[self.pages[page]])
                 self.current_window = self.pages[page]
 
-
     def switch_frame(self, frame):
         if frame:
             if frame != self.frame:
@@ -47,7 +44,6 @@ class Windows:
             if self.frame != 0:
                 g.driver.switch_to.default_content()
                 self.frame = 0
-
 
     def open(self, step):
         page = list(step['elements'])[0]
@@ -65,7 +61,6 @@ class Windows:
         handle = g.driver.current_window_handle
         # 注册窗口名称和handle
         self.register(step, handle)
-
 
     def register(self, step, handle):
         # 如果有提供新窗口名字，则使用该名字，否则使用默认名字：HOME

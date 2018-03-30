@@ -24,17 +24,20 @@ class Autotest:
         self.app = app
 
         g.project_name = file_name.split('-')[0]
-        self.testcase_file = path.join('testcase', file_name + '-' + _testcase + '.xlsx')
-        self.elements_file = path.join('element', g.project_name + '-' + _elements + '.xlsx')
-        self.report_file = path.join('report', file_name + '-' + _report + '.xlsx')
-        self.report_xml = path.join('junit', file_name + '-' + _report + '.xml')
+        self.testcase_file = path.join(
+            'testcase', file_name + '-' + _testcase + '.xlsx')
+        self.elements_file = path.join(
+            'element', g.project_name + '-' + _elements + '.xlsx')
+        self.report_file = path.join(
+            'report', file_name + '-' + _report + '.xlsx')
+        self.report_xml = path.join(
+            'junit', file_name + '-' + _report + '.xml')
 
         self.testcase_workbook = Excel(self.testcase_file, 'r')
         self.sheet_names = self.testcase_workbook.get_sheet(sheet_name)
 
         self.report_workbook = Excel(self.report_file.split('.')[
                                      0] + g.start_time + '.xlsx', 'w')
-
 
     def plan(self):
         self.code = 0  # 返回码
@@ -53,7 +56,8 @@ class Autotest:
         for sheet_name in self.sheet_names:
             g.sheet_name = sheet_name
             # xml 测试报告初始化
-            self.report_ts[sheet_name] = self.report.create_suite(g.project_name, sheet_name)
+            self.report_ts[sheet_name] = self.report.create_suite(
+                g.project_name, sheet_name)
             self.report_ts[sheet_name].start()
 
             self.run(sheet_name)
@@ -65,13 +69,13 @@ class Autotest:
 
         sys.exit(self.code)
 
-
     def run(self, sheet_name):
         # 1.从 Excel 获取测试用例集
         try:
             data = self.testcase_workbook.read(sheet_name)
             testsuite = testsuite_format(data)
-            logger.info('Testsuite imported from Excle:\n' + json.dumps(testsuite, ensure_ascii=False, indent=4))
+            logger.info('Testsuite imported from Excle:\n' +
+                        json.dumps(testsuite, ensure_ascii=False, indent=4))
             logger.info('From Excel import testsuite success')
         except:
             logger.exception('*** From Excel import testsuite fail ***')
@@ -82,7 +86,8 @@ class Autotest:
         try:
             g.set_driver(self.platform, self.app)
             # 如果测试数据文件存在，则从该文件里读取一行数据，赋值到全局变量列表里
-            data_file = path.join('data', g.project_name + '-' + sheet_name + '.csv')
+            data_file = path.join(
+                'data', g.project_name + '-' + sheet_name + '.csv')
             if path.exists(data_file):
                 g.var = get_record(data_file)
             w.init()
@@ -100,14 +105,13 @@ class Autotest:
             self.code = -1
             sys.exit(self.code)
 
-
         # 4.执行测试套件
         ts = TestSuite(testsuite, self.report_ts[sheet_name])
         ts.run()
 
         # 5.判断测试结果
         if self.report_ts[sheet_name].high_errors + self.report_ts[sheet_name].medium_errors + \
-        self.report_ts[sheet_name].high_failures + self.report_ts[sheet_name].medium_failures:
+                self.report_ts[sheet_name].high_failures + self.report_ts[sheet_name].medium_failures:
             self.code = -1
 
         # 6.保存测试结果

@@ -33,7 +33,6 @@ class Elements:
         d = Excel(elements_file)
         self.elements = elements_format(data2dict(d.read('elements')))
 
-
     def have(self, page, element):
         ele = element.split('#')
 
@@ -54,10 +53,9 @@ class Elements:
             if self.elements.get(elem, ''):
                 return self.elements[elem]['frame'], '通用' + '-' + element
             else:
-                logger.critical('Page:%s element:%s is not exist' % (page, element))
+                logger.critical('Page:%s element:%s is not exist' %
+                                (page, element))
                 raise ('Page:%s element:%s is not exist' % (page, element))
-
-
 
     def get(self, element):
         ele = element.split('#')
@@ -73,5 +71,6 @@ class Elements:
         for v in _v:
             value = value.replace('#', v, 1)
         return el, value
+
 
 e = Elements()

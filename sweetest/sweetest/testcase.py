@@ -16,7 +16,7 @@ class TestCase:
 
     def run(self):
         logger.info('Run the TestCase: %s|%s' %
-                     (self.testcase['id'], self.testcase['title']))
+                    (self.testcase['id'], self.testcase['title']))
         self.testcase['result'] = 'Pass'
         self.testcase['report'] = ''
         if_result = ''
@@ -33,7 +33,7 @@ class TestCase:
                 continue
 
             logger.info('Run the Step: %s|%s|%s' %
-                         (step['no'], step['keyword'], step['elements']))
+                        (step['no'], step['keyword'], step['elements']))
 
             try:
                 # 判断页面是否已和窗口做了关联，如果没有，就关联当前窗口，如果已关联，则判断是否需要切换
@@ -47,7 +47,7 @@ class TestCase:
                 # 根据关键字调用关键字实现
                 getattr(keywords, step['keyword'].lower())(step)
                 logger.info('Run the Step: %s|%s|%s is Pass' %
-                             (step['no'], step['keyword'], step['elements']))
+                            (step['no'], step['keyword'], step['elements']))
                 step['result'] = 'OK'
 
                 # if 语句结果赋值
@@ -56,7 +56,7 @@ class TestCase:
 
                 # 操作后，等待0.2秒
                 sleep(0.2)
-            except  Exception as exception:
+            except Exception as exception:
                 snapshot_file = path.join('snapshot', g.project_name + '-' +
                                           g.sheet_name + g.start_time + '#' + self.testcase['id'] + '-' + str(step['no']) + '.png')
                 try:
@@ -64,7 +64,7 @@ class TestCase:
                 except:
                     logger.exception('*** save the screenshot is fail ***')
                 logger.exception('Run the Step: %s|%s|%s is Failure' %
-                             (step['no'], step['keyword'], step['elements']))
+                                 (step['no'], step['keyword'], step['elements']))
                 step['result'] = 'NO'
 
                 # if 语句结果赋值

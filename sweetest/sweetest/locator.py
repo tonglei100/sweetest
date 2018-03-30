@@ -12,7 +12,8 @@ def locating_element(element, action=''):
     try:
         el, value = e.get(element)
     except:
-        logger.exception('Locating the element:%s is Failure, no element in define' % element)
+        logger.exception(
+            'Locating the element:%s is Failure, no element in define' % element)
         raise 'Locating the element:%s is Failure, no element in define' % element
 
     wait = WebDriverWait(g.driver, element_wait_timeout)

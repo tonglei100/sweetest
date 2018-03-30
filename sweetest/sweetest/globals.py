@@ -2,7 +2,6 @@ from selenium import webdriver
 from sweetest.config import element_wait_timeout, page_flash_timeout
 
 
-
 class Global:
     def __init__(self):
         self.start_time = ''
@@ -35,7 +34,7 @@ class Global:
             # 等待元素超时时间
             self.driver.implicitly_wait(element_wait_timeout)  # seconds
             # 页面刷新超时时间
-            self.driver.set_page_load_timeout(page_flash_timeout) # seconds
+            self.driver.set_page_load_timeout(page_flash_timeout)  # seconds
 
         if platform.lower() == 'ios':
             print('Come soon...')
