@@ -130,7 +130,7 @@ def get_record(data_file):
         if d[-1] != 'Y':
             for i in range(len(data[0][:-1])):
                 record[data[0][i]] = d[i]
-
             d[-1] = 'Y'
             write_csv(data_file, data)
+            break
     return record

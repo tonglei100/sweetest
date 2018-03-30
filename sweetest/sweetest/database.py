@@ -1,4 +1,5 @@
-from sweetest.exception import Error
+from sweetest.log import logger
+
 
 class DB:
 
@@ -32,36 +33,38 @@ class DB:
             self.cursor.execute(sql)
             data = self.cursor.fetchone()
 
-        except Exception as exception:
-            print(exception)
-            raise Error('%s 连接失败：%s' % (arg['type'], exception))
+        except:
+            logger.exception('*** %s connect is fail ***' % arg['type'])
+            raise
 
     def fetchone(self, sql):
         try:
             self.cursor.execute(sql)
             data = self.cursor.fetchone()
             return data
-        except Exception as exception:
-            raise Error('Fetchone fail: %s' % exception)
+        except:
+            logger.exception('*** Fetchone fail ***')
+            raise
 
     def fetchall(self, sql):
         try:
             self.cursor.execute(sql)
             data = self.cursor.fetchall()
             return data
-        except Exception as exception:
-            raise Error('Fetchall fail: %s' % exception)
+        except:
+            logger.exception('*** Fetchall fail ***')
+            raise
 
     def execute(self, sql):
         try:
             self.cursor.execute(sql)
             self.connect.commit()
-        except Exception as exception:
-            raise Error('Execute fail: %s' % exception)
+        except:
+            logger.exception('*** Execute fail ***')
+            raise
 
     def __del__(self):
-        #self.connect.close()
-        pass
+        self.connect.close()
 
 if __name__ == '__main__':
     arg = {'type': 'Oracle', 'host': '10.1.50.125', 'port': '3306',\

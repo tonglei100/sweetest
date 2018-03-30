@@ -1,5 +1,4 @@
-from sweetest.log import logging
-from sweetest.exception import Error
+from sweetest.log import logger
 from sweetest.config import keywords_map, comma_lower, comma_upper, equals, vertical
 from sweetest.elements import e
 from sweetest.globals import g
@@ -48,9 +47,8 @@ def check_keyword(action):
     try:
         keyword = keywords_map.get(action)
         return keyword
-    except Exception as exception:
-        logging.critical('Keyword:%s is not exist' % action)
-        logging.debug(exception)
+    except:
+        logger.exception('Keyword:%s is not exist' % action)
         exit()
 
 
@@ -72,8 +70,7 @@ def data_format(data):
             d[0] = d[0].strip()  # 清除 <元素属性> 2边的空格，如果有的话
             data_dict[d[0]] = d[1]
         else:
-            raise Error(
-                'Error: Testcase\'s Data is error, more "=" or less ","')
+            raise 'Error: Testcase\'s Data is error, more "=" or less ","'
     return data_dict
 
 

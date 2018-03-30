@@ -1,6 +1,5 @@
 from sweetest.utility import Excel, data2dict
-from sweetest.log import logging
-from sweetest.exception import Error
+from sweetest.log import logger
 
 
 def elements_format(data):
@@ -55,8 +54,8 @@ class Elements:
             if self.elements.get(elem, ''):
                 return self.elements[elem]['frame'], '通用' + '-' + element
             else:
-                logging.critical('Page:%s element:%s is not exist' % (page, element))
-                raise Error('Page:%s element:%s is not exist' % (page, element))
+                logger.critical('Page:%s element:%s is not exist' % (page, element))
+                raise ('Page:%s element:%s is not exist' % (page, element))
 
 
 

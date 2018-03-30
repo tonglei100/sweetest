@@ -2,6 +2,7 @@
 from os import path
 import time
 import sys
+import json
 from sweetest.data import testsuite_format, testsuite2data
 from sweetest.parse import parse
 from sweetest.elements import e
@@ -10,7 +11,7 @@ from sweetest.windows import w
 from sweetest.testsuite import TestSuite
 from sweetest.testcase import TestCase
 from sweetest.utility import Excel, get_record
-from sweetest.log import logging
+from sweetest.log import logger
 from sweetest.report import Report
 from sweetest.config import _testcase, _elements, _report
 
@@ -40,9 +41,8 @@ class Autotest:
         # 1.解析配置文件
         try:
             e.get_elements(self.elements_file)
-        except Exception as exception:
-            logging.critical('Parse config file fail')
-            logging.debug(exception)
+        except:
+            logger.exception('*** Parse config file fail ***')
             self.code = -1
             sys.exit(self.code)
 
@@ -71,11 +71,10 @@ class Autotest:
         try:
             data = self.testcase_workbook.read(sheet_name)
             testsuite = testsuite_format(data)
-            logging.debug('Testsuite imported from Excle:\n' + str(testsuite))
-            logging.info('From Excel import testsuite success')
-        except Exception as exception:
-            logging.critical('From Excel import testsuite fail')
-            logging.debug(exception)
+            logger.info('Testsuite imported from Excle:\n' + json.dumps(testsuite, ensure_ascii=False, indent=4))
+            logger.info('From Excel import testsuite success')
+        except:
+            logger.exception('*** From Excel import testsuite fail ***')
             self.code = -1
             sys.exit(self.code)
 
@@ -87,19 +86,17 @@ class Autotest:
             if path.exists(data_file):
                 g.var = get_record(data_file)
             w.init()
-        except Exception as exception:
-            logging.critical('Init global object fail')
-            logging.debug(exception)
+        except:
+            logger.exception('*** Init global object fail ***')
             self.code = -1
             sys.exit(self.code)
 
         # 3.解析测试用例集
         try:
             parse(testsuite)
-            logging.debug('testsuite has been parsed:\n' + str(testsuite))
-        except Exception as exception:
-            logging.critical('Parse testsuite fail')
-            logging.debug(exception)
+            logger.debug('testsuite has been parsed:\n' + str(testsuite))
+        except:
+            logger.exception('*** Parse testsuite fail ***')
             self.code = -1
             sys.exit(self.code)
 
@@ -117,6 +114,5 @@ class Autotest:
         try:
             data = testsuite2data(testsuite)
             self.report_workbook.write(data, sheet_name)
-        except Exception as exception:
-            logging.warn('Save the report is fail')
-            logging.debug(exception)
+        except:
+            logger.exception('*** Save the report is fail ***')

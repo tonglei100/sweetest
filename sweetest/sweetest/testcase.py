@@ -1,7 +1,6 @@
 from time import sleep
 from os import path
-from sweetest.log import logging
-from sweetest.exception import Error
+from sweetest.log import logger
 from sweetest.globals import g
 from sweetest.elements import e
 from sweetest.windows import w
@@ -16,7 +15,7 @@ class TestCase:
         self.testcase = testcase
 
     def run(self):
-        logging.info('Run the TestCase: %s|%s' %
+        logger.info('Run the TestCase: %s|%s' %
                      (self.testcase['id'], self.testcase['title']))
         self.testcase['result'] = 'Pass'
         self.testcase['report'] = ''
@@ -33,7 +32,7 @@ class TestCase:
                 step['result'] = '-'
                 continue
 
-            logging.info('Run the Step: %s|%s|%s' %
+            logger.info('Run the Step: %s|%s|%s' %
                          (step['no'], step['keyword'], step['elements']))
 
             try:
@@ -47,7 +46,7 @@ class TestCase:
 
                 # 根据关键字调用关键字实现
                 getattr(keywords, step['keyword'].lower())(step)
-                logging.info('Run the Step: %s|%s|%s is Pass' %
+                logger.info('Run the Step: %s|%s|%s is Pass' %
                              (step['no'], step['keyword'], step['elements']))
                 step['result'] = 'OK'
 
@@ -57,16 +56,15 @@ class TestCase:
 
                 # 操作后，等待0.2秒
                 sleep(0.2)
-            except Exception as exception:
+            except  Exception as exception:
                 snapshot_file = path.join('snapshot', g.project_name + '-' +
                                           g.sheet_name + g.start_time + '#' + self.testcase['id'] + '-' + str(step['no']) + '.png')
                 try:
                     g.driver.get_screenshot_as_file(snapshot_file)
-                except Exception as e:
-                    logging.debug(e)
-                logging.warn('Run the Step: %s|%s|%s is Failure' %
+                except:
+                    logger.exception('*** save the screenshot is fail ***')
+                logger.exception('Run the Step: %s|%s|%s is Failure' %
                              (step['no'], step['keyword'], step['elements']))
-                logging.debug(exception)
                 step['result'] = 'NO'
 
                 # if 语句结果赋值
