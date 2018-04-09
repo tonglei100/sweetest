@@ -9,11 +9,13 @@ class Global:
         self.sheet_name = ''
 
     def set_driver(self, platform, app):
+        self.platform = platform
+        self.app = app
         self.var = {}
         self.snippet = {}
         self.db = {}
 
-        if platform.lower() == 'pc':
+        if self.platform.lower() == 'web':
             if app.lower() == 'ie':
                 self.driver = webdriver.Ie()
             elif app.lower() == 'firefox':
@@ -36,10 +38,10 @@ class Global:
             # 页面刷新超时时间
             self.driver.set_page_load_timeout(page_flash_timeout)  # seconds
 
-        if platform.lower() == 'ios':
+        if self.platform.lower() == 'ios':
             print('Come soon...')
 
-        if platform.lower() == 'android':
+        if self.platform.lower() == 'android':
             print('Come soon...')
 
     def close(self):

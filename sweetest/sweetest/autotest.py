@@ -17,7 +17,7 @@ from sweetest.config import _testcase, _elements, _report
 
 
 class Autotest:
-    def __init__(self, file_name, sheet_name, platform='PC', app='Chrome'):
+    def __init__(self, file_name, sheet_name, platform='Web', app='Chrome'):
         g.start_time = time.strftime("@%Y%m%d_%H%M%S", time.localtime())
 
         self.platform = platform

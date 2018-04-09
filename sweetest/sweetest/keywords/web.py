@@ -1,13 +1,11 @@
 from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
-from copy import deepcopy
 from sweetest.globals import g
 from sweetest.elements import e
 from sweetest.windows import w
 from sweetest.locator import locating_elements, locating_data, locating_element
 from sweetest.log import logger
 from sweetest.parse import data_format
-from sweetest.database import DB
 
 
 class Common():

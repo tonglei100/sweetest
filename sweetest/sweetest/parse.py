@@ -1,5 +1,5 @@
 from sweetest.log import logger
-from sweetest.config import keywords_map, comma_lower, comma_upper, equals, vertical
+from sweetest.config import all_keywords, comma_lower, comma_upper, equals, vertical
 from sweetest.elements import e
 from sweetest.globals import g
 
@@ -44,7 +44,7 @@ def elements_format(page, elements):
 
 def check_keyword(action):
     try:
-        keyword = keywords_map.get(action)
+        keyword = all_keywords.get(action)
         return keyword
     except:
         logger.exception('Keyword:%s is not exist' % action)

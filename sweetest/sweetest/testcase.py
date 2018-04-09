@@ -5,7 +5,8 @@ from sweetest.globals import g
 from sweetest.elements import e
 from sweetest.windows import w
 from sweetest.locator import locating_elements, locating_data, locating_element
-from sweetest import keywords
+from sweetest.keywords import web, common, mobile
+from sweetest.config import web_keywords, common_keywords, mobile_keywords
 from sweetest.utility import replace_dict
 from sweetest.utility import replace_list
 
@@ -36,16 +37,27 @@ class TestCase:
                         (step['no'], step['keyword'], step['elements']))
 
             try:
-                # 判断页面是否已和窗口做了关联，如果没有，就关联当前窗口，如果已关联，则判断是否需要切换
-                w.switch_window(step['page'])
-                # 判断是否需要切换 frmae
-                w.switch_frame(step['frames'][0])
                 # 变量替换
                 replace_dict(step['data'])
                 replace_list(step['elements'])
 
-                # 根据关键字调用关键字实现
-                getattr(keywords, step['keyword'].lower())(step)
+                if g.platform.lower() in ('web',) and step['keyword'] in web_keywords:
+                    # 判断页面是否已和窗口做了关联，如果没有，就关联当前窗口，如果已关联，则判断是否需要切换
+                    w.switch_window(step['page'])
+                    # 判断是否需要切换 frmae
+                    w.switch_frame(step['frames'][0])
+
+                    # 根据关键字调用关键字实现
+                    getattr(web, step['keyword'].lower())(step)
+
+                elif g.platform.lower() in ('ios', 'android') and step['keyword'] in mobile_keywords:
+                    # 根据关键字调用关键字实现
+                    getattr(mobile, step['keyword'].lower())(step)
+
+                else:
+                    # 根据关键字调用关键字实现
+                    print(step)
+                    getattr(common, step['keyword'].lower())(step)
                 logger.info('Run the Step: %s|%s|%s is Pass' %
                             (step['no'], step['keyword'], step['elements']))
                 step['result'] = 'OK'

@@ -1,4 +1,4 @@
-keywords_map = {
+web_keywords = {
     '打开': 'OPEN',
     'OPEN': 'OPEN',
     '检查': 'CHECK',
@@ -12,11 +12,29 @@ keywords_map = {
     '选择': 'SELECT',
     'SELECT': 'SELECT',
     '移动到': 'MOVE',
-    'MOVE': 'MOVE',
+    'MOVE': 'MOVE'
+}
+
+common_keywords = {
     '执行': 'EXECUTE',
     'EXECUTE': 'EXECUTE',
     'SQL': 'SQL'
 }
+
+mobile_keywords = {
+    '打开': 'OPEN',
+    'OPEN': 'OPEN',
+    '检查': 'CHECK',
+    'CHECK': 'CHECK',
+    '#检查': 'NOTCHECK',
+    '#CHECK': 'NOTCHECK',
+    '输入': 'INPUT',
+    'INPUT': 'INPUT',
+    '点击': 'CLICK',
+    'CLICK': 'CLICK'
+}
+
+all_keywords = dict(dict(web_keywords, **common_keywords), **mobile_keywords)
 
 # 文件名后缀
 _testcase = 'TestCase'  # '测试用例'
