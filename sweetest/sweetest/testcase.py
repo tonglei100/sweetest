@@ -7,8 +7,7 @@ from sweetest.windows import w
 from sweetest.locator import locating_elements, locating_data, locating_element
 from sweetest.keywords import web, common, mobile
 from sweetest.config import web_keywords, common_keywords, mobile_keywords
-from sweetest.utility import replace_dict
-from sweetest.utility import replace_list
+from sweetest.utility import replace_dict, replace
 
 
 class TestCase:
@@ -25,27 +24,27 @@ class TestCase:
         for step in self.testcase['steps']:
             # if 为否，不执行 then 语句
             if step['control'] == '>' and not if_result:
-                step['result'] = '-'
+                step['score'] = '-'
                 continue
 
             # if 为真，不执行 else 语句
             if step['control'] == '<' and if_result:
-                step['result'] = '-'
+                step['score'] = '-'
                 continue
 
             logger.info('Run the Step: %s|%s|%s' %
-                        (step['no'], step['keyword'], step['elements']))
+                        (step['no'], step['keyword'], step['element']))
 
             try:
                 # 变量替换
                 replace_dict(step['data'])
-                replace_list(step['elements'])
+                replace(step['element'])
 
                 if g.platform.lower() in ('web',) and step['keyword'] in web_keywords:
                     # 判断页面是否已和窗口做了关联，如果没有，就关联当前窗口，如果已关联，则判断是否需要切换
                     w.switch_window(step['page'])
                     # 判断是否需要切换 frmae
-                    w.switch_frame(step['frames'][0])
+                    w.switch_frame(step['frame'])
 
                     # 根据关键字调用关键字实现
                     getattr(web, step['keyword'].lower())(step)
@@ -59,8 +58,8 @@ class TestCase:
                     print(step)
                     getattr(common, step['keyword'].lower())(step)
                 logger.info('Run the Step: %s|%s|%s is Pass' %
-                            (step['no'], step['keyword'], step['elements']))
-                step['result'] = 'OK'
+                            (step['no'], step['keyword'], step['element']))
+                step['score'] = 'OK'
 
                 # if 语句结果赋值
                 if step['control'] == '^':
@@ -76,8 +75,8 @@ class TestCase:
                 except:
                     logger.exception('*** save the screenshot is fail ***')
                 logger.exception('Run the Step: %s|%s|%s is Failure' %
-                                 (step['no'], step['keyword'], step['elements']))
-                step['result'] = 'NO'
+                                 (step['no'], step['keyword'], step['element']))
+                step['score'] = 'NO'
 
                 # if 语句结果赋值
                 if step['control'] == '^':
@@ -86,6 +85,6 @@ class TestCase:
 
                 self.testcase['result'] = 'Fail'
                 self.testcase['report'] = 'step-%s|%s|%s: %s' % (
-                    step['no'], step['keyword'], step['elements'], exception)
+                    step['no'], step['keyword'], step['element'], exception)
                 step['remark'] = exception
                 break

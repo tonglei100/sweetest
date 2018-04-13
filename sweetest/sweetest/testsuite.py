@@ -23,7 +23,7 @@ class TestSuite:
                 g.snippet[testcase['id']] = testcase
                 testcase['flag'] = 'N'
 
-    def setup(self):
+    def setup(self, testcase):
         logger.info('Start running the SETUP testcase...')
         # setup 执行成功标记
 
@@ -95,7 +95,7 @@ class TestSuite:
                             testcase['id'], testcase['title']))
                         continue
                 else:
-                    result = self.setup()
+                    result = self.setup(testcase)
                     if result == 'N':
                         continue
 

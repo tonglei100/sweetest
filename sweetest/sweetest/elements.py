@@ -18,7 +18,7 @@ def elements_format(data):
         else:
             d['frame'] = frame
 
-        elements[d['page'] + '-' + d['name']] = d
+        elements[d['page'] + '-' + d['element']] = d
     return elements
 
 
@@ -55,7 +55,7 @@ class Elements:
             else:
                 logger.critical('Page:%s element:%s is not exist' %
                                 (page, element))
-                raise ('Page:%s element:%s is not exist' % (page, element))
+                raise Exception('Page:%s element:%s is not exist' % (page, element))
 
     def get(self, element):
         ele = element.split('#')

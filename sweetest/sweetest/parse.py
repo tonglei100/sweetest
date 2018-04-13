@@ -14,32 +14,16 @@ def recover(data):
     return data.replace(comma_lower, ',').replace(comma_upper, '，').replace(equals, '=')
 
 
-def elements_format(page, elements):
+def elements_format(page, element):
 
-    if not elements:
-        return page, elements
+    if not element:
+        return page, '', element
 
-    # 需要把‘|’转义一下
-    elements = elements.replace('\\|', vertical)
-    es = elements.split('|')
-    els = []
-    _el = ''
+    if page in ('SNIPPET','用例片段') or element in ('变量赋值',):
+        return page, '', element
 
-    frames = []
-
-    if page in ('用例片段') or '变量赋值' in elements:
-        for element in es:
-            els.append(element)
-            frames.append('')
-        return page, frames, els
-
-    for element in es:
-        # 把转义的'|'转换回来
-        element = element.replace(vertical, '|')
-        frame, el = e.have(page, element)
-        frames.append(frame)
-        els.append(el)
-    return page, frames, els
+    frame, el = e.have(page, element)
+    return page, frame, el
 
 
 def check_keyword(action):
@@ -69,7 +53,7 @@ def data_format(data):
             d[0] = d[0].strip()  # 清除 <元素属性> 2边的空格，如果有的话
             data_dict[d[0]] = d[1]
         else:
-            raise 'Error: Testcase\'s Data is error, more "=" or less ","'
+            raise Exception('Error: Testcase\'s Data is error, more "=" or less ","')
     return data_dict
 
 
@@ -80,8 +64,7 @@ def parse(testsuit):
     '''
     for testcase in testsuit:
         for step in testcase['steps']:
-            step['keyword'] = check_keyword(step['action'].strip())
-            step['page'], step['frames'], step['elements'] = elements_format(
-                step['page'].strip(), step['elements'].strip())
+            step['keyword'] = check_keyword(step['keyword'])
+            step['page'], step['frame'], step['element'] = elements_format(step['page'], step['element'])
             step['data'] = data_format(str(step['data']))
             step['output'] = data_format(step['output'])

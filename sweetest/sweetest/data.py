@@ -38,25 +38,17 @@ def testsuite_format(data):
 
     for d in data:
         # 如果用例编号不为空，则为新的用例
-        if d['用例编号'].strip():
+        if d['id'].strip():
             # 如果 testcase 非空，则添加到 testcases 里，并重新初始化 testcase
             if testcase:
                 testsuite.append(testcase)
                 testcase = {}
-            testcase['id'] = d['用例编号']
-            testcase['title'] = d['用例标题']
-            testcase['condition'] = d['前置条件']
-            if d['优先级']:
-                testcase['priority'] = d['优先级']
-            else:
-                testcase['priority'] = 'M'
-            testcase['designer'] = d['设计者']
-            testcase['flag'] = d['自动化标记']
-            testcase['result'] = d['测试结果']
-            testcase['remark'] = d['备注']
+            for key in ('id', 'title', 'condition', 'designer', 'flag', 'result', 'remark'):
+                testcase[key] = d[key]
+            testcase['priority'] = d.get('priority', 'M')
             testcase['steps'] = []
         # 如果步骤编号不为空，则为有效步骤，否则用例解析结束
-        no = str(d['步骤编号']).strip()
+        no = str(d['step']).strip()
         if no:
             step = {}
             step['control'] = ''
@@ -64,18 +56,15 @@ def testsuite_format(data):
                 step['control'] = no[0]
                 step['no'] = no
             else:
-                step['no'] = int(d['步骤编号'])
-            step['action'] = d['操作']
-            step['page'] = d['页面']
-            step['elements'] = d['元素']
-            step['data'] = d['测试数据']
-            step['output'] = d['输出数据']
-            step['result'] = d['测试结果']
-            step['remark'] = d['备注']
+                step['no'] = int(d['step'])
+            for key in ('keyword', 'page', 'element', 'data', 'output', 'score', 'remark'):
+                step[key] = d[key]
+
             # 仅作为测试结果输出时，保持原样
-            step['元素'] = d['元素']
-            step['测试数据'] = d['测试数据']
-            step['输出数据'] = d['输出数据']
+            step['_keyword'] = d['keyword']
+            step['_element'] = d['element']
+            step['_data'] = d['data']
+            step['_output'] = d['output']
             testcase['steps'].append(step)
     if testcase:
         testsuite.append(testcase)
@@ -88,13 +77,14 @@ def testsuite_from_excel(file_name, sheet_name):
 
 
 def testsuite2data(data):
-    list_list_data = [header]
+    result = [list(header.keys())]
     for d in data:
-        testcase = [d['id'], d['title'], d['condition'], '', '', '', '',
-                    '', '', d['priority'], d['designer'], d['flag'], d['result'], d['remark']]
-        list_list_data.append(testcase)
-        for s in d['steps']:
-            step = ['', '', '', s['no'], s['action'], s['page'], s['元素'],
-                    s['测试数据'], s['输出数据'], '', '', '', s['result'], s['remark']]
-            list_list_data.append(step)
-    return list_list_data
+        s = d['steps'][0]  # 第一步和用例标题同一行
+        testcase = [d['id'], d['title'], d['condition'], s['no'], s['_keyword'], s['page'], s['_element'],
+                s['_data'], s['_output'], d['priority'], d['designer'], d['flag'], s['score'], d['result'], s['remark']]
+        result.append(testcase)
+        for s in d['steps'][1:]:
+            step = ['', '', '', s['no'], s['_keyword'], s['page'], s['_element'],
+                    s['_data'], s['_output'], '', '', '', s['score'], '', s['remark']]
+            result.append(step)
+    return result

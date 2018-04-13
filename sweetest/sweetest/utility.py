@@ -12,7 +12,7 @@ class Excel:
         elif mode == 'w':
             self.workbook = xlsxwriter.Workbook(file_name)
         else:
-            raise Error('Error: init Excel class with error mode: %s' % mode)
+            raise Exception('Error: init Excel class with error mode: %s' % mode)
 
     def get_sheet(self, sheet_name):
         names = []
@@ -26,7 +26,7 @@ class Excel:
         elif isinstance(sheet_name, list):
             names = sheet_name
         else:
-            raise Error('Error: invalidity sheet_name: %s' % sheet_name)
+            raise Exception('Error: invalidity sheet_name: %s' % sheet_name)
 
         return names
 
@@ -79,11 +79,19 @@ def data2dict(data):
     把带头标题的二维数组，转换成以标题为 key 的 dict  的 list
     '''
     list_dict_data = []
-    key = data[0]
+    key = []
+    for d in data[0]:
+        d = d.strip()
+        # 如果为中文，则替换成英文
+        key.append(header.get(d, d).lower())
+
     for d in data[1:]:
         dict_data = {}
         for i in range(len(key)):
-            dict_data[key[i]] = d[i]
+            if isinstance(d[i],str):
+                dict_data[key[i]] = str(d[i]).strip()
+            else:
+                dict_data[key[i]] = d[i]
         list_dict_data.append(dict_data)
     return list_dict_data
 

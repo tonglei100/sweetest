@@ -35,7 +35,7 @@ class Common():
 
 
 def open(step):
-    element = step['elements'][0]
+    element = step['element']
     el, value = e.get(element)
     g.driver.get(value)
     w.open(step)
@@ -44,7 +44,7 @@ def open(step):
 
 def check(step):
     data = step['data']
-    element = step['elements'][0]
+    element = step['element']
     element_location = locating_element(element)
     if '#' in element:
         e_name = element.split('#')[0] + '#'
@@ -87,7 +87,7 @@ def check(step):
 
 def notcheck(step):
     data = step['data']
-    element = step['elements'][0]
+    element = step['element']
     element_location = locating_element(element)
 
     if e.elements[element]['by'] == 'title':
@@ -96,19 +96,18 @@ def notcheck(step):
 
 def input(step):
     data = step['data']
-    elements_location = locating_elements(step['elements'])
+    element = step['element']
+    element_location = locating_element(element)
 
-    for element in elements_location:
-        elements_location[element].clear()
-        elements_location[element].send_keys(data['text'])
+    element_location.clear()
+    element_location.send_keys(data['text'])
 
 
 def click(step):
-    element_location = ''
-    for element in step['elements']:
-        element_location = locating_element(element, 'CLICK')
-        element_location.click()
-        sleep(0.5)
+    element = step['element']
+    element_location = locating_element(element, 'CLICK')
+    element_location.click()
+    sleep(0.5)
 
     # 获取元素其他属性
     output = step['output']
@@ -136,59 +135,8 @@ def select(step):
 
 def move(step):
     actions = ActionChains(g.driver)
-    for element in step['elements']:
-        el = locating_element(element)
-        actions.move_to_element(el)
-        actions.perform()
-        sleep(0.5)
-
-
-def execute(step):
-    # 先执行赋值操作
-    data = step['data']
-    for k, v in data.items():
-        g.var[k] = v
-
-    from sweetest.testcase import TestCase
-    for element in step['elements']:
-        if element != '变量赋值':
-            testcase = deepcopy(g.snippet[element])
-            tc = TestCase(testcase)
-            tc.run()
-
-
-def sql(step):
-    element = step['elements'][0]
-    el, _sql = e.get(element)
-
-    logger.info('SQL: %s' % _sql)
-    # 获取连接参数
-    el, value = e.get(step['page'] + '-' + '配置信息')
-    arg = data_format(value)
-
-    if step['page'] not in g.db.keys():
-        g.db[step['page']] = DB(arg)
-    row = g.db[step['page']].fetchone(_sql)
-    logger.info('SQL result: %s' % (row,))
-
-    result = {}
-    if _sql.lower().startswith('select') and '*' not in _sql:
-        keys = _sql[6:].split('FROM')[0].split('from')[0].strip().split(',')
-        result = dict(zip(keys, row))
-        logger.info('keys result: %s' % result)
-
-    data = step['data']
-    output = step['output']
-    if data:
-        for key in data:
-            logger.info('key: %s, expect: %s, real: %s' %
-                        (key, data[key], result[key]))
-            if data[key].startswith('*'):
-                assert data[key][1:] in result[key]
-            else:
-                assert data[key] == result[key]
-
-    if output:
-        logger.info('output: %s' % output)
-        for key in output:
-            g.var[key] = result[output[key]]
+    element = step['element']
+    el = locating_element(element)
+    actions.move_to_element(el)
+    actions.perform()
+    sleep(0.5)

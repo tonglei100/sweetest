@@ -32,7 +32,7 @@ class Global:
                     "excludeSwitches", ["ignore-certificate-errors"])
                 self.driver = webdriver.Chrome(chrome_options=options)
             else:
-                raise 'Error: this browser is not supported or mistake name：%s' % browser
+                raise Exception('Error: this browser is not supported or mistake name：%s' % browser)
             # 等待元素超时时间
             self.driver.implicitly_wait(element_wait_timeout)  # seconds
             # 页面刷新超时时间

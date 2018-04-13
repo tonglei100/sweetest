@@ -13,15 +13,15 @@ def execute(step):
         g.var[k] = v
 
     from sweetest.testcase import TestCase
-    for element in step['elements']:
-        if element != '变量赋值':
-            testcase = deepcopy(g.snippet[element])
-            tc = TestCase(testcase)
-            tc.run()
+    element = step['element']
+    if element != '变量赋值':
+        testcase = deepcopy(g.snippet[element])
+        tc = TestCase(testcase)
+        tc.run()
 
 
 def sql(step):
-    element = step['elements'][0]
+    element = step['element']
     el, _sql = e.get(element)
 
     logger.info('SQL: %s' % _sql)
@@ -34,6 +34,9 @@ def sql(step):
     row = g.db[step['page']].fetchone(_sql)
     logger.info('SQL result: %s' % (row,))
 
+    if not row:
+        raise Exception('*** Fetch None ***')
+
     result = {}
     if _sql.lower().startswith('select') and '*' not in _sql:
         keys = _sql[6:].split('FROM')[0].split('from')[0].strip().split(',')
@@ -41,7 +44,6 @@ def sql(step):
         logger.info('keys result: %s' % result)
 
     data = step['data']
-    output = step['output']
     if data:
         for key in data:
             logger.info('key: %s, expect: %s, real: %s' %
@@ -51,6 +53,7 @@ def sql(step):
             else:
                 assert data[key] == result[key]
 
+    output = step['output']
     if output:
         logger.info('output: %s' % output)
         for key in output:

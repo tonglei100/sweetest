@@ -46,7 +46,6 @@ class Windows:
                 self.frame = 0
 
     def open(self, step):
-        page = list(step['elements'])[0]
         # 查看当前窗口是否已经注册到 windows 映射表
         c = self.windows.get(self.current_window, '')
         # 如果已经存在，则需要清除和当前窗口绑定的页面
