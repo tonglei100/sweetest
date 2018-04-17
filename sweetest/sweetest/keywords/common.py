@@ -26,7 +26,7 @@ def sql(step):
 
     logger.info('SQL: %s' % _sql)
     # 获取连接参数
-    el, value = e.get(step['page'] + '-' + '配置信息')
+    el, value = e.get(step['page'] + '-' + 'config')
     arg = data_format(value)
 
     if step['page'] not in g.db.keys():

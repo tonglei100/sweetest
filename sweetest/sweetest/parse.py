@@ -19,19 +19,19 @@ def elements_format(page, element):
     if not element:
         return page, '', element
 
-    if page in ('SNIPPET','用例片段') or element in ('变量赋值',):
+    if page in ('SNIPPET', '用例片段') or element in ('变量赋值',):
         return page, '', element
 
-    frame, el = e.have(page, element)
-    return page, frame, el
+    custom, el = e.have(page, element)
+    return page, custom, el
 
 
-def check_keyword(action):
+def check_keyword(kw):
     try:
-        keyword = all_keywords.get(action)
+        keyword = all_keywords.get(kw)
         return keyword
     except:
-        logger.exception('Keyword:%s is not exist' % action)
+        logger.exception('Keyword:%s is not exist' % kw)
         exit()
 
 
@@ -53,7 +53,8 @@ def data_format(data):
             d[0] = d[0].strip()  # 清除 <元素属性> 2边的空格，如果有的话
             data_dict[d[0]] = d[1]
         else:
-            raise Exception('Error: Testcase\'s Data is error, more "=" or less ","')
+            raise Exception(
+                'Error: Testcase\'s Data is error, more "=" or less ","')
     return data_dict
 
 
@@ -65,6 +66,7 @@ def parse(testsuit):
     for testcase in testsuit:
         for step in testcase['steps']:
             step['keyword'] = check_keyword(step['keyword'])
-            step['page'], step['frame'], step['element'] = elements_format(step['page'], step['element'])
+            step['page'], step['custom'], step['element'] = elements_format(
+                step['page'], step['element'])
             step['data'] = data_format(str(step['data']))
             step['output'] = data_format(step['output'])

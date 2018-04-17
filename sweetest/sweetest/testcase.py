@@ -5,8 +5,8 @@ from sweetest.globals import g
 from sweetest.elements import e
 from sweetest.windows import w
 from sweetest.locator import locating_elements, locating_data, locating_element
-from sweetest.keywords import web, common, mobile
-from sweetest.config import web_keywords, common_keywords, mobile_keywords
+from sweetest.keywords import web, common, mobile, http
+from sweetest.config import web_keywords, common_keywords, mobile_keywords, http_keywords
 from sweetest.utility import replace_dict, replace
 
 
@@ -44,7 +44,7 @@ class TestCase:
                     # 判断页面是否已和窗口做了关联，如果没有，就关联当前窗口，如果已关联，则判断是否需要切换
                     w.switch_window(step['page'])
                     # 判断是否需要切换 frmae
-                    w.switch_frame(step['frame'])
+                    w.switch_frame(step['custom'])
 
                     # 根据关键字调用关键字实现
                     getattr(web, step['keyword'].lower())(step)
@@ -52,6 +52,10 @@ class TestCase:
                 elif g.platform.lower() in ('ios', 'android') and step['keyword'] in mobile_keywords:
                     # 根据关键字调用关键字实现
                     getattr(mobile, step['keyword'].lower())(step)
+
+                elif step['keyword'] in http_keywords:
+                    # 根据关键字调用关键字实现
+                    getattr(http, step['keyword'].lower())(step)
 
                 else:
                     # 根据关键字调用关键字实现

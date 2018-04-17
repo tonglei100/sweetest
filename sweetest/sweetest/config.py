@@ -21,6 +21,11 @@ common_keywords = {
     'SQL': 'SQL'
 }
 
+http_keywords = {
+    'GET': 'GET',
+    'POST': 'POST'
+}
+
 mobile_keywords = {
     '打开': 'OPEN',
     'OPEN': 'OPEN',
@@ -34,7 +39,9 @@ mobile_keywords = {
     'CLICK': 'CLICK'
 }
 
-all_keywords = dict(dict(web_keywords, **common_keywords), **mobile_keywords)
+all_keywords = {}
+for keywords in (web_keywords, common_keywords, http_keywords, mobile_keywords):
+    all_keywords = dict(all_keywords, **keywords)
 
 # 文件名后缀
 _testcase = 'TestCase'  # '测试用例'
@@ -47,7 +54,7 @@ comma_upper = '&^%$#'
 equals = '%^$#&'
 vertical = '&$&*^&A@'
 
-#header = ['用例编号', '用例标题', '前置条件', '步骤编号', '操作', '页面', '元素',
+# header = ['用例编号', '用例标题', '前置条件', '步骤编号', '操作', '页面', '元素',
 #          '测试数据', '输出数据', '优先级', '设计者', '自动化标记', '测试结果', '备注']
 
 header = {
