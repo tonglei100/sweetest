@@ -10,6 +10,21 @@ from sweetest.config import web_keywords, common_keywords, mobile_keywords, http
 from sweetest.utility import replace_dict, replace
 
 
+def elements_format(page, element):
+    if not page:
+        page= g.current_page
+
+    if not element:
+        return page, '', element
+
+    if page in ('SNIPPET', '用例片段') or element in ('变量赋值',):
+        return page, '', element
+
+    custom, el = e.have(page, element)
+    g.current_page = page
+    return page, custom, el
+
+    
 class TestCase:
     def __init__(self, testcase):
         self.testcase = testcase
@@ -35,6 +50,8 @@ class TestCase:
             logger.info('Run the Step: %s|%s|%s' %
                         (step['no'], step['keyword'], step['element']))
 
+            step['page'], step['custom'], step['element'] = elements_format(
+                step['page'], step['element'])
             try:
                 # 变量替换
                 replace_dict(step['data'])

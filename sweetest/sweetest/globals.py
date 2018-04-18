@@ -13,6 +13,7 @@ class Global:
         self.app = app
         self.var = {}
         self.snippet = {}
+        self.current_page = '通用' 
         self.db = {}
         self.http = {}
         self.baseurl = {}

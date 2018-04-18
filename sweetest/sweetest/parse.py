@@ -14,18 +14,6 @@ def recover(data):
     return data.replace(comma_lower, ',').replace(comma_upper, '，').replace(equals, '=')
 
 
-def elements_format(page, element):
-
-    if not element:
-        return page, '', element
-
-    if page in ('SNIPPET', '用例片段') or element in ('变量赋值',):
-        return page, '', element
-
-    custom, el = e.have(page, element)
-    return page, custom, el
-
-
 def check_keyword(kw):
     try:
         keyword = all_keywords.get(kw)
@@ -66,7 +54,7 @@ def parse(testsuit):
     for testcase in testsuit:
         for step in testcase['steps']:
             step['keyword'] = check_keyword(step['keyword'])
-            step['page'], step['custom'], step['element'] = elements_format(
-                step['page'], step['element'])
+            # step['page'], step['custom'], step['element'] = elements_format(
+            #     step['page'], step['element'])
             step['data'] = data_format(str(step['data']))
             step['output'] = data_format(step['output'])

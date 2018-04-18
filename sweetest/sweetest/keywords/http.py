@@ -20,10 +20,9 @@ class Http:
 
         self.r = requests.Session()
         # 获取 headers
-        el, value = e.get(step['page'] + '-' + 'headers', True)
-        if value:
-            headers = data_format(value)
-            self.r.headers.update(headers)
+        el, headers = e.get(step['page'] + '-' + 'headers', True)
+        if headers:
+            self.r.headers.update(eval(headers))
 
 
 def json_in_test(sub, parent):

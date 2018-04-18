@@ -15,8 +15,16 @@ class Windows:
         self.frame = 0
         # 所有页面--窗口名字映射表，如：{'门户首页': '新版门户首页窗口'}
         self.pages = {}
+        # 新开窗口标志
+        self.new_window_flag = True
 
     def switch_window(self, page):
+        if self.new_window_flag:
+            if page in list(self.pages):
+                page = '通用'
+                g.current_page = '通用'
+            self.new_window_flag = False
+
         if page != '通用':
             if page not in list(self.pages):
                 # 如果当前页未注册，则需要先清除和当前窗口绑定的页面
@@ -82,6 +90,7 @@ class Windows:
         self.windows[new_window] = handle
         # 把当前窗口名字改为新窗口名称
         self.current_window = new_window
-
+        # 新窗口标志置为是
+        self.new_window_flag = True
 
 w = Windows()
