@@ -44,6 +44,9 @@ def open(step):
 
 def check(step):
     data = step['data']
+    if not data:
+        data = step['expected']
+
     element = step['element']
     element_location = locating_element(element)
     if '#' in element:
@@ -87,6 +90,9 @@ def check(step):
 
 def notcheck(step):
     data = step['data']
+    if not data:
+        data = step['expected']
+        
     element = step['element']
     element_location = locating_element(element)
 

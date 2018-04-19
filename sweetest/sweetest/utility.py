@@ -80,10 +80,13 @@ def data2dict(data):
     '''
     list_dict_data = []
     key = []
+    g.header_custom = {}  # 用户自定义的标题
     for d in data[0]:
-        d = d.strip()
+        k = d.strip().split('#')[0]
         # 如果为中文，则替换成英文
-        key.append(header.get(d, d).lower())
+        h = header.get(k, k).lower()
+        key.append(h)
+        g.header_custom[h] = d.strip()
 
     for d in data[1:]:
         dict_data = {}

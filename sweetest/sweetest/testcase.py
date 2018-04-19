@@ -12,7 +12,7 @@ from sweetest.utility import replace_dict, replace
 
 def elements_format(page, element):
     if not page:
-        page= g.current_page
+        page = g.current_page
 
     if not element:
         return page, '', element
@@ -24,7 +24,7 @@ def elements_format(page, element):
     g.current_page = page
     return page, custom, el
 
-    
+
 class TestCase:
     def __init__(self, testcase):
         self.testcase = testcase
@@ -89,8 +89,9 @@ class TestCase:
                 # 操作后，等待0.2秒
                 sleep(0.2)
             except Exception as exception:
-                snapshot_file = path.join('snapshot', g.project_name + '-' +
-                                          g.sheet_name + g.start_time + '#' + self.testcase['id'] + '-' + str(step['no']) + '.png')
+                file_name = g.project_name + '-' + g.sheet_name + g.start_time + \
+                    '#' + self.testcase['id'] + '-' + str(step['no']) + '.png'
+                snapshot_file = path.join('snapshot', file_name)
                 try:
                     g.driver.get_screenshot_as_file(snapshot_file)
                 except:

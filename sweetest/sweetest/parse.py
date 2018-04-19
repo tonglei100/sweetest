@@ -57,4 +57,5 @@ def parse(testsuit):
             # step['page'], step['custom'], step['element'] = elements_format(
             #     step['page'], step['element'])
             step['data'] = data_format(str(step['data']))
+            step['expected'] = data_format(str(step['expected']))
             step['output'] = data_format(step['output'])

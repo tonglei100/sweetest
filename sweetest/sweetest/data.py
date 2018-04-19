@@ -1,6 +1,7 @@
 import xlrd
 from sweetest.utility import Excel, data2dict
 from sweetest.config import header
+from sweetest.globals import g
 
 
 def testsuite_format(data):
@@ -13,18 +14,18 @@ def testsuite_format(data):
         'condition': '',  #前置条件
         'designer': 'Leo',  #设计者
         'flag': '',  #自动化标记
-        'result': '',  #测试结果
+        'result': '',  #用例结果
         'remark': '',  #备注
         'steps':
             [
                 {
                 'no': 1,  #步骤编号
-                'action': '输入',
+                'keyword': '输入',
                 'page': '产品管系统登录页',
-                'elements': '用户名'
+                'element': '用户名'
                 'data': 'user1',  #测试数据
                 'output': '',  #输出数据
-                'result': '',  #测试结果
+                'score': '',  #测试结果
                 'remark': ''  #备注
                 },
                 {……}
@@ -39,7 +40,7 @@ def testsuite_format(data):
     for d in data:
         # 如果用例编号不为空，则为新的用例
         if d['id'].strip():
-            # 如果 testcase 非空，则添加到 testcases 里，并重新初始化 testcase
+            # 如果 testcase 非空，则添加到 testsuite 里，并重新初始化 testcase
             if testcase:
                 testsuite.append(testcase)
                 testcase = {}
@@ -57,13 +58,14 @@ def testsuite_format(data):
                 step['no'] = no
             else:
                 step['no'] = int(d['step'])
-            for key in ('keyword', 'page', 'element', 'data', 'output', 'score', 'remark'):
-                step[key] = d[key]
+            for key in ('keyword', 'page', 'element', 'data', 'expected', 'output', 'score', 'remark'):
+                step[key] = d.get(key, '')
 
             # 仅作为测试结果输出时，保持原样
             step['_keyword'] = d['keyword']
             step['_element'] = d['element']
             step['_data'] = d['data']
+            step['_expected'] = d['expected']
             step['_output'] = d['output']
             testcase['steps'].append(step)
     if testcase:
@@ -77,14 +79,19 @@ def testsuite_from_excel(file_name, sheet_name):
 
 
 def testsuite2data(data):
-    result = [list(header.keys())]
+    # result = [list(header.values())]
+    result = [[g.header_custom[key.lower()] for key in header.values()]]
     for d in data:
         s = d['steps'][0]  # 第一步和用例标题同一行
         testcase = [d['id'], d['title'], d['condition'], s['no'], s['_keyword'], s['page'], s['_element'],
                 s['_data'], s['_output'], d['priority'], d['designer'], d['flag'], s['score'], d['result'], s['remark']]
+        if 'expected' in g.header_custom:
+            testcase.insert(8, s['_expected'])
         result.append(testcase)
         for s in d['steps'][1:]:
             step = ['', '', '', s['no'], s['_keyword'], s['page'], s['_element'],
                     s['_data'], s['_output'], '', '', '', s['score'], '', s['remark']]
+            if 'expected' in g.header_custom:
+                step.insert(8, s['_expected'])
             result.append(step)
     return result

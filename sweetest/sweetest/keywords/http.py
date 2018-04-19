@@ -47,9 +47,13 @@ def request(kw, step):
     data = step['data']
     data['headers'] = data.get('headers', '')
     data['data'] = data.get('data', '{}')
-    data['status_code'] = data.get('status_code', '')
-    data['text'] = data.get('text', '')
-    data['json'] = data.get('json', '')
+    expected = step['expected']
+    status_code = data.get('status_code', '')
+    text = data.get('text', '')
+    json = data.get('json', '')
+    expected['status_code'] = expected.get('status_code', status_code)
+    expected['text'] = expected.get('text', text)
+    expected['json'] = expected.get('json', json)
 
     if not g.http.get(step['page']):
         g.http[step['page']] = Http(step)
@@ -62,16 +66,17 @@ def request(kw, step):
     logger.info('Code: %s' % r.status_code)
     logger.info('Http result: %s' % (r.text,))
 
-    if data['status_code']:
-        assert data['status_code'] == str(r.status_code)
+    if expected['status_code']:
+        assert expected['status_code'] == str(r.status_code)
 
-    if data['text'].startswith('*'):
-        assert data['text'][1:] in r.text
-    else:
-        assert data['text'] == r.text
+    if expected['text']:
+        if expected['text'].startswith('*'):
+            assert expected['text'][1:] in r.text
+        else:
+            assert expected['text'] == r.text
 
-    if data['json']:
-        assert json_in_test(data['json'], r.json())
+    if expected['json']:
+        assert json_in_test(expected['json'], r.json())
 
     output = step['output']
     if output:

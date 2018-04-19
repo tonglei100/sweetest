@@ -66,6 +66,7 @@ header = {
     '页面': 'page',
     '元素': 'element',
     '测试数据': 'data',
+    '预期结果': 'expected',
     '输出数据': 'output',
     '优先级': 'priority',
     '设计者': 'designer',
