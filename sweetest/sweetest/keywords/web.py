@@ -75,6 +75,8 @@ def check(step):
                     elif isinstance(data[key], float):
                         text, p = str2float(text)
                         assert text == round(data[key], p)
+                    else:
+                        assert data[key] == text
             else:
                 logger.info('DATA:%s' % repr(data[key]))
                 logger.info('REAL: %s' % repr(element_location.get_attribute(key)))
@@ -88,6 +90,8 @@ def check(step):
                     elif isinstance(data[key], float):
                         vaule, p = str2float(vaule)
                         assert vaule == round(data, p)
+                    else:
+                        assert data[key] == vaule
 
         # 获取元素其他属性
         for key in output:
