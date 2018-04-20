@@ -65,6 +65,7 @@ def testsuite_format(data):
             step['_keyword'] = d['keyword']
             step['_element'] = d['element']
             step['_data'] = d['data']
+            step['vdata'] = d['data']
             step['_expected'] = d['expected']
             step['_output'] = d['output']
             testcase['steps'].append(step)
@@ -84,13 +85,13 @@ def testsuite2data(data):
     for d in data:
         s = d['steps'][0]  # 第一步和用例标题同一行
         testcase = [d['id'], d['title'], d['condition'], s['no'], s['_keyword'], s['page'], s['_element'],
-                s['_data'], s['_output'], d['priority'], d['designer'], d['flag'], s['score'], d['result'], s['remark']]
+                s['vdata'], s['_output'], d['priority'], d['designer'], d['flag'], s['score'], d['result'], s['remark']]
         if 'expected' in g.header_custom:
             testcase.insert(8, s['_expected'])
         result.append(testcase)
         for s in d['steps'][1:]:
             step = ['', '', '', s['no'], s['_keyword'], s['page'], s['_element'],
-                    s['_data'], s['_output'], '', '', '', s['score'], '', s['remark']]
+                    s['vdata'], s['_output'], '', '', '', s['score'], '', s['remark']]
             if 'expected' in g.header_custom:
                 step.insert(8, s['_expected'])
             result.append(step)

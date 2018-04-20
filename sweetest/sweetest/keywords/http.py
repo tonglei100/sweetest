@@ -63,8 +63,8 @@ def request(kw, step):
     if data['headers']:
         http.r.headers.update(eval(data['headers']))
     r = getattr(http.r, kw)(http.baseurl + url, data=eval(data['data']))
-    logger.info('Code: %s' % r.status_code)
-    logger.info('Http result: %s' % (r.text,))
+    logger.info('Code: %s' % repr(r.status_code))
+    logger.info('Http result: %s' % repr(r.text))
 
     if expected['status_code']:
         assert expected['status_code'] == str(r.status_code)
@@ -80,7 +80,7 @@ def request(kw, step):
 
     output = step['output']
     if output:
-        logger.info('output: %s' % output)
+        logger.info('output: %s' % repr(output))
         # TODO
         # for key in output:
         #     g.var[key] = r.json[output[key]]

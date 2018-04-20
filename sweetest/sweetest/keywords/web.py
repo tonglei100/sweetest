@@ -6,13 +6,14 @@ from sweetest.windows import w
 from sweetest.locator import locating_elements, locating_data, locating_element
 from sweetest.log import logger
 from sweetest.parse import data_format
+from sweetest.utility import str2int, str2float
 
 
 class Common():
     @classmethod
     def title(cls, data, output):
-        logger.info('DATA:%s' % data['text'])
-        logger.info('REAL: %s' % g.driver.title)
+        logger.info('DATA:%s' % repr(data['text']))
+        logger.info('REAL: %s' % repr(g.driver.title))
         if data['text'].startswith('*'):
             assert data['text'][1:] in g.driver.title
         else:
@@ -23,8 +24,8 @@ class Common():
 
     @classmethod
     def current_url(cls, data, output):
-        logger.info('DATA:%s' % data['text'])
-        logger.info('REAL: %s' % g.driver.current_url)
+        logger.info('DATA:%s' % repr(data['text']))
+        logger.info('REAL: %s' % repr(g.driver.current_url))
         if data['text'].startswith('*'):
             assert data['text'][1:] in g.driver.current_url
         else:
@@ -62,19 +63,31 @@ def check(step):
     else:
         for key in data:
             if key == 'text':
-                logger.info('DATA:%s' % data[key])
-                logger.info('REAL: %s' % element_location.text)
+                text = element_location.text
+                logger.info('DATA:%s' % repr(data[key]))
+                logger.info('REAL: %s' % repr(text))
                 if data[key].startswith('*'):
-                    assert data[key][1:] in element_location.text
+                    assert data[key][1:] in text
                 else:
-                    assert element_location.text == data[key]
+                    if isinstance(data[key], int):
+                        text = str2int(text)
+                    elif isinstance(data[key], float):
+                        text, p = str2float(text)
+                    assert text == round(data[key], p)
             else:
-                logger.info('DATA:%s' % data[key])
-                logger.info('REAL: %s' % element_location.get_attribute(key))
+                logger.info('DATA:%s' % repr(data[key]))
+                logger.info('REAL: %s' % repr(element_location.get_attribute(key)))
                 if data[key].startswith('*'):
                     assert data[key][1:] in element_location.get_attribute(key)
                 else:
-                    assert element_location.get_attribute(key) == data[key]
+                    vaule = element_location.get_attribute(key)
+                    if isinstance(data[key], int):
+                        vaule = str2int(vaule)
+                        assert text == round(data)
+                    elif isinstance(data[key], float):
+                        vaule, p = str2float(vaule)
+                        assert vaule == round(data, p)
+
         # 获取元素其他属性
         for key in output:
             if output[key] == 'text':
@@ -92,7 +105,7 @@ def notcheck(step):
     data = step['data']
     if not data:
         data = step['expected']
-        
+
     element = step['element']
     element_location = locating_element(element)
 

@@ -25,9 +25,17 @@ def elements_format(page, element):
     return page, custom, el
 
 
+def v_data(d):
+    data = ''
+    for k,v in d.items():
+        data += k + '=' + v + ','
+    return data[:-1]
+
+
 class TestCase:
     def __init__(self, testcase):
         self.testcase = testcase
+        self.snippet_steps = {}
 
     def run(self):
         logger.info('Run the TestCase: %s|%s' %
@@ -36,7 +44,7 @@ class TestCase:
         self.testcase['report'] = ''
         if_result = ''
 
-        for step in self.testcase['steps']:
+        for index, step in enumerate(self.testcase['steps']):
             # if 为否，不执行 then 语句
             if step['control'] == '>' and not if_result:
                 step['score'] = '-'
@@ -55,7 +63,11 @@ class TestCase:
             try:
                 # 变量替换
                 replace_dict(step['data'])
-                replace(step['element'])
+                replace_dict(step['expected'])
+
+                step['element'] = replace(step['element'])
+
+                step['vdata'] = v_data(step['data'])
 
                 if g.platform.lower() in ('web',) and step['keyword'] in web_keywords:
                     # 判断页面是否已和窗口做了关联，如果没有，就关联当前窗口，如果已关联，则判断是否需要切换
@@ -74,9 +86,12 @@ class TestCase:
                     # 根据关键字调用关键字实现
                     getattr(http, step['keyword'].lower())(step)
 
+                elif step['keyword'].lower() == 'execute':
+                    steps = getattr(common, step['keyword'].lower())(step)
+                    self.snippet_steps[index+1]= steps
+
                 else:
                     # 根据关键字调用关键字实现
-                    print(step)
                     getattr(common, step['keyword'].lower())(step)
                 logger.info('Run the Step: %s|%s|%s is Pass' %
                             (step['no'], step['keyword'], step['element']))
@@ -108,5 +123,13 @@ class TestCase:
                 self.testcase['result'] = 'Fail'
                 self.testcase['report'] = 'step-%s|%s|%s: %s' % (
                     step['no'], step['keyword'], step['element'], exception)
-                step['remark'] = exception
+                step['remark'] += str(exception)
                 break
+
+        steps = []
+        i = 0
+        for k in self.snippet_steps:
+            steps = self.testcase['steps'][i:k] + self.snippet_steps[k]
+            i = k
+        steps += self.testcase['steps'][i:]
+        self.testcase['steps'] = steps

@@ -12,7 +12,8 @@ class Excel:
         elif mode == 'w':
             self.workbook = xlsxwriter.Workbook(file_name)
         else:
-            raise Exception('Error: init Excel class with error mode: %s' % mode)
+            raise Exception(
+                'Error: init Excel class with error mode: %s' % mode)
 
     def get_sheet(self, sheet_name):
         names = []
@@ -91,7 +92,7 @@ def data2dict(data):
     for d in data[1:]:
         dict_data = {}
         for i in range(len(key)):
-            if isinstance(d[i],str):
+            if isinstance(d[i], str):
                 dict_data[key[i]] = str(d[i]).strip()
             else:
                 dict_data[key[i]] = d[i]
@@ -115,7 +116,13 @@ def replace(data):
     # 变量替换
     if '>' in data:
         for k in g.var:
-            data = data.replace('<' + k + '>', g.var[k])
+            if isinstance(g.var[k], list):
+                if '<' + k + '>' in data:
+                    data = data.replace('<' + k + '>', str(g.var[k].pop(0)))
+                    if len(g.var[k]) == 1:
+                        g.var[k] = g.var[k][0]
+            else:
+                data = data.replace('<' + k + '>', str(g.var[k]))
     return data
 
 
@@ -140,8 +147,39 @@ def get_record(data_file):
     for d in data[1:]:
         if d[-1] != 'Y':
             for i in range(len(data[0][:-1])):
-                record[data[0][i]] = d[i]
+                k = data[0][i]
+                if record.get(k, None):
+                    if isinstance(record[k], str):
+                        record[k] = [record[k]]
+                    record[k].append(d[i])
+                else:
+                    record[k] = d[i]
             d[-1] = 'Y'
             write_csv(data_file, data)
             break
     return record
+
+
+def str2int(s):
+    s = s.replace(',', '').split('.', 1)
+    if len(s) == 2:
+        dot = s[-1]
+        assert int(dot) == 0
+    return int(s[0])
+
+
+def zero(s):
+    if s[-1] == '0':
+        s = s[:-1]
+        s = zero(s)
+    return s
+
+
+def str2float(s):
+    s = s.replace(',', '').split('.', 1)
+    dot = '0'
+    if len(s) == 2:
+        dot = s[-1]
+        dot = zero(dot)
+    f = float(s[0]+'.'+dot)
+    return round(f, len(dot)), len(dot)
