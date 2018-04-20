@@ -144,9 +144,9 @@ def write_csv(csv_file, data):
 def get_record(data_file):
     data = read_csv(data_file)
     record = {}
-    for d in data[1:]:
-        if d[-1] != 'Y':
-            for i in range(len(data[0][:-1])):
+    if data[0][-1].lower() != 'flag':
+        for d in data[1:]:
+            for i in range(len(data[0])):
                 k = data[0][i]
                 if record.get(k, None):
                     if isinstance(record[k], str):
@@ -154,9 +154,21 @@ def get_record(data_file):
                     record[k].append(d[i])
                 else:
                     record[k] = d[i]
-            d[-1] = 'Y'
-            write_csv(data_file, data)
-            break
+
+    else:
+        for d in data[1:]:
+            if d[-1] != 'Y':
+                for i in range(len(data[0][:-1])):
+                    k = data[0][i]
+                    if record.get(k, None):
+                        if isinstance(record[k], str):
+                            record[k] = [record[k]]
+                        record[k].append(d[i])
+                    else:
+                        record[k] = d[i]
+                d[-1] = 'Y'
+                write_csv(data_file, data)
+                break
     return record
 
 
