@@ -73,8 +73,10 @@ def check(step):
                         text = str2int(text)
                         assert text == round(data[key])
                     elif isinstance(data[key], float):
-                        text, p = str2float(text)
-                        assert text == round(data[key], p)
+                        t, p1 = str2float(text)
+                        d, p2 = str2float(data[key])
+                        p = min(p1, p2)
+                        assert round(t, p) == round(d, p)
                     else:
                         assert data[key] == text
             else:
@@ -88,8 +90,10 @@ def check(step):
                         vaule = str2int(vaule)
                         assert text == round(data)
                     elif isinstance(data[key], float):
-                        vaule, p = str2float(vaule)
-                        assert vaule == round(data, p)
+                        t, p1 = str2float(text)
+                        d, p2 = str2float(data[key])
+                        p = min(p1, p2)
+                        assert round(t, p) == round(d, p)
                     else:
                         assert data[key] == vaule
 

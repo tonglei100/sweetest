@@ -118,10 +118,14 @@ def replace(data):
         for k in g.var:
             if isinstance(g.var[k], list):
                 if '<' + k + '>' in data:
+                    if data = '<' + k + '>':
+                        data = g.var[k].pop(0)
                     data = data.replace('<' + k + '>', str(g.var[k].pop(0)))
                     if len(g.var[k]) == 1:
                         g.var[k] = g.var[k][0]
             else:
+                if data = '<' + k + '>':
+                    data = g.var[k]
                 data = data.replace('<' + k + '>', str(g.var[k]))
     return data
 
