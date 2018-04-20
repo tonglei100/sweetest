@@ -66,7 +66,7 @@ def testsuite_format(data):
             step['_element'] = d['element']
             step['_data'] = d['data']
             step['vdata'] = d['data']
-            step['_expected'] = d['expected']
+            step['_expected'] = d.get('expected', '')
             step['_output'] = d['output']
             testcase['steps'].append(step)
     if testcase:

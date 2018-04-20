@@ -71,9 +71,10 @@ def check(step):
                 else:
                     if isinstance(data[key], int):
                         text = str2int(text)
+                        assert text == round(data[key])
                     elif isinstance(data[key], float):
                         text, p = str2float(text)
-                    assert text == round(data[key], p)
+                        assert text == round(data[key], p)
             else:
                 logger.info('DATA:%s' % repr(data[key]))
                 logger.info('REAL: %s' % repr(element_location.get_attribute(key)))
