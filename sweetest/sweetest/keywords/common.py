@@ -65,8 +65,10 @@ def sql(step):
         raise Exception('*** Fetch None ***')
 
     result = {}
-    if _sql.lower().startswith('select') and '*' not in _sql:
+    if _sql.lower().startswith('select'):
         keys = _sql[6:].split('FROM')[0].split('from')[0].strip().split(',')
+        for i,k in enumerate(keys):
+            keys[i] = k.split(' ')[-1]
         result = dict(zip(keys, row))
         logger.info('keys result: %s' % repr(result))
 
