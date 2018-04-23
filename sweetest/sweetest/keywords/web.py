@@ -66,36 +66,41 @@ def check(step):
                 text = element_location.text
                 logger.info('DATA:%s' % repr(data[key]))
                 logger.info('REAL: %s' % repr(text))
-                if data[key].startswith('*'):
-                    assert data[key][1:] in text
-                else:
-                    if isinstance(data[key], int):
-                        text = str2int(text)
-                        assert text == round(data[key])
-                    elif isinstance(data[key], float):
-                        t, p1 = str2float(text)
-                        d, p2 = str2float(data[key])
-                        p = min(p1, p2)
-                        assert round(t, p) == round(d, p)
+                if isinstance(data[key], str):
+                    if data[key].startswith('*'):
+                        assert data[key][1:] in text
                     else:
                         assert data[key] == text
+                elif isinstance(data[key], int):
+                    text = str2int(text)
+                    assert text == round(data[key])
+                elif isinstance(data[key], float):
+                    t, p1 = str2float(text)
+                    d, p2 = str2float(data[key])
+                    p = min(p1, p2)
+                    assert round(t, p) == round(d, p)
+                elif data[key] is None:
+                    assert text == ''
+
             else:
+                value = element_location.get_attribute(key)
                 logger.info('DATA:%s' % repr(data[key]))
-                logger.info('REAL: %s' % repr(element_location.get_attribute(key)))
-                if data[key].startswith('*'):
-                    assert data[key][1:] in element_location.get_attribute(key)
-                else:
-                    vaule = element_location.get_attribute(key)
-                    if isinstance(data[key], int):
-                        vaule = str2int(vaule)
-                        assert text == round(data)
-                    elif isinstance(data[key], float):
-                        t, p1 = str2float(text)
-                        d, p2 = str2float(data[key])
-                        p = min(p1, p2)
-                        assert round(t, p) == round(d, p)
+                logger.info('REAL: %s' % repr(value))
+                if isinstance(data[key], str):
+                    if data[key].startswith('*'):
+                        assert data[key][1:] in value
                     else:
-                        assert data[key] == vaule
+                        assert data[key] == value
+                elif isinstance(data[key], int):
+                    text = str2int(value)
+                    assert text == round(data[key])
+                elif isinstance(data[key], float):
+                    t, p1 = str2float(value)
+                    d, p2 = str2float(data[key])
+                    p = min(p1, p2)
+                    assert round(t, p) == round(d, p)
+                elif data[key] is None:
+                    assert value == ''
 
         # 获取元素其他属性
         for key in output:

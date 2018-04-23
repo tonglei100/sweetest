@@ -86,13 +86,13 @@ def testsuite2data(data):
         s = d['steps'][0]  # 第一步和用例标题同一行
         testcase = [d['id'], d['title'], d['condition'], s['no'], s['_keyword'], s['page'], s['_element'],
                 s['vdata'], s['_output'], d['priority'], d['designer'], d['flag'], s['score'], d['result'], s['remark']]
-        if 'expected' in g.header_custom:
+        if g.header_custom['expected']:
             testcase.insert(8, s['_expected'])
         result.append(testcase)
         for s in d['steps'][1:]:
             step = ['', '', '', s['no'], s['_keyword'], s['page'], s['_element'],
                     s['vdata'], s['_output'], '', '', '', s['score'], '', s['remark']]
-            if 'expected' in g.header_custom:
+            if g.header_custom['expected']:
                 step.insert(8, s['_expected'])
             result.append(step)
     return result

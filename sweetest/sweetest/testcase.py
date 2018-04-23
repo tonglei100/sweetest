@@ -28,8 +28,13 @@ def elements_format(page, element):
 def v_data(d):
     data = ''
     for k,v in d.items():
-        data += k + '=' + v + ','
+        data += k + '=' + str(v) + ','
     return data[:-1]
+
+
+def test_v_data():
+    data = {'a':1, 'b':'b'}
+    v_data(data)
 
 
 class TestCase:
