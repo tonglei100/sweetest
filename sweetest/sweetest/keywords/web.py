@@ -1,5 +1,6 @@
 from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
+import re
 from sweetest.globals import g
 from sweetest.elements import e
 from sweetest.windows import w
@@ -62,44 +63,56 @@ def check(step):
 
     else:
         for key in data:
+            # 预期结果
+            expected = data[key]
+            # 切片操作处理
+            s = re.findall(r'\[.*?\]', key)
+            if s:
+                s = s[0]
+                key = key.replace(s, '')
+
             if key == 'text':
                 text = element_location.text
-                logger.info('DATA:%s' % repr(data[key]))
+                if s:
+                    text = eval('text'+s)
+                logger.info('DATA:%s' % repr(expected))
                 logger.info('REAL: %s' % repr(text))
-                if isinstance(data[key], str):
-                    if data[key].startswith('*'):
-                        assert data[key][1:] in text
+                if isinstance(expected, str):
+                    if expected.startswith('*'):
+                        assert expected[1:] in text
                     else:
-                        assert data[key] == text
-                elif isinstance(data[key], int):
+                        assert expected == text
+                elif isinstance(expected, int):
                     text = str2int(text)
-                    assert text == round(data[key])
-                elif isinstance(data[key], float):
+                    assert text == expected
+                elif isinstance(expected, float):
                     t, p1 = str2float(text)
-                    d, p2 = str2float(data[key])
+                    d, p2 = str2float(expected)
                     p = min(p1, p2)
                     assert round(t, p) == round(d, p)
-                elif data[key] is None:
+                elif expected is None:
                     assert text == ''
 
             else:
                 value = element_location.get_attribute(key)
-                logger.info('DATA:%s' % repr(data[key]))
+                if s:
+                    value = eval('value'+s)
+                logger.info('DATA:%s' % repr(expected))
                 logger.info('REAL: %s' % repr(value))
-                if isinstance(data[key], str):
-                    if data[key].startswith('*'):
-                        assert data[key][1:] in value
+                if isinstance(expected, str):
+                    if expected.startswith('*'):
+                        assert expected[1:] in value
                     else:
-                        assert data[key] == value
-                elif isinstance(data[key], int):
+                        assert expected == value
+                elif isinstance(expected, int):
                     text = str2int(value)
-                    assert text == round(data[key])
-                elif isinstance(data[key], float):
+                    assert text == round(expected)
+                elif isinstance(expected, float):
                     t, p1 = str2float(value)
-                    d, p2 = str2float(data[key])
+                    d, p2 = str2float(expected)
                     p = min(p1, p2)
                     assert round(t, p) == round(d, p)
-                elif data[key] is None:
+                elif expected is None:
                     assert value == ''
 
         # 获取元素其他属性
