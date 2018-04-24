@@ -14,7 +14,7 @@ class Common():
     @classmethod
     def title(cls, data, output):
         logger.info('DATA:%s' % repr(data['text']))
-        logger.info('REAL: %s' % repr(g.driver.title))
+        logger.info('REAL:%s' % repr(g.driver.title))
         if data['text'].startswith('*'):
             assert data['text'][1:] in g.driver.title
         else:
@@ -26,7 +26,7 @@ class Common():
     @classmethod
     def current_url(cls, data, output):
         logger.info('DATA:%s' % repr(data['text']))
-        logger.info('REAL: %s' % repr(g.driver.current_url))
+        logger.info('REAL:%s' % repr(g.driver.current_url))
         if data['text'].startswith('*'):
             assert data['text'][1:] in g.driver.current_url
         else:
@@ -72,48 +72,28 @@ def check(step):
                 key = key.replace(s, '')
 
             if key == 'text':
-                text = element_location.text
-                if s:
-                    text = eval('text'+s)
-                logger.info('DATA:%s' % repr(expected))
-                logger.info('REAL: %s' % repr(text))
-                if isinstance(expected, str):
-                    if expected.startswith('*'):
-                        assert expected[1:] in text
-                    else:
-                        assert expected == text
-                elif isinstance(expected, int):
-                    text = str2int(text)
-                    assert text == expected
-                elif isinstance(expected, float):
-                    t, p1 = str2float(text)
-                    d, p2 = str2float(expected)
-                    p = min(p1, p2)
-                    assert round(t, p) == round(d, p)
-                elif expected is None:
-                    assert text == ''
-
+                real = element_location.text
             else:
-                value = element_location.get_attribute(key)
-                if s:
-                    value = eval('value'+s)
-                logger.info('DATA:%s' % repr(expected))
-                logger.info('REAL: %s' % repr(value))
-                if isinstance(expected, str):
-                    if expected.startswith('*'):
-                        assert expected[1:] in value
-                    else:
-                        assert expected == value
-                elif isinstance(expected, int):
-                    text = str2int(value)
-                    assert text == round(expected)
-                elif isinstance(expected, float):
-                    t, p1 = str2float(value)
-                    d, p2 = str2float(expected)
-                    p = min(p1, p2)
-                    assert round(t, p) == round(d, p)
-                elif expected is None:
-                    assert value == ''
+                real = element_location.get_attribute(key)
+            if s:
+                real = eval('real'+s)
+            logger.info('DATA:%s' % repr(expected))
+            logger.info('REAL:%s' % repr(real))
+            if isinstance(expected, str):
+                if expected.startswith('*'):
+                    assert expected[1:] in real
+                else:
+                    assert expected == real
+            elif isinstance(expected, int):
+                real = str2int(real)
+                assert real == round(expected)
+            elif isinstance(expected, float):
+                t, p1 = str2float(real)
+                d, p2 = str2float(expected)
+                p = min(p1, p2)
+                assert round(t, p) == round(d, p)
+            elif expected is None:
+                assert real == ''
 
         # 获取元素其他属性
         for key in output:

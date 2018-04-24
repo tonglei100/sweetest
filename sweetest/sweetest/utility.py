@@ -123,19 +123,19 @@ def replace(data):
         # 正则匹配出 k 中的 + - ** * // / % ( )，返回列表
         values = re.split(r'(\+|-|\*\*|\*|//|/|%|\(|\))', k)
         for j,v in enumerate(values):
-            # 切片操作处理
+            # 切片操作处理，正在匹配出 [] 中内容
             s = re.findall(r'\[.*?\]', v)
             if s:
                 s = s[0]
                 v = v.replace(s, '')
 
             if v in g.var:
-                # 如果在 g.var 中是list，则 pop 第一值
+                # 如果在 g.var 中是 list，则 pop 第一个值
                 if isinstance(g.var[v], list):
                     values[j] = g.var[k].pop(0)
                     if s:
                         values[j] = eval('values[j]'+s)
-                    # 在判断一下此 list 是否只有一个值了，如果是，则从 list 变为该值
+                    # 再判断一下此 list 是否只有一个值了，如果是，则从 list 变为该值
                     if len(g.var[v]) == 1:
                         g.var[v] = g.var[v][0]
                 # 如果在 g.var 中是值，则直接赋值
@@ -144,14 +144,14 @@ def replace(data):
                     if s:
                         values[j] = eval('values[j]'+s)
 
-        #如果 values 长度大于 1，说明由算术运算符，则用 eval 运算
+        #如果 values 长度大于 1，说明有算术运算符，则用 eval 运算
         # 注意，先要把元素中的数字变为字符串
         if len(values) > 1:
             values = eval(''.join([str(x) for x in values]))
         # 如果 values 长度为 1，则直接赋值，注意此值可能是数字
         else:
             values = values[0]
-        # 如果 data 就是一个<>，如 data = '<a+1>',则直接赋值为 values，此值可能是数字
+        # 如果 data 就是一个 <>，如 data = '<a+1>',则直接赋值为 values，此值可能是数字
         if data == '<' + keys[0] + '>':
             data = values
         # 否则需要替换，此时变量强制转换为为字符串
