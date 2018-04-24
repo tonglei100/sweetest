@@ -123,11 +123,11 @@ def replace(data):
         # 正则匹配出 k 中的 + - ** * // / % ( )，返回列表
         values = re.split(r'(\+|-|\*\*|\*|//|/|%|\(|\))', k)
         for j,v in enumerate(values):
-                # 切片操作处理
-                s = re.findall(r'\[.*?\]', v)
-                if s:
-                    s = s[0]
-                    v = v.replace(s, '')
+            # 切片操作处理
+            s = re.findall(r'\[.*?\]', v)
+            if s:
+                s = s[0]
+                v = v.replace(s, '')
 
             if v in g.var:
                 # 如果在 g.var 中是list，则 pop 第一值
