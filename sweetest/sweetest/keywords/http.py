@@ -45,10 +45,10 @@ def request(kw, step):
     data['headers'] = data.get('headers', '')
     data['data'] = data.get('data', '{}')
     expected = step['expected']
-    status_code = data.get('status_code', '')
+    _status_code = data.get('status_code', '')
     _text = data.get('text', '')
     _json = data.get('json', '')
-    expected['status_code'] = expected.get('status_code', status_code)
+    expected['status_code'] = expected.get('status_code', _status_code)
     expected['text'] = expected.get('text', _text)
     expected['json'] = expected.get('json', _json)
 
@@ -64,7 +64,7 @@ def request(kw, step):
     logger.info('Http result: %s' % repr(r.text))
 
     if expected['status_code']:
-        assert expected['status_code'] == str(r.status_code)
+        assert str(expected['status_code']) == str(r.status_code)
 
     if expected['text']:
         if expected['text'].startswith('*'):
@@ -74,13 +74,23 @@ def request(kw, step):
 
     if expected['json']:
         result = pick(json.loads(expected['json']), r.json())
-        step['remark'] += str(result['result'])
+        if result['result']:
+            step['remark'] += str(result['result'])
+        logger.info('expected result:\n%s' %result)
         assert result['code'] == 0
 
 
     output = step['output']
     if output:
         logger.info('output: %s' % repr(output))
-        # TODO
-        # for key in output:
-        #     g.var[key] = r.json[output[key]]
+
+    for k, v in output.items():
+        if v == 'status_code':
+            g.var[k] = r.status_code
+        elif v == 'text':
+            g.var[k] = r.text
+        elif k == 'json':
+            sub = output.get('json')
+            result = pick(json.loads(sub), r.json())
+            logger.info('output result:\n%s' %result)
+            g.var = dict(g.var, **result['var'])
