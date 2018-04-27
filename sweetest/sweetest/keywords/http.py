@@ -5,7 +5,7 @@ from sweetest.globals import g
 from sweetest.elements import e
 from sweetest.log import logger
 from sweetest.parse import data_format
-from sweetest.lib.json import in_json
+from sweetest.lib.injson import in_json
 
 
 class Http:
