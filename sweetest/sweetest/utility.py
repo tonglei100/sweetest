@@ -4,6 +4,7 @@ import csv
 import re
 from sweetest.config import header
 from sweetest.globals import g
+from sweetest.lib import *
 
 
 class Excel:
@@ -162,7 +163,7 @@ def replace(data):
 
 def test_replace():
     g.var = {'a': 1, 'b': 'B'}
-    for d in ('<a+1>','<b>','abc<a>', 'abc<a+1>', '<a*(8+4)/2//3>'):
+    for d in ('<a+1>','<b>','abc<a>', 'abc<a+1>', '<a*(8+4)/2//3>', '<u.td(-3)>'):
         print('data:%s' %d)
         data = replace(d)
         print(repr(data))

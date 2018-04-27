@@ -1,9 +1,11 @@
 from copy import deepcopy
 import requests
+import json
 from sweetest.globals import g
 from sweetest.elements import e
 from sweetest.log import logger
 from sweetest.parse import data_format
+from sweetest.lib.json import in_json
 
 
 class Http:
@@ -25,11 +27,6 @@ class Http:
             self.r.headers.update(eval(headers))
 
 
-def json_in_test(sub, parent):
-    # TODO
-    return True
-
-
 def get(step):
     request('get', step)
 
@@ -49,11 +46,11 @@ def request(kw, step):
     data['data'] = data.get('data', '{}')
     expected = step['expected']
     status_code = data.get('status_code', '')
-    text = data.get('text', '')
-    json = data.get('json', '')
+    _text = data.get('text', '')
+    _json = data.get('json', '')
     expected['status_code'] = expected.get('status_code', status_code)
-    expected['text'] = expected.get('text', text)
-    expected['json'] = expected.get('json', json)
+    expected['text'] = expected.get('text', _text)
+    expected['json'] = expected.get('json', _json)
 
     if not g.http.get(step['page']):
         g.http[step['page']] = Http(step)
@@ -76,7 +73,10 @@ def request(kw, step):
             assert expected['text'] == r.text
 
     if expected['json']:
-        assert json_in_test(expected['json'], r.json())
+        result = in_json(json.loads(expected['json']), r.json())
+        step['remark'] += str(result['result'])
+        assert result['code'] == 0
+
 
     output = step['output']
     if output:
