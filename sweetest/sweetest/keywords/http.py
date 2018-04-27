@@ -1,11 +1,11 @@
 from copy import deepcopy
 import requests
 import json
+from injson import pick
 from sweetest.globals import g
 from sweetest.elements import e
 from sweetest.log import logger
 from sweetest.parse import data_format
-from sweetest.lib.injson import in_json
 
 
 class Http:
@@ -73,7 +73,7 @@ def request(kw, step):
             assert expected['text'] == r.text
 
     if expected['json']:
-        result = in_json(json.loads(expected['json']), r.json())
+        result = pick(json.loads(expected['json']), r.json())
         step['remark'] += str(result['result'])
         assert result['code'] == 0
 
