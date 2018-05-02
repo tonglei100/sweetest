@@ -1,7 +1,7 @@
 from copy import deepcopy
 import requests
 import json
-from injson import pick
+from injson import check
 from sweetest.globals import g
 from sweetest.elements import e
 from sweetest.log import logger
@@ -73,7 +73,7 @@ def request(kw, step):
             assert expected['text'] == r.text
 
     if expected['json']:
-        result = pick(json.loads(expected['json']), r.json())
+        result = check(json.loads(expected['json']), r.json())
         if result['result']:
             step['remark'] += str(result['result'])
         logger.info('expected result:\n%s' %result)
@@ -91,6 +91,6 @@ def request(kw, step):
             g.var[k] = r.text
         elif k == 'json':
             sub = output.get('json')
-            result = pick(json.loads(sub), r.json())
+            result = check(json.loads(sub), r.json())
             logger.info('output result:\n%s' %result)
             g.var = dict(g.var, **result['var'])
