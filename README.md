@@ -35,7 +35,7 @@ sweetest 是一款 Web 自动化测试框架，或者说是解决方案，名字
 3. 用例工具：Excel
 
 测试用例如下图：
-![testcase](https://github.com/tonglei100/sweetest/blob/master/snapshot/testcase.png?raw=true)
+![testcase](https://github.com/tonglei100/sweetest/blob/mobile/snapshot/testcase.png?raw=true)
 
 
 # 安装
@@ -61,18 +61,18 @@ sweetest 是一款 Web 自动化测试框架，或者说是解决方案，名字
 打开 cmd 命令窗口，切换到某个目录，如：D:\Autotest
 ```
 sweetest
-cd sweetest_sample
+cd sweetest_example
 python start.py
 ```
 
-![install](https://github.com/tonglei100/sweetest/blob/master/snapshot/install.png?raw=true)
+![install](https://github.com/tonglei100/sweetest/blob/mobile/snapshot/install.png?raw=true)
 
 OK，如果一切顺利的话，sweetest 已经跑起来了
 
 
 # 目录结构
 
-![dir](https://github.com/tonglei100/sweetest/blob/master/snapshot/dir.png?raw=true)
+![dir](https://github.com/tonglei100/sweetest/blob/mobile/snapshot/dir.png?raw=true)
 
 目录     | 说明
 --------------------|-----------------------------------------------------
@@ -95,7 +95,7 @@ start.py            | 启动脚本，`test = Autotest(project_name, sheet_name)`
 
 页面元素表的作用主要是把元素定位独立出来，一是方便维护定位信息，二是测试用例中用元素名称书写，可读性更高。
 
-![elements](https://github.com/tonglei100/sweetest/blob/master/snapshot/elements.png?raw=true)
+![elements](https://github.com/tonglei100/sweetest/blob/mobile/snapshot/elements.png?raw=true)
 
 字段      | 注释
 ---------|-----------------------------------------------------
@@ -176,7 +176,7 @@ value    | Selenium 定义的值
 
 # 测试用例
 
-![testcase](https://github.com/tonglei100/sweetest/blob/master/snapshot/testcase.png?raw=true)
+![testcase](https://github.com/tonglei100/sweetest/blob/mobile/snapshot/testcase.png?raw=true)
 
 
 ## 用例字段
