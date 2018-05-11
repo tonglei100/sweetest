@@ -46,7 +46,7 @@ sweetest 是一款 Web 自动化测试框架，或者说是解决方案，名字
 - Python 版本：3.6+
 - Selenium
 - 浏览器：Chrome
-- Chrome 驱动: chromedriver (需和 Chrome 版本匹配)
+- Chrome 驱动: [chromedriver](https://npm.taobao.org/mirrors/chromedriver) (需和 Chrome 版本匹配)
 
 ## 安装 sweetest
 
@@ -77,7 +77,7 @@ OK，如果一切顺利的话，sweetest 已经跑起来了
 目录     | 说明
 --------------------|-----------------------------------------------------
 data\               | 测试数据目录
-\Baidu-baidu.csv    | 测试数据文件，名称格式：project_name + sheet——name +".csv"
+\Baidu-baidu.csv    | 测试数据文件，名称格式：project_name + '-' + sheet_name +".csv"
 element\            | 页面元素表目录
 \Baidu-Elements.xlsx| 页面元素表，名称格式：project_name + "-Elements.xlsx"
 junit\              | junit格式测试结果目录
@@ -101,7 +101,7 @@ start.py            | 启动脚本，`test = Autotest(project_name, sheet_name)`
 ---------|-----------------------------------------------------
 page     | element 所在的页面，在所有页面都可用的 element 放在“通用”下面，如 title
 frame    | element 所在的 frame id，如果是顶层 frame，可为空。
-name     | element 名称，在不同的 page 下面可以同名
+element  | element 名称，在不同的 page 下面可以同名
 by       | Selenium 定义方式
 value    | Selenium 定义的值
 备注     | 注释作用
@@ -113,7 +113,7 @@ value    | Selenium 定义的值
 
     如：
 
-    page        |  name      | by    | value
+    page        |  element   | by    | value
     ------------|------------|-------|--------------------
     百度搜索页面 | 搜索框      | id    | kw
 
@@ -123,7 +123,7 @@ value    | Selenium 定义的值
 
     如示例中：
 
-    page      |  name      | by    | value
+    page      |  element   | by    | value
     ----------|------------|-------|--------------------
     百度搜索页面 | 搜索结果# | xpath | //*[@id="#"]/h3/a
 
@@ -163,9 +163,9 @@ value    | Selenium 定义的值
 
     一般来讲，导航栏在所有页面都存在，应该把导航栏放在“通用”下面，做成变量定位方式，如示例中的：
 
-    page | name           | by    | value
+    page | element        | by    | value
     -----|----------------|-------|--------------------
-    通用 | 搜索页导航栏#	| xpath | //*[@class="s_tab"]//a[text()="#"]
+    通用 | 搜索页导航栏#  	| xpath | //*[@class="s_tab"]//a[text()="#"]
 
     用例中的写法：
 
@@ -192,7 +192,7 @@ value    | Selenium 定义的值
 
 必填字段：
 - 用例编号
-- 步骤编号
+- 测试步骤
 - 操作
 - 页面
 - 元素
@@ -261,11 +261,11 @@ value    | Selenium 定义的值
 
 - 点击
 
-    点击按钮或者链接等(一切可点击操作的)元素。此关键字支持在同一个页面上顺序点击多个元素，在元素列以竖杠(|)分割即可，如：
+    点击按钮或者链接等(一切可点击操作的)元素，如：
 
     操作  | 页面        | 元素
     -----|------------ |--------------------
-    点击 | 百度搜索页面 | 搜索按钮&#124;搜索结果#1
+    点击 | 百度搜索页面 | 搜索按钮
 
 - 移动到
 
@@ -304,15 +304,15 @@ value    | Selenium 定义的值
 点击 | 百度搜索页面 | 搜索结果#1  |          | title=text
 检查 | 通用        | 页面标题    | \<title>  |
 
-### 步骤编号：
+### 测试步骤：
 
-除了控制语句符号外，步骤编号必须为数字，建议在 Excel 中设置为文本格式。
+除了控制语句符号外，测试步骤必须为数字，建议在 Excel 中设置为文本格式。
 
 控制语句：
 
 - if then else
 
-    步骤编号 | 操作  | 页面       | 元素           | 测试数据
+    测试步骤 | 操作  | 页面       | 元素           | 测试数据
     ------- | ----- | ---------- | ------------- | --------
     \^3      | 检查  | 通用       | 页面标题        |*知乎
     \>4      | 点击  | 通用      | link#登录      |
@@ -353,7 +353,7 @@ value    | Selenium 定义的值
 
 当我们写测试用例时，就可以直接使用 <_keywords>, <_title> 这些变量。如测试用例:BAIDU_005
 
-|步骤编号|操作  |页面       |元素        |测试数据              |
+|测试步骤|操作  |页面       |元素        |测试数据              |
 |-------|-----|----------|------------|--------------------|
 |1      |执行  |用例片段   |SNIPPET_001 |keywords=<_keywords>|
 |2      |点击  |百度搜索页面|搜索结果#1   |                    |
@@ -365,9 +365,9 @@ value    | Selenium 定义的值
 
 ### 元素管理
 
-测试用例中元素是以 page + name 为唯一标识，来页面元素表中查找定位信息的。因此，不同 page 下的元素 name 可以相同，但不能和“通用”下的相同。
+测试用例中元素是以 page + element 为唯一标识，来页面元素表中查找定位信息的。因此，不同 page 下的元素 element 可以相同，但不能和“通用”下的相同。
 
-测试用例中，如果 page 不为“通用”，当 \<page> + name 查找不到，会继续以 “通用” + name 为标识符来查找。
+测试用例中，如果 page 不为“通用”，当 \<page> + element 查找不到，会继续以 “通用” + element 为标识符来查找。
 
 “通用”是方便我们写页面元素表的，写用例时我们建议还是用 \<page> 来代替“通用”，甚至有时候我们必须这么做。
 
@@ -405,7 +405,3 @@ value    | Selenium 定义的值
 # 测试报告
 
 见 report 目录
-
-> QQ交流群：158755338 (验证码：python)
-
-> 项目地址：https://github.com/tonglei100/sweetest
