@@ -19,7 +19,7 @@ def testsuite_format(data):
         'steps':
             [
                 {
-                'no': 1,  #步骤编号
+                'no': 1,  #测试步骤
                 'keyword': '输入',
                 'page': '产品管系统登录页',
                 'element': '用户名'
@@ -46,7 +46,7 @@ def testsuite_format(data):
                 testcase = {}
             for key in ('id', 'title', 'condition', 'designer', 'flag', 'result', 'remark'):
                 testcase[key] = d[key]
-            testcase['priority'] = d.get('priority', 'M') if d['priority'] else 'M'
+            testcase['priority'] = d['priority'] if d['priority'] else 'M'
             testcase['steps'] = []
         # 如果步骤编号不为空，则为有效步骤，否则用例解析结束
         no = str(d['step']).strip()
