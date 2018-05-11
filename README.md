@@ -102,8 +102,8 @@ start.py            | 启动脚本，`test = Autotest(project_name, sheet_name)`
 page     | element 所在的页面，在所有页面都可用的 element 放在“通用”下面，如 title
 frame    | element 所在的 frame id，如果是顶层 frame，可为空。
 element  | element 名称，在不同的 page 下面可以同名
-by       | Selenium 定义方式
-value    | Selenium 定义的值
+by       | Selenium 定位方式
+value    | Selenium 定位的值
 备注     | 注释作用
 
 
@@ -160,6 +160,8 @@ value    | Selenium 定义的值
 4. 页面url
 
     页面的 url
+
+5. 通用
 
     一般来讲，导航栏在所有页面都存在，应该把导航栏放在“通用”下面，做成变量定位方式，如示例中的：
 
