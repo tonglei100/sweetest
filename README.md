@@ -178,15 +178,6 @@ value    | Selenium 定义的值
 
 ![testcase](https://github.com/tonglei100/sweetest/blob/master/snapshot/testcase.png?raw=true)
 
-## 下拉菜单配置
-
-操作、页面、元素这些列其实都是选项列表，利用 Excel 的下拉菜单功能，能够让书写用例更方便，且不易笔误。
-下图是测试用例文件中的 ElementsMap 页面：
-
-![maps](https://github.com/tonglei100/sweetest/blob/master/snapshot/maps.png?raw=true)
-
-我们可以通过 Excel 的菜单栏“公式-名称管理器”来配置这些菜单，同时在用例页面通过“数据-数据有效性”配置好“操作”的下拉菜单，以及“页面-元素”的二级联动下拉菜单。
-
 
 ## 用例字段
 
