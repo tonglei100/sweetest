@@ -48,7 +48,7 @@ def testsuite_format(data):
                 testcase[key] = d[key]
             testcase['priority'] = d['priority'] if d['priority'] else 'M'
             testcase['steps'] = []
-        # 如果步骤编号不为空，则为有效步骤，否则用例解析结束
+        # 如果测试步骤不为空，则为有效步骤，否则用例解析结束
         no = str(d['step']).strip()
         if no:
             step = {}
