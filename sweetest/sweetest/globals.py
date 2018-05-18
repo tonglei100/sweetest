@@ -11,7 +11,7 @@ class Global:
 
     def init(self, desired_caps, server_url):
         self.platform = desired_caps['platformName']
-        self.app = desired_caps.get('app', '')
+        self.browserName = desired_caps.get('browserName', '')
         self.var = {}
         self.snippet = {}
         self.current_page = '通用'
@@ -20,14 +20,13 @@ class Global:
         self.baseurl = {}
         self.driver = ''
 
-
     def set_driver(self):
         if self.platform.lower() == 'desktop':
-            if self.app.lower() == 'ie':
+            if self.browserName.lower() == 'ie':
                 self.driver = webdriver.Ie()
-            elif self.app.lower() == 'firefox':
+            elif self.browserName.lower() == 'firefox':
                 self.driver = webdriver.Firefox()
-            elif self.app.lower() == 'chrome':
+            elif self.browserName.lower() == 'chrome':
                 options = webdriver.ChromeOptions()
                 options.add_argument("--start-maximized")
                 prefs = {"": ""}

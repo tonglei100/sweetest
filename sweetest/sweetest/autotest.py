@@ -23,7 +23,7 @@ class Autotest:
         if desired_caps:
             self.desired_caps = desired_caps
         else:
-            self.desired_caps = {'platformName': 'Desktop', 'app': 'Chrome'}
+            self.desired_caps = {'platformName': 'Desktop', 'browserName': 'Chrome'}
         self.server_url = server_url
 
         g.project_name = file_name.split('-')[0]
