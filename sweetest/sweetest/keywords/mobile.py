@@ -1,19 +1,19 @@
-from selenium.webdriver.common.action_chains import ActionChains
 from time import sleep
-from copy import deepcopy
+import re
 from sweetest.globals import g
 from sweetest.elements import e
 from sweetest.windows import w
 from sweetest.locator import locating_elements, locating_data, locating_element
 from sweetest.log import logger
 from sweetest.parse import data_format
+from sweetest.utility import str2int, str2float
 
 
 class Common():
     @classmethod
     def title(cls, data, output):
-        logger.info('DATA:%s' % data['text'])
-        logger.info('REAL: %s' % g.driver.title)
+        logger.info('DATA:%s' % repr(data['text']))
+        logger.info('REAL:%s' % repr(g.driver.title))
         if data['text'].startswith('*'):
             assert data['text'][1:] in g.driver.title
         else:
@@ -24,8 +24,8 @@ class Common():
 
     @classmethod
     def current_url(cls, data, output):
-        logger.info('DATA:%s' % data['text'])
-        logger.info('REAL: %s' % g.driver.current_url)
+        logger.info('DATA:%s' % repr(data['text']))
+        logger.info('REAL:%s' % repr(g.driver.current_url))
         if data['text'].startswith('*'):
             assert data['text'][1:] in g.driver.current_url
         else:
@@ -36,7 +36,7 @@ class Common():
 
 
 def open(step):
-    element = step['elements'][0]
+    element = step['element']
     el, value = e.get(element)
     g.driver.get(value)
     w.open(step)
@@ -45,7 +45,10 @@ def open(step):
 
 def check(step):
     data = step['data']
-    element = step['elements'][0]
+    if not data:
+        data = step['expected']
+
+    element = step['element']
     element_location = locating_element(element)
     if '#' in element:
         e_name = element.split('#')[0] + '#'
@@ -59,20 +62,38 @@ def check(step):
 
     else:
         for key in data:
+            # 预期结果
+            expected = data[key]
+            # 切片操作处理
+            s = re.findall(r'\[.*?\]', key)
+            if s:
+                s = s[0]
+                key = key.replace(s, '')
+
             if key == 'text':
-                logger.info('DATA:%s' % data[key])
-                logger.info('REAL: %s' % element_location.text)
-                if data[key].startswith('*'):
-                    assert data[key][1:] in element_location.text
-                else:
-                    assert element_location.text == data[key]
+                real = element_location.text
             else:
-                logger.info('DATA:%s' % data[key])
-                logger.info('REAL: %s' % element_location.get_attribute(key))
-                if data[key].startswith('*'):
-                    assert data[key][1:] in element_location.get_attribute(key)
+                real = element_location.get_attribute(key)
+            if s:
+                real = eval('real'+s)
+            logger.info('DATA:%s' % repr(expected))
+            logger.info('REAL:%s' % repr(real))
+            if isinstance(expected, str):
+                if expected.startswith('*'):
+                    assert expected[1:] in real
                 else:
-                    assert element_location.get_attribute(key) == data[key]
+                    assert expected == real
+            elif isinstance(expected, int):
+                real = str2int(real)
+                assert real == round(expected)
+            elif isinstance(expected, float):
+                t, p1 = str2float(real)
+                d, p2 = str2float(expected)
+                p = min(p1, p2)
+                assert round(t, p) == round(d, p)
+            elif expected is None:
+                assert real == ''
+
         # 获取元素其他属性
         for key in output:
             if output[key] == 'text':
@@ -88,7 +109,10 @@ def check(step):
 
 def notcheck(step):
     data = step['data']
-    element = step['elements'][0]
+    if not data:
+        data = step['expected']
+
+    element = step['element']
     element_location = locating_element(element)
 
     if e.elements[element]['by'] == 'title':
@@ -97,19 +121,18 @@ def notcheck(step):
 
 def input(step):
     data = step['data']
-    elements_location = locating_elements(step['elements'])
+    element = step['element']
+    element_location = locating_element(element)
 
-    for element in elements_location:
-        elements_location[element].clear()
-        elements_location[element].send_keys(data['text'])
+    element_location.clear()
+    element_location.send_keys(data['text'])
 
 
 def click(step):
-    element_location = ''
-    for element in step['elements']:
-        element_location = locating_element(element, 'CLICK')
-        element_location.click()
-        sleep(0.5)
+    element = step['element']
+    element_location = locating_element(element, 'CLICK')
+    element_location.click()
+    sleep(0.5)
 
     # 获取元素其他属性
     output = step['output']
@@ -124,21 +147,6 @@ def click(step):
         else:
             g.var[key] = element_location.get_attribute(output[key])
 
-    # 判断是否打开了新的窗口，并将新窗口添加到所有窗口列表里
-    all_handles = g.driver.window_handles
-    for handle in all_handles:
-        if handle not in w.windows.values():
-            w.register(step, handle)
-
 
 def select(step):
     pass
-
-
-def move(step):
-    actions = ActionChains(g.driver)
-    for element in step['elements']:
-        el = locating_element(element)
-        actions.move_to_element(el)
-        actions.perform()
-        sleep(0.5)

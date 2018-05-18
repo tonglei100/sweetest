@@ -17,11 +17,14 @@ from sweetest.config import _testcase, _elements, _report
 
 
 class Autotest:
-    def __init__(self, file_name, sheet_name, platform='Web', app='Chrome'):
+    def __init__(self, file_name, sheet_name, desired_caps={}, server_url=''):
         g.start_time = time.strftime("@%Y%m%d_%H%M%S", time.localtime())
 
-        self.platform = platform
-        self.app = app
+        if desired_caps:
+            self.desired_caps = desired_caps
+        else:
+            self.desired_caps = {'platformName': 'Desktop', 'app': 'Chrome'}
+        self.server_url = server_url
 
         g.project_name = file_name.split('-')[0]
         self.testcase_file = path.join(
@@ -84,7 +87,7 @@ class Autotest:
 
         # 2.初始化全局对象
         try:
-            g.set_driver(self.platform, self.app)
+            g.set_driver(self.desired_caps, self.server_url)
             # 如果测试数据文件存在，则从该文件里读取一行数据，赋值到全局变量列表里
             data_file = path.join(
                 'data', g.project_name + '-' + sheet_name + '.csv')

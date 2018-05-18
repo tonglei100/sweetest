@@ -39,8 +39,17 @@ class Common():
 def open(step):
     element = step['element']
     el, value = e.get(element)
-    g.driver.get(value)
-    w.open(step)
+    if step['data'].get('打开方式', '') == '新标签页' or step['data'].get('mode', '').lower() == 'NewTab':
+        js = "window.open('%s')" % value
+        g.driver.execute_script(js)
+        # 判断是否打开了新的窗口，并将新窗口添加到所有窗口列表里
+        all_handles = g.driver.window_handles
+        for handle in all_handles:
+            if handle not in w.windows.values():
+                w.register(step, handle)
+    else:
+        g.driver.get(value)
+        w.open(step)
     sleep(0.5)
 
 
@@ -76,7 +85,7 @@ def check(step):
             else:
                 real = element_location.get_attribute(key)
             if s:
-                real = eval('real'+s)
+                real = eval('real' + s)
             logger.info('DATA:%s' % repr(expected))
             logger.info('REAL:%s' % repr(real))
             if isinstance(expected, str):

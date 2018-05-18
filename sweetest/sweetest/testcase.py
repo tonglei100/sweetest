@@ -74,10 +74,16 @@ class TestCase:
 
                 step['vdata'] = v_data(step['data'])
 
-                if g.platform.lower() in ('web',) and step['keyword'] in web_keywords:
+                # 处理强制等待时间
+                t = step['data'].get('等待时间')
+                if t:
+                    del step['data']['等待时间']
+                    sleep(int(t))
+
+                if g.platform.lower() in ('desktop',) and step['keyword'] in web_keywords:
                     # 判断页面是否已和窗口做了关联，如果没有，就关联当前窗口，如果已关联，则判断是否需要切换
                     w.switch_window(step['page'])
-                    # 判断是否需要切换 frmae
+                    # 判断是否需要切换 frame
                     w.switch_frame(step['custom'])
 
                     # 根据关键字调用关键字实现

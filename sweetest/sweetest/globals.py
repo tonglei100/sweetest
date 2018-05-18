@@ -1,4 +1,5 @@
 from selenium import webdriver
+from appium import webdriver as appdriver
 from sweetest.config import element_wait_timeout, page_flash_timeout
 
 
@@ -8,22 +9,24 @@ class Global:
         self.project_name = ''
         self.sheet_name = ''
 
-    def set_driver(self, platform, app):
-        self.platform = platform
-        self.app = app
+    def set_driver(self, desired_caps, server_url):
+        self.platform = desired_caps['platformName']
+        self.app = desired_caps.get('app', '')
         self.var = {}
         self.snippet = {}
-        self.current_page = '通用' 
+        self.current_page = '通用'
         self.db = {}
         self.http = {}
         self.baseurl = {}
+        self.driver = ''
 
-        if self.platform.lower() == 'web':
-            if app.lower() == 'ie':
+
+        if self.platform.lower() == 'desktop':
+            if self.app.lower() == 'ie':
                 self.driver = webdriver.Ie()
-            elif app.lower() == 'firefox':
+            elif self.app.lower() == 'firefox':
                 self.driver = webdriver.Firefox()
-            elif app.lower() == 'chrome':
+            elif self.app.lower() == 'chrome':
                 options = webdriver.ChromeOptions()
                 options.add_argument("--start-maximized")
                 prefs = {"": ""}
@@ -46,7 +49,7 @@ class Global:
             print('Come soon...')
 
         if self.platform.lower() == 'android':
-            print('Come soon...')
+            self.driver = appdriver.Remote(server_url, desired_caps)
 
     def close(self):
         self.driver.close()

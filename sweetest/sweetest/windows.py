@@ -71,7 +71,12 @@ class Windows:
 
     def register(self, step, handle):
         # 如果有提供新窗口名字，则使用该名字，否则使用默认名字：HOME
-        new_window = step['data'].get('新窗口', 'HOME')
+        #new_window = step['data'].get('新窗口', 'HOME')
+        # 新窗口 变为 标签页名，兼容原有格式
+        new_window = 'HOME'
+        for k in ('新窗口', '标签页名', 'tabname'):
+            if step['data'].get(k):
+                new_window = step['data'].get(k)
         # 已存在同名的窗口，则
         if new_window in self.windows:
             # 1. 清除和当前窗口同名的旧窗口绑定的页面
