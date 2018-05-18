@@ -98,4 +98,14 @@ class Windows:
         # 新窗口标志置为是
         self.new_window_flag = True
 
+    def close(self):
+        for window in self.windows:
+
+            all_handles = g.driver.window_handles
+            for handle in all_handles:
+                #  切换到每一个窗口,并关闭它
+                g.driver.switch_to_window(handle)
+                g.driver.close()
+
+
 w = Windows()

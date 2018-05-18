@@ -9,7 +9,7 @@ class Global:
         self.project_name = ''
         self.sheet_name = ''
 
-    def set_driver(self, desired_caps, server_url):
+    def init(self, desired_caps, server_url):
         self.platform = desired_caps['platformName']
         self.app = desired_caps.get('app', '')
         self.var = {}
@@ -21,6 +21,7 @@ class Global:
         self.driver = ''
 
 
+    def set_driver(self):
         if self.platform.lower() == 'desktop':
             if self.app.lower() == 'ie':
                 self.driver = webdriver.Ie()

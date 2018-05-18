@@ -87,7 +87,8 @@ class Autotest:
 
         # 2.初始化全局对象
         try:
-            g.set_driver(self.desired_caps, self.server_url)
+            g.init(self.desired_caps, self.server_url)
+            g.set_driver()
             # 如果测试数据文件存在，则从该文件里读取一行数据，赋值到全局变量列表里
             data_file = path.join(
                 'data', g.project_name + '-' + sheet_name + '.csv')

@@ -39,7 +39,7 @@ class Common():
 def open(step):
     element = step['element']
     el, value = e.get(element)
-    if step['data'].get('打开方式', '') == '新标签页' or step['data'].get('mode', '').lower() == 'NewTab':
+    if step['data'].get('打开方式', '') == '新标签页' or step['data'].get('mode', '').lower() == 'tab':
         js = "window.open('%s')" % value
         g.driver.execute_script(js)
         # 判断是否打开了新的窗口，并将新窗口添加到所有窗口列表里
@@ -48,6 +48,10 @@ def open(step):
             if handle not in w.windows.values():
                 w.register(step, handle)
     else:
+        if step['data'].get('打开方式', '') == '新浏览器' or step['data'].get('mode', '').lower() == 'browser':
+            w.close()
+            g.set_driver()
+            w.init()
         g.driver.get(value)
         w.open(step)
     sleep(0.5)
