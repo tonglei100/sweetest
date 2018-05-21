@@ -39,6 +39,8 @@ class Common():
 def open(step):
     element = step['element']
     el, value = e.get(element)
+    if step['data'].get('清理缓存', '') or step['data'].get('cookie', ''):
+        g.driver.delete_all_cookies()
     if step['data'].get('打开方式', '') == '新标签页' or step['data'].get('mode', '').lower() == 'tab':
         js = "window.open('%s')" % value
         g.driver.execute_script(js)
