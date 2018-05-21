@@ -1,3 +1,4 @@
+from selenium.webdriver.common.keys import Keys
 import xlrd
 import xlsxwriter
 import csv
@@ -124,7 +125,7 @@ def replace(data):
         # 正则匹配出 k 中的 + - ** * // / % ( )，返回列表
         values = re.split(r'(\+|-|\*\*|\*|//|/|%|\(|\))', k)
         for j,v in enumerate(values):
-            # 切片操作处理，正在匹配出 [] 中内容
+            # 切片操作处理，正则匹配出 [] 中内容
             s = re.findall(r'\[.*?\]', v)
             if s:
                 s = s[0]
@@ -145,7 +146,7 @@ def replace(data):
                     if s:
                         values[j] = eval('values[j]'+s)
 
-        #如果 values 长度大于 1，说明有算术运算符，则用 eval 运算
+        # 如果 values 长度大于 1，说明有算术运算符，则用 eval 运算
         # 注意，先要把元素中的数字变为字符串
         if len(values) > 1:
             values = eval(''.join([str(x) for x in values]))
@@ -155,6 +156,9 @@ def replace(data):
         # 如果 data 就是一个 <>，如 data = '<a+1>',则直接赋值为 values，此值可能是数字
         if data == '<' + keys[0] + '>':
             data = values
+            # 如果有键盘操作，则需要 eval 处理
+            if 'Keys.' in data:
+                data = eval(data)
         # 否则需要替换，此时变量强制转换为为字符串
         else:
             data = data.replace('<' + k + '>', str(values))

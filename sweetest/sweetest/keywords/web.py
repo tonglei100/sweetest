@@ -138,8 +138,11 @@ def input(step):
     element = step['element']
     element_location = locating_element(element)
 
-    element_location.clear()
-    element_location.send_keys(data['text'])
+    if isinstance(data['text'], tuple):
+        element_location.send_keys(*data['text'])
+    else:
+        element_location.clear()
+        element_location.send_keys(data['text'])
 
 
 def click(step):
