@@ -1,5 +1,4 @@
 from selenium import webdriver
-from appium import webdriver as appdriver
 from sweetest.config import element_wait_timeout, page_flash_timeout
 
 
@@ -46,9 +45,11 @@ class Global:
             self.driver.set_page_load_timeout(page_flash_timeout)  # seconds
 
         if self.platform.lower() == 'ios':
+            from appium import webdriver as appdriver
             print('Come soon...')
 
         if self.platform.lower() == 'android':
+            from appium import webdriver as appdriver
             self.driver = appdriver.Remote(server_url, desired_caps)
 
     def close(self):

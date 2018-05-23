@@ -143,7 +143,10 @@ def input(step):
     if isinstance(data['text'], tuple):
         element_location.send_keys(*data['text'])
     else:
-        element_location.clear()
+        if step['data'].get('清除文本', '') == '否' or step['data'].get('clear', '').lower() == 'no':
+            pass
+        else:
+            element_location.clear()
         element_location.send_keys(data['text'])
 
 

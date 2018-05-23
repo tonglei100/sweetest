@@ -98,7 +98,8 @@ class TestCase:
                     getattr(http, step['keyword'].lower())(step)
 
                 elif step['keyword'].lower() == 'execute':
-                    steps = getattr(common, step['keyword'].lower())(step)
+                    result, steps = getattr(common, step['keyword'].lower())(step)
+                    self.testcase['result'] = result
                     self.snippet_steps[index+1]= steps
 
                 else:
@@ -115,15 +116,17 @@ class TestCase:
                 # 操作后，等待0.2秒
                 sleep(0.2)
             except Exception as exception:
-                file_name = g.project_name + '-' + g.sheet_name + g.start_time + \
-                    '#' + self.testcase['id'] + '-' + str(step['no']) + '.png'
-                snapshot_file = path.join('snapshot', file_name)
-                try:
-                    g.driver.get_screenshot_as_file(snapshot_file)
-                except:
-                    logger.exception('*** save the screenshot is fail ***')
+                if g.platform.lower() in ('desktop',) and step['keyword'] in web_keywords:
+                    file_name = g.project_name + '-' + g.sheet_name + g.start_time + \
+                        '#' + self.testcase['id'] + '-' + str(step['no']) + '.png'
+                    snapshot_file = path.join('snapshot', file_name)
+                    try:
+                        g.driver.get_screenshot_as_file(snapshot_file)
+                    except:
+                        logger.exception('*** save the screenshot is fail ***')
+
                 logger.exception('Run the Step: %s|%s|%s is Failure' %
-                                 (step['no'], step['keyword'], step['element']))
+                                     (step['no'], step['keyword'], step['element']))
                 step['score'] = 'NO'
 
                 # if 语句结果赋值

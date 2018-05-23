@@ -8,7 +8,18 @@ from sweetest.utility import replace_dict
 
 
 def execute(step):
-    # 先执行赋值操作
+    # 先处理循环结束条件
+    condition = ''
+    for k in ('循环结束条件', 'condition'):
+        if step['data'].get(k):
+            condition = step['data'].get(k)
+            del step['data'][k]
+    if condition.lower() in ('成功', 'pass'):
+        condition = 'Pass'
+    elif condition.lower() in ('失败', 'fail'):
+        condition = 'Fail'
+
+    # 执行赋值操作
     data = step['data']
     for k, v in data.items():
         g.var[k] = v
@@ -27,6 +38,8 @@ def execute(step):
         element = _element[0]
         times = int(_element[1])
 
+    # 初始化测试片段执行结果
+    result = 'Pass'
     steps = []
     if element != '变量赋值':
         for t in range(times):
@@ -41,10 +54,24 @@ def execute(step):
             for s in testcase['steps']:
                 s['no'] = str(t+1) + '-' + str(s['no'])
             steps += testcase['steps']
+            # 用例片段执行失败时
             if testcase['result'] != 'Pass':
-                if flag:
-                    return steps
-    return steps
+                result = testcase['result']
+                # 循环退出条件为失败，则直接返回，返回结果是 Pass
+                if condition == 'Fail':
+                    return 'Pass', steps
+                # 如果没有结束条件，且失败直接退出标志位真，则返回结果
+                if not condition and flag:
+                    return result, steps
+            # 用例片段执行成功时
+            else:
+                # 如果循环退出条件是成功，则直接返回，返回结果是 Pass
+                if condition == 'Pass':
+                    return 'Pass', steps
+    # 执行结束，还没有触发循环退出条件，则返回结果为 Fail
+    if condition:
+        result = 'Fail'
+    return result, steps
 
 
 def sql(step):
