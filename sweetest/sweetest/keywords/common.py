@@ -52,7 +52,7 @@ def execute(step):
             tc = TestCase(testcase)
             tc.run()
             for s in testcase['steps']:
-                s['no'] = str(t+1) + '-' + str(s['no'])
+                s['no'] = str(step['no']) + '*' + str(t+1) + '-' + str(s['no'])
             steps += testcase['steps']
             # 用例片段执行失败时
             if testcase['result'] != 'Pass':

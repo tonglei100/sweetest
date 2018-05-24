@@ -100,7 +100,7 @@ class TestCase:
                 elif step['keyword'].lower() == 'execute':
                     result, steps = getattr(common, step['keyword'].lower())(step)
                     self.testcase['result'] = result
-                    self.snippet_steps[index+1]= steps
+                    self.snippet_steps[index+1] = steps
 
                 else:
                     # 根据关键字调用关键字实现
@@ -143,7 +143,7 @@ class TestCase:
         steps = []
         i = 0
         for k in self.snippet_steps:
-            steps = self.testcase['steps'][i:k] + self.snippet_steps[k]
+            steps += self.testcase['steps'][i:k] + self.snippet_steps[k]
             i = k
         steps += self.testcase['steps'][i:]
         self.testcase['steps'] = steps

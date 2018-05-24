@@ -22,7 +22,7 @@ def testsuite_format(data):
                 'no': 1,  #测试步骤
                 'keyword': '输入',
                 'page': '产品管系统登录页',
-                'element': '用户名'
+                'element': '用户名',
                 'data': 'user1',  #测试数据
                 'output': '',  #输出数据
                 'score': '',  #测试结果
