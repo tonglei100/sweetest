@@ -83,8 +83,9 @@ class TestCase:
                 if g.platform.lower() in ('desktop',) and step['keyword'] in web_keywords:
                     # 判断页面是否已和窗口做了关联，如果没有，就关联当前窗口，如果已关联，则判断是否需要切换
                     w.switch_window(step['page'])
-                    # 判断是否需要切换 frame
-                    w.switch_frame(step['custom'])
+                    # 切换 frame 处理，支持变量替换
+                    frame = replace(step['custom'])
+                    w.switch_frame(frame)
 
                     # 根据关键字调用关键字实现
                     getattr(web, step['keyword'].lower())(step)
@@ -101,6 +102,8 @@ class TestCase:
                     result, steps = getattr(common, step['keyword'].lower())(step)
                     self.testcase['result'] = result
                     self.snippet_steps[index+1] = steps
+                    if result != 'Pass':
+                        break
 
                 else:
                     # 根据关键字调用关键字实现

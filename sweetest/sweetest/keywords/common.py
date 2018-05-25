@@ -29,7 +29,7 @@ def execute(step):
     times = 1
     _element = element.split('*')
 
-    # snippet 执行失败是否退出标准
+    # snippet 执行失败是否退出标志
     flag = True
     if element[-1] == '*':
        flag = False
