@@ -1,4 +1,7 @@
-# 介绍
+![sweetest](https://github.com/tonglei100/sweetest/blob/master/snapshot/logo.png?raw=true)
+# sweetest
+
+## 介绍
 
 sweetest 是一款 Web 自动化测试框架，或者说是解决方案，名字取 Selenium, Web UI, Excel, Element, Test 含义。
 特点:
