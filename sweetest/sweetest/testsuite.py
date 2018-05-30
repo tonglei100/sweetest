@@ -94,6 +94,8 @@ class TestSuite:
                         logger.warn('Run the testcase: %s|%s Blocked, Main or pre Sub TestCase is not Pass' % (
                             testcase['id'], testcase['title']))
                         continue
+                elif testcase['condition'].lower() == 'skip':
+                    pass
                 else:
                     result = self.setup(testcase, case)
                     #if result == 'N':
