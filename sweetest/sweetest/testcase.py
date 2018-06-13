@@ -17,7 +17,7 @@ def elements_format(page, element):
     if not element:
         return page, '', element
 
-    if page in ('SNIPPET', '用例片段') or element in ('变量赋值',):
+    if page in ('SNIPPET', 'SCRIPT', '用例片段', '脚本') or element in ('变量赋值',):
         return page, '', element
 
     elements = element.split('|')
@@ -112,11 +112,14 @@ class TestCase:
                     getattr(http, step['keyword'].lower())(step)
 
                 elif step['keyword'].lower() == 'execute':
-                    result, steps = getattr(common, step['keyword'].lower())(step)
-                    self.testcase['result'] = result
-                    self.snippet_steps[index+1] = steps
-                    if result != 'Pass':
-                        break
+                    if step['page'] in ('SNIPPET', '用例片段'):
+                        result, steps = getattr(common, step['keyword'].lower())(step)
+                        self.testcase['result'] = result
+                        self.snippet_steps[index+1] = steps
+                        if result != 'Pass':
+                            break
+                    elif step['page'] in ('SCRIPT', '脚本'):
+                        common.script(step)
 
                 else:
                     # 根据关键字调用关键字实现
