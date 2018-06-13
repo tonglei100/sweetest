@@ -28,7 +28,7 @@ def elements_format(page, element):
     else:
         els = []
         for _element in elements:
-            custom, el = e.have(page, _element)
+            custom, el = e.have(page, _element.strip() )
             els.append(el)
         g.current_page = page
         return page, custom, els
