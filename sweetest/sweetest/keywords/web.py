@@ -152,8 +152,14 @@ def input(step):
 
 def click(step):
     element = step['element']
-    element_location = locating_element(element, 'CLICK')
-    element_location.click()
+    if isinstance(element, str):
+        element_location = locating_element(element, 'CLICK')
+        element_location.click()
+    elif isinstance(element, list):
+        for _e in element:
+            element_location = locating_element(_e, 'CLICK')
+            element_location.click()
+            sleep(0.5)
     sleep(0.5)
 
     # 获取元素其他属性
@@ -185,5 +191,33 @@ def move(step):
     element = step['element']
     el = locating_element(element)
     actions.move_to_element(el)
+    actions.perform()
+    sleep(0.5)
+
+
+def context_click(step):
+    actions = ActionChains(g.driver)
+    element = step['element']
+    el = locating_element(element)
+    actions.context_click(el)
+    actions.perform()
+    sleep(0.5)
+
+
+def double_click(step):
+    actions = ActionChains(g.driver)
+    element = step['element']
+    el = locating_element(element)
+    actions.double_click(el)
+    actions.perform()
+    sleep(0.5)
+
+
+def drag_and_drop(step):
+    actions = ActionChains(g.driver)
+    element = step['element']
+    source = locating_element(element[0])
+    target = locating_element(element[1])
+    actions.drag_and_drop(source, target)
     actions.perform()
     sleep(0.5)

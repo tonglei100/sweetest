@@ -20,9 +20,18 @@ def elements_format(page, element):
     if page in ('SNIPPET', '用例片段') or element in ('变量赋值',):
         return page, '', element
 
-    custom, el = e.have(page, element)
-    g.current_page = page
-    return page, custom, el
+    elements = element.split('|')
+    if len(elements) == 1:
+        custom, el = e.have(page, element)
+        g.current_page = page
+        return page, custom, el
+    else:
+        els = []
+        for _element in elements:
+            custom, el = e.have(page, _element)
+            els.append(el)
+        g.current_page = page
+        return page, custom, els
 
 
 def v_data(d):
@@ -70,7 +79,11 @@ class TestCase:
                 replace_dict(step['data'])
                 replace_dict(step['expected'])
 
-                step['element'] = replace(step['element'])
+                if isinstance(step['element'] , str):
+                    step['element'] = replace(step['element'])
+                elif isinstance(step['element'] , list):
+                    for i in range(len(step['element'])):
+                        step['element'][i] = replace(step['element'][i])
 
                 step['vdata'] = v_data(step['data'])
 

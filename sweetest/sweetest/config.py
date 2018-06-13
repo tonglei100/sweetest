@@ -12,7 +12,13 @@ web_keywords = {
     '选择': 'SELECT',
     'SELECT': 'SELECT',
     '移动到': 'MOVE',
-    'MOVE': 'MOVE'
+    'MOVE': 'MOVE',
+    '右击': 'CONTEXT_CLICK',
+    'CONTEXT_CLICK': 'CONTEXT_CLICK',
+    '双击': 'DOUBLE_CLICK',
+    'DOUBLE_CLICK': 'DOUBLE_CLICK',
+    '拖拽': 'DRAG_AND_DROP',
+    'DRAG_AND_DROP': 'DRAG_AND_DROP'        
 }
 
 common_keywords = {
