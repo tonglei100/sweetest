@@ -11,7 +11,7 @@ class DB:
             if arg['type'].lower() == 'mysql':
                 import pymysql as mysql
                 self.connect = mysql.connect(
-                    host=arg['host'], port=arg['port'], user=arg['user'], password=arg['password'], database=arg['dbname'])
+                    host=arg['host'], port=int(arg['port']), user=arg['user'], password=arg['password'], database=arg['dbname'], charset=arg.get('charset',utf8'))
                 self.cursor = self.connect.cursor()
                 sql = 'select version()'
 
@@ -27,7 +27,7 @@ class DB:
             elif arg['type'].lower() == 'sqlserver':
                 import pymssql as sqlserver
                 self.connect = sqlserver.connect(
-                    host=arg['host'], port=arg['port'], user=arg['user'], password=arg['password'], database=arg['dbname'])
+                    host=arg['host'], port=arg['port'], user=arg['user'], password=arg['password'], database=arg['dbname'], charset=arg.get('charset',utf8'))
                 self.cursor = self.connect.cursor()
                 sql = 'select @@version'
 
