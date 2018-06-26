@@ -51,16 +51,19 @@ Sweetest 是一款同时支持 Web UI，Http 接口，DB 操作的自动化测�
 
 ## 安装 sweetest
 
-`pip install sweetest`
+```bash
+pip install sweetest
+```
 
 ## 升级 sweetest
 
-`pip install --upgrade sweetest`
-
+```bash
+pip install -U sweetest
+```
 
 ## 快速体验
 打开 cmd 命令窗口，切换到某个目录，如：D:\Autotest
-```
+```bash
 sweetest
 cd sweetest_example
 python start.py
@@ -105,6 +108,7 @@ frame    | element 所在的 frame id，如果是顶层 frame，可为空。
 element  | element 名称，在不同的 page 下面可以同名
 by       | Selenium 定位方式
 value    | Selenium 定位的值
+custom   | 自定义字段，如 element 在 frame/iframe 中，则在此填写 frame id/name
 备注     | 注释作用
 
 
