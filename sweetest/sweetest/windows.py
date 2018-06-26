@@ -44,9 +44,13 @@ class Windows:
                 self.current_window = self.pages[page]
 
     def switch_frame(self, frame):
-        if frame:
+        if frame.strip():
+            frame = frame.replace('，', ',').split(',')
             if frame != self.frame:
-                g.driver.switch_to.frame(frame)
+                if self.frame != 0:
+                    g.driver.switch_to.default_content()
+                for f in frame:
+                    g.driver.switch_to.frame(f)
                 self.frame = frame
         else:
             if self.frame != 0:
