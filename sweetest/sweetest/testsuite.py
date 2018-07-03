@@ -69,8 +69,7 @@ class TestSuite:
 
         # 1.执行用例
         for testcase in self.testsuite:
-            previous = current
-            current = testcase
+
 
             # xml 测试报告-测试用例初始化
             if testcase['flag'] != 'N':
@@ -78,6 +77,9 @@ class TestSuite:
                     testcase['title'], testcase['id'])
                 case.start()
                 case.priority = testcase['priority']
+                # 用例上下文，
+                previous = current
+                current = testcase
             else:
                 testcase['result'] = 'Skip'
                 # case.skip('Skip', 'Autotest Flag is N')
@@ -94,6 +96,7 @@ class TestSuite:
                         logger.warn('Run the testcase: %s|%s Blocked, Main or pre Sub TestCase is not Pass' % (
                             testcase['id'], testcase['title']))
                         continue
+                # 如果前置条件为 skip，则此用例不执行前置条件
                 elif testcase['condition'].lower() == 'skip':
                     pass
                 else:
