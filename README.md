@@ -1,6 +1,11 @@
 ![sweetest](https://github.com/tonglei100/sweetest/blob/master/snapshot/logo.png?raw=true)
 # sweetest
 
+🔥 App 测试已支持大部分操作，目前处于开发阶段，详细情况请加 QQ 群 🔥
+
+QQ 交流群：158755338 (验证码：python)
+
+
 ## 介绍
 
 Sweetest 是一款同时支持 Web UI，Http 接口，DB 操作的自动化测试框架(即将支持 App 测试)，由于开始只支持 Web UI 测试，名字取自 Selenium，Web UI，Excel，Element， Test 含义。
