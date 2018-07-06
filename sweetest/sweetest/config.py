@@ -18,7 +18,7 @@ web_keywords = {
     '双击': 'DOUBLE_CLICK',
     'DOUBLE_CLICK': 'DOUBLE_CLICK',
     '拖拽': 'DRAG_AND_DROP',
-    'DRAG_AND_DROP': 'DRAG_AND_DROP'        
+    'DRAG_AND_DROP': 'DRAG_AND_DROP'
 }
 
 common_keywords = {
@@ -33,16 +33,40 @@ http_keywords = {
 }
 
 mobile_keywords = {
-    '打开': 'OPEN',
-    'OPEN': 'OPEN',
     '检查': 'CHECK',
     'CHECK': 'CHECK',
     '#检查': 'NOTCHECK',
     '#CHECK': 'NOTCHECK',
     '输入': 'INPUT',
     'INPUT': 'INPUT',
+    '填写': 'SET_VALUE',
+    'SET_VALUE': 'SET_VALUE',
     '点击': 'CLICK',
-    'CLICK': 'CLICK'
+    'CLICK': 'CLICK',
+    '轻点': 'TAP',
+    'TAP': 'TAP',
+    '发送按键码': 'PRESS_KEYCODE',  # Android 特有，常见代码 HOME:3, 菜单键：82，返回键：4
+    'PRESS_KEYCODE': 'PRESS_KEYCODE',
+    '拖动': 'SWIPE',
+    'SWIPE': 'SWIPE',
+    '滚动': 'SCROLL',  # iOS 专用
+    'SCROLL': 'SCROLL',
+    '拖拽': 'DRAG_AND_DROP',
+    'DRAG_AND_DROP': 'DRAG_AND_DROP',
+    '摇晃': 'SHAKE',  # 貌似 Android 上不可用
+    'SHAKE': 'SHAKE',
+    '滑动': 'FLICK',
+    'FLICK': 'FLICK',
+    '滑动元素': 'FLICK_ELEMENT',
+    'FLICK_ELEMENT': 'FLICK_ELEMENT',
+    '长按': 'LONG_PRESS',
+    'LONG_PRESS': 'LONG_PRESS',
+    '缩小': 'PINCH',
+    'PINCH': 'PINCH',
+    '放大': 'ZOOM',
+    'ZOOM': 'ZOOM',
+    '隐藏键盘': 'HIDE_KEYBOARD',  # iOS 专用
+    'HIDE_KEYBOARD': 'HIDE_KEYBOARD'
 }
 
 all_keywords = {}

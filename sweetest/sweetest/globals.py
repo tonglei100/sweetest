@@ -9,6 +9,8 @@ class Global:
         self.sheet_name = ''
 
     def init(self, desired_caps, server_url):
+        self.desired_caps = desired_caps
+        self.server_url = server_url
         self.platform = desired_caps['platformName']
         self.browserName = desired_caps.get('browserName', '')
         self.var = {}
@@ -46,11 +48,11 @@ class Global:
 
         if self.platform.lower() == 'ios':
             from appium import webdriver as appdriver
-            print('Come soon...')
+            self.driver = appdriver.Remote(self.server_url, self.desired_caps)
 
         if self.platform.lower() == 'android':
             from appium import webdriver as appdriver
-            self.driver = appdriver.Remote(server_url, desired_caps)
+            self.driver = appdriver.Remote(self.server_url, self.desired_caps)
 
     def close(self):
         self.driver.close()
