@@ -215,14 +215,14 @@ def press_keycode(step):
 
 def swipe(step):
     element = step['element']
-    duration = step['data'].get('持续时间', None)
+    duration = step['data'].get('持续时间', 0.3)
     assert isinstance(element, list) and len(element) == 4, '坐标格式或数量不对，正确格式如：100|200|300|400'
     start_x = eval(element[0])
     start_y = eval(element[1])
     end_x = eval(element[2])
     end_y = eval(element[3])
     if duration:
-        g.driver.swipe(start_x, start_y, end_x, end_y, duration))
+        g.driver.swipe(start_x, start_y, end_x, end_y, sleep(int(duration)))
     else:
         g.driver.swipe(start_x, start_y, end_x, end_y)
 

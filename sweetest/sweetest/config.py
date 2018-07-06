@@ -45,7 +45,7 @@ mobile_keywords = {
     'CLICK': 'CLICK',
     '轻点': 'TAP',
     'TAP': 'TAP',
-    '发送按键码': 'PRESS_KEYCODE',  # Android 特有，常见代码 HOME:3, 菜单键：82，返回键：4
+    '按键码': 'PRESS_KEYCODE',  # Android 特有，常见代码 HOME:3, 菜单键：82，返回键：4
     'PRESS_KEYCODE': 'PRESS_KEYCODE',
     '拖动': 'SWIPE',
     'SWIPE': 'SWIPE',
