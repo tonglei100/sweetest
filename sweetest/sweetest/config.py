@@ -47,15 +47,19 @@ mobile_keywords = {
     'TAP': 'TAP',
     '按键码': 'PRESS_KEYCODE',  # Android 特有，常见代码 HOME:3, 菜单键：82，返回键：4
     'PRESS_KEYCODE': 'PRESS_KEYCODE',
-    '拖动': 'SWIPE',
+    '滑动': 'SWIPE',
     'SWIPE': 'SWIPE',
+    '划线': 'LINE',
+    'LINE': 'LINE',
+    '划线解锁': 'LINE_UNLOCK',
+    'LINE_UNLOCK': 'LINE_UNLOCK',
     '滚动': 'SCROLL',  # iOS 专用
     'SCROLL': 'SCROLL',
     '拖拽': 'DRAG_AND_DROP',
     'DRAG_AND_DROP': 'DRAG_AND_DROP',
     '摇晃': 'SHAKE',  # 貌似 Android 上不可用
     'SHAKE': 'SHAKE',
-    '滑动': 'FLICK',
+    '快速滑动': 'FLICK',
     'FLICK': 'FLICK',
     '滑动元素': 'FLICK_ELEMENT',
     'FLICK_ELEMENT': 'FLICK_ELEMENT',
