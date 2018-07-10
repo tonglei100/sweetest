@@ -256,7 +256,7 @@ def line(step):
 def line_unlock(step):
     element = step['element']
     duration = float(step['data'].get('持续时间', 0.3))
-    assert isinstance(element, list) and len(element) > 2, '坐标格式或数量不对，正确格式如：lock_pattern/lock_pattern|1|4|7|8|9'
+    assert isinstance(element, list) and len(element) > 2, '坐标格式或数量不对，正确格式如：lock_pattern|1|4|7|8|9'
     _e = locating_element(element[0])
     rect = _e.rect
     w = rect['width']/6
