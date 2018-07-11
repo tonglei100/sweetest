@@ -282,6 +282,42 @@ def line_unlock(step):
     action.release().perform()
 
 
+def rocker(step):
+    element = step['element']
+    duration = float(step['data'].get('持续时间', 0.3))
+    rocker_name = step['data'].get('摇杆', 'rocker')
+    release = step['data'].get('释放', False)
+
+    if isinstance(element, str):
+        if element:
+            element = [element]
+        else:
+            element = []
+
+    postions = []
+    for _e in element:
+        _e = _e.replace('，', ',')
+        p = _e.split(',')
+        postions.append(p)
+
+    # 如果 action 中么有此摇杆名，则是新的遥感
+    if not g.action.get(rocker_name):
+        g.action[rocker_name] = TouchAction(g.driver)
+        action = g.action[rocker_name].press(x=postions[0][0], y=postions[0][1]).wait(duration*1000)
+        # 新摇杆的第一个点已操作，需要删除
+        postions.pop(0)
+    # 依次操作
+    for i in range(len(postions)):
+        g.action[rocker_name].move_to(x=postions[i][0], y=postions[i][1]).wait(duration*1000)
+
+    if release:
+        # 释放摇杆，并删除摇杆
+        g.action[rocker_name].release().perform()
+        del g.action[rocker_name]
+    else:
+        g.action[rocker_name].perform()
+
+
 def scroll(step):
     element = step['element']
     assert isinstance(element, list) and len(element) == 2, '元素格式或数量不对，正确格式如：origin_el|destination_el'

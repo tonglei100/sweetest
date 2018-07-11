@@ -53,6 +53,8 @@ mobile_keywords = {
     'LINE': 'LINE',
     '划线解锁': 'LINE_UNLOCK',
     'LINE_UNLOCK': 'LINE_UNLOCK',
+    '摇杆': 'ROCKER',
+    'ROCKER': 'ROCKER',
     '滚动': 'SCROLL',  # iOS 专用
     'SCROLL': 'SCROLL',
     '拖拽': 'DRAG_AND_DROP',

@@ -91,7 +91,7 @@ class TestCase:
                 t = step['data'].get('等待时间')
                 if t:
                     del step['data']['等待时间']
-                    sleep(int(t))
+                    sleep(float(t))
 
                 if g.platform.lower() in ('desktop',) and step['keyword'] in web_keywords:
                     # 判断页面是否已和窗口做了关联，如果没有，就关联当前窗口，如果已关联，则判断是否需要切换
