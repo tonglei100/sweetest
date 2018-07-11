@@ -157,7 +157,7 @@ def replace(data):
         if data == '<' + keys[0] + '>':
             data = values
             # 如果有键盘操作，则需要 eval 处理
-            if 'Keys.' in data:
+            if isinstance(data, str) and 'Keys.' in data:
                 data = eval(data)
         # 否则需要替换，此时变量强制转换为为字符串
         else:
