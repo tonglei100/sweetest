@@ -77,7 +77,7 @@ class Autotest:
         try:
             data = self.testcase_workbook.read(sheet_name)
             testsuite = testsuite_format(data)
-            logger.info('Testsuite imported from Excle:\n' +
+            logger.info('Testsuite imported from Excel:\n' +
                         json.dumps(testsuite, ensure_ascii=False, indent=4))
             logger.info('From Excel import testsuite success')
         except:
