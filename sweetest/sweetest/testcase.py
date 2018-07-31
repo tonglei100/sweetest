@@ -104,6 +104,10 @@ class TestCase:
                     getattr(web, step['keyword'].lower())(step)
 
                 elif g.platform.lower() in ('ios', 'android') and step['keyword'] in mobile_keywords:
+                    # 切換 context 處理
+                    context = replace(step['custom']).strip()
+                    w.switch_context(context)
+
                     # 根据关键字调用关键字实现
                     getattr(mobile, step['keyword'].lower())(step)
 

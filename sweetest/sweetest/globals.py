@@ -11,7 +11,7 @@ class Global:
     def init(self, desired_caps, server_url):
         self.desired_caps = desired_caps
         self.server_url = server_url
-        self.platform = desired_caps['platformName']
+        self.platform = desired_caps.get('platformName', '')
         self.browserName = desired_caps.get('browserName', '')
         self.var = {}
         self.snippet = {}

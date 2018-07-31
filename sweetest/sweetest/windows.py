@@ -1,4 +1,5 @@
 from sweetest.globals import g
+from sweetest.log import logger
 
 
 class Windows:
@@ -17,6 +18,8 @@ class Windows:
         self.pages = {}
         # 新开窗口标志
         self.new_window_flag = True
+        # App context
+        self.current_context = ''
 
     def switch_window(self, page):
         if self.new_window_flag:
@@ -45,11 +48,20 @@ class Windows:
 
     def switch_frame(self, frame):
         if frame.strip():
-            frame = frame.replace('，', ',').split(',')
+            frame = [x.strip() for x in frame.split('|')]
             if frame != self.frame:
                 if self.frame != 0:
                     g.driver.switch_to.default_content()
                 for f in frame:
+                    logger.info('--- Frame value:  %s' % repr(f))
+                    if f.startswith('#'):
+                        f = int(f[1:])
+                    elif '#' in f:
+                        from sweetest.testcase import elements_format
+                        from sweetest.locator import locating_element
+                        element = elements_format('通用',f)[2]
+                        f = locating_element(element)
+                    logger.info('--- Switch frame: %s' % repr(f))
                     g.driver.switch_to.frame(f)
                 self.frame = frame
         else:
@@ -107,9 +119,17 @@ class Windows:
 
             all_handles = g.driver.window_handles
             for handle in all_handles:
-                #  切换到每一个窗口,并关闭它
+                # 切换到每一个窗口,并关闭它
                 g.driver.switch_to_window(handle)
                 g.driver.close()
+
+    def switch_context(self, context):
+        logger.info('ALL Contexts:%s' % g.driver.contexts)
+        if context != self.current_context:
+            if contex == '':
+                context = None
+            g.driver.switch_to.context(context)
+            self.current_context = context
 
 
 w = Windows()
