@@ -145,11 +145,13 @@ def set_value(step):
 def click(step):
     element = step['element']
     if isinstance(element, str):
-        element_location = locating_element(element, 'CLICK')
+        #element_location = locating_element(element, 'CLICK')
+        element_location = locating_element(element)
         element_location.click()
     elif isinstance(element, list):
         for _e in element:
-            element_location = locating_element(_e, 'CLICK')
+            #element_location = locating_element(_e, 'CLICK')
+            element_location = locating_element(_e)
             element_location.click()
             sleep(0.5)
     sleep(0.5)
@@ -168,6 +170,13 @@ def click(step):
                 g.var[key] = element_location.text
         else:
             g.var[key] = element_location.get_attribute(output[key])
+
+    # if w.current_context.startswith('WEBVIEW'):
+    #     # 判断是否打开了新的窗口，并将新窗口添加到所有窗口列表里
+    #     all_handles = g.driver.window_handles
+    #     for handle in all_handles:
+    #         if handle not in w.windows.values():
+    #             w.register(step, handle)
 
 
 def tap(step):
@@ -210,6 +219,13 @@ def tap(step):
                 g.var[key] = element_location.text
         else:
             g.var[key] = element_location.get_attribute(output[key])
+
+    # if w.current_context.startswith('WEBVIEW'):
+    #     # 判断是否打开了新的窗口，并将新窗口添加到所有窗口列表里
+    #     all_handles = g.driver.window_handles
+    #     for handle in all_handles:
+    #         if handle not in w.windows.values():
+    #             w.register(step, handle)
 
 
 def press_keycode(step):
@@ -401,3 +417,33 @@ def hide_keyboard(step):
 
 def shake(step):
     g.driver.shake()
+
+
+def tab_name(step):
+    element = step['element']
+    name = step['data']['text']
+    # 从所有窗口中查找给定元素，如果查询到就命名，否则报错
+    all_handles = g.driver.window_handles
+    logger.info('All Handles: %s' % all_handles)
+
+    flag = False
+    for handle in all_handles:
+        #logger.info('Page Source: %s \n%s' % (handle, g.driver.page_source))
+        #logger.info('All Windows: %s' %w.windows)
+        if handle not in w.windows.values():
+            # 切换至此窗口
+            g.driver.switch_to_window(handle)
+            try:
+                # 成功定位到关键元素
+                element_location = locating_element(element, 'CLICK')
+                # 添加到窗口资源池 g.windows
+                w.windows[name] = handle
+                # 把当前窗口名字改为新窗口名称
+                w.current_window = name
+                flag = True
+                logger.info('Current Window: %s' % repr(name))
+                logger.info('Current Handle: %s' % repr(handle))
+            except Exception as exception:
+                pass
+    if not flag:
+        raise Exception('Tab Name Fail: the element:%s in all tab is not found' %element)

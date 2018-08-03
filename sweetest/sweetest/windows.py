@@ -19,7 +19,7 @@ class Windows:
         # 新开窗口标志
         self.new_window_flag = True
         # App context
-        self.current_context = ''
+        self.current_context = 'NATIVE_APP'
 
     def switch_window(self, page):
         if self.new_window_flag:
@@ -53,7 +53,7 @@ class Windows:
                 if self.frame != 0:
                     g.driver.switch_to.default_content()
                 for f in frame:
-                    logger.info('--- Frame value:  %s' % repr(f))
+                    logger.info('--- Frame Value:  %s' % repr(f))
                     if f.startswith('#'):
                         f = int(f[1:])
                     elif '#' in f:
@@ -61,7 +61,7 @@ class Windows:
                         from sweetest.locator import locating_element
                         element = elements_format('通用',f)[2]
                         f = locating_element(element)
-                    logger.info('--- Switch frame: %s' % repr(f))
+                    logger.info('--- Switch Frame: %s' % repr(f))
                     g.driver.switch_to.frame(f)
                 self.frame = frame
         else:
@@ -124,10 +124,14 @@ class Windows:
                 g.driver.close()
 
     def switch_context(self, context):
-        logger.info('ALL Contexts:%s' % g.driver.contexts)
+        if context.strip() == '':
+            context = 'NATIVE_APP'
+        logger.info('--- ALL   Contexts:%s' % g.driver.contexts)
+        logger.info('--- Input  Context:%s' % repr(context))
         if context != self.current_context:
-            if contex == '':
+            if context == '':
                 context = None
+            logger.info('--- Switch Context:%s' % repr(context))
             g.driver.switch_to.context(context)
             self.current_context = context
 

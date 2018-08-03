@@ -138,8 +138,9 @@ class TestSuite:
 
         # 2.清理环境
         try:
-            for handle in w.windows.values():
-                g.driver.switch_to_window(handle)
-                g.driver.close()
+            if g.platform.lower() in ('desktop',):
+                for handle in w.windows.values():
+                    g.driver.switch_to_window(handle)
+                    g.driver.close()
         except:
             logger.exception('Clear the env is fail')

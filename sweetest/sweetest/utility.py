@@ -175,7 +175,7 @@ def test_replace():
 
 def read_csv(csv_file):
     data = []
-    with open(csv_file) as f:
+    with open(csv_file, encoding='utf-8') as f:
         reader = csv.reader(f)
         for line in reader:
             data.append(line)

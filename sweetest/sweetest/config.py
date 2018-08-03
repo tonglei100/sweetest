@@ -72,7 +72,9 @@ mobile_keywords = {
     '放大': 'ZOOM',
     'ZOOM': 'ZOOM',
     '隐藏键盘': 'HIDE_KEYBOARD',  # iOS 专用
-    'HIDE_KEYBOARD': 'HIDE_KEYBOARD'
+    'HIDE_KEYBOARD': 'HIDE_KEYBOARD',
+    '命名标签页': 'TAB_NAME',
+    'TAB_NAME': 'TAB_NAME'
 }
 
 all_keywords = {}

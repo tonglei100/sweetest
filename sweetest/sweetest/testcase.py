@@ -106,7 +106,16 @@ class TestCase:
                 elif g.platform.lower() in ('ios', 'android') and step['keyword'] in mobile_keywords:
                     # 切換 context 處理
                     context = replace(step['custom']).strip()
-                    w.switch_context(context)
+                    current_context = w.switch_context(context)
+
+                    if w.current_context.startswith('WEBVIEW'):
+                        # 切换标签页
+                        tab = step['data'].get('标签页')
+                        if tab:
+                            del step['data']['标签页']
+                            g.driver.switch_to_window(w.windows[tab])
+                        logger.info('Current Context: %s' % repr(w.current_context))
+
 
                     # 根据关键字调用关键字实现
                     getattr(mobile, step['keyword'].lower())(step)
