@@ -183,7 +183,7 @@ def read_csv(csv_file):
 
 
 def write_csv(csv_file, data):
-    with open(csv_file, 'w', newline='') as f:
+    with open(csv_file, 'w', encoding='utf-8', newline='') as f:
         writer = csv.writer(f)
         writer.writerows(data)
 

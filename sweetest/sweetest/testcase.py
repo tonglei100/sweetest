@@ -17,7 +17,7 @@ def elements_format(page, element):
     if not element:
         return page, '', element
 
-    if page in ('SNIPPET', 'SCRIPT', '用例片段', '脚本') or element in ('变量赋值',):
+    if page in ('SNIPPET', 'SCRIPT', '用例片段') or element in ('变量赋值',):
         return page, '', element
 
     elements = element.split('|')
@@ -132,6 +132,11 @@ class TestCase:
                         if result != 'Pass':
                             break
                     elif step['page'] in ('SCRIPT', '脚本'):
+                        # 判断页面是否已和窗口做了关联，如果没有，就关联当前窗口，如果已关联，则判断是否需要切换
+                        w.switch_window(step['page'])
+                        # 切换 frame 处理，支持变量替换
+                        frame = replace(step['custom'])
+                        w.switch_frame(frame)
                         common.script(step)
 
                 else:

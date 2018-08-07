@@ -43,8 +43,11 @@ class Windows:
                     g.driver.close()
                     self.windows.pop('HOME')
                 # 再切换到需要操作的窗口
-                g.driver.switch_to_window(self.windows[self.pages[page]])
+                tw = self.windows[self.pages[page]]
+                logger.info('--- Switch Windows: %s' % repr(tw))
+                g.driver.switch_to_window(tw)
                 self.current_window = self.pages[page]
+                logger.info('--- Current Windows: %s' % repr(self.current_window))
 
     def switch_frame(self, frame):
         if frame.strip():

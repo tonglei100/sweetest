@@ -8,7 +8,9 @@ from sweetest.utility import replace_dict
 
 
 def script(step):
-    g.driver.execute_script(step['element'])
+    element = step['element']
+    el, value = e.get(element)
+    g.driver.execute_script(value)
     return
 
 

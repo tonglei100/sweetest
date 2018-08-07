@@ -29,6 +29,7 @@ def locating_element(element, action='', text=''):
         elif value.lower() in ('输入', 'input'):
             g.driver.switch_to_alert().send_keys(text)
             g.driver.switch_to_alert().accept()
+        logger.info('--- Switch Frame: Alert')
         w.frame = 'Alert'
         return None
 
