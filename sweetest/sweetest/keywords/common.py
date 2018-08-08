@@ -7,13 +7,6 @@ from sweetest.database import DB
 from sweetest.utility import replace_dict
 
 
-def script(step):
-    element = step['element']
-    el, value = e.get(element)
-    g.driver.execute_script(value)
-    return
-
-
 def execute(step):
     # 先处理循环结束条件
     condition = ''

@@ -18,7 +18,11 @@ web_keywords = {
     '双击': 'DOUBLE_CLICK',
     'DOUBLE_CLICK': 'DOUBLE_CLICK',
     '拖拽': 'DRAG_AND_DROP',
-    'DRAG_AND_DROP': 'DRAG_AND_DROP'
+    'DRAG_AND_DROP': 'DRAG_AND_DROP',
+    '脚本': 'SCRIPT',
+    'SCRIPT': 'SCRIPT',
+    '对话框': 'MESSAGE',
+    'MESSAGE': 'MESSAGE'
 }
 
 common_keywords = {

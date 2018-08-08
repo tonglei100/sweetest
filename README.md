@@ -1,14 +1,14 @@
 ![sweetest](https://github.com/tonglei100/sweetest/blob/master/snapshot/logo.png?raw=true)
 # sweetest
 
-🔥 App 测试已支持大部分操作，目前处于开发阶段，详细情况请加 QQ 群 🔥
+🔥 iOS 测试支持目前处于开发阶段，详细情况请加 QQ 群 🔥
 
 QQ 交流群：158755338 (验证码：python)
 
 
 ## 介绍
 
-Sweetest 是一款同时支持 Web UI，Http 接口，DB 操作的自动化测试框架(即将支持 App 测试)，由于开始只支持 Web UI 测试，名字取自 Selenium，Web UI，Excel，Element， Test 含义。
+Sweetest 是一款同时支持 Web UI，Http 接口，DB 操作测试，Android App 测试，小程序测试，由于开始只支持 Web UI 测试，名字取自 Selenium，Web UI，Excel，Element， Test 含义。
 特点:
 1. 简单快速，轻松上手
 2. 无需编码能力
@@ -146,7 +146,6 @@ custom   | 自定义字段，如 element 在 frame/iframe 中，则在此填写 
 
     已定义好的常用变量定位方式：
 
-    - alert#
     - id#
     - link#
     - *link#
@@ -163,9 +162,9 @@ custom   | 自定义字段，如 element 在 frame/iframe 中，则在此填写 
 
     当然，如果#后面的变量不够直观的话，不建议太多使用这几个变量方式。
 
-3. alert#
+3. 对话框(Alert,confirm,prompt)
 
-    弹出框操作，支持如下几个操作：
+    弹出对话框操作，支持如下几个操作：
     - 确认
     - 取消
     - 关闭
@@ -175,11 +174,11 @@ custom   | 自定义字段，如 element 在 frame/iframe 中，则在此填写 
 
     操作  | 页面 | 元素       | 测试数据
     -----|----- |-----------|-----------------
-    点击  | 通用 | alert#确认 |
+    对话框  | 通用 | 确认     |
 
     操作  | 页面 | 元素       | 测试数据
     -----|----- |-----------|-----------------
-    输入  | 通用 | alert#输入 | hello world
+    对话框  | 通用 | 输入     | hello world
 
     > 注：输入操作，默认自动点击确认按钮
 
@@ -297,11 +296,11 @@ custom   | 自定义字段，如 element 在 frame/iframe 中，则在此填写 
     输入 | 百度搜索页 | 搜索框 | 搜狗
 
     框架会先做 clear() 操作，以防止输入框中已有文本。
-    如果不信做 clear() 操作，需在测试数据中，写上：清除文本=否，此时输入的文本必须以 **text=xxx** 来指定，如:
+    如果不信做 clear() 操作，需在测试数据中，加上：清除文本=否，如:
 
     操作  | 页面     | 元素   | 测试数据
     -----|--------- |-------|----------
-    输入 | 百度搜索页 | 搜索框 | text=搜狗，清除文本=否
+    输入 | 百度搜索页 | 搜索框 | 搜狗，清除文本=否
 
     测试数据列为要输入的内容。
 
@@ -353,14 +352,15 @@ custom   | 自定义字段，如 element 在 frame/iframe 中，则在此填写 
     -----|------------ |--------------|----------
     执行 | 用例片段	  | SNIPPET_001\*6 | 循环结束条件=成功
 
-- 执行: 脚本
+- 脚本
 
     即：执行 js 脚本，js 脚本写在元素列
 
     操作  | 页面      | 元素
     -----|---------- |-----------------
-    执行 | 脚本    	  | window.alert('这是一个测试Alert弹窗');
+    脚本  | 通用  	  | window.alert('这是一个测试Alert弹窗');
 
+    >注意：如果需要在 frame 中执行脚本，需要在元素定位表中定义 custom
 
 - #检查
 

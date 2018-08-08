@@ -222,3 +222,25 @@ def drag_and_drop(step):
     actions.drag_and_drop(source, target)
     actions.perform()
     sleep(0.5)
+
+
+def script(step):
+    element = step['element']
+    el, value = e.get(element)
+    g.driver.execute_script(value)
+
+def message(step):
+    data = step['data']
+    text=data.get('text', '')
+    element = step['element']
+    el, value = e.get(element)
+
+    if value.lower() in ('确认', 'accept'):
+        g.driver.switch_to_alert().accept()
+    elif value.lower() in ('取消', '关闭', 'cancel', 'close'):
+        g.driver.switch_to_alert().dismiss()
+    elif value.lower() in ('输入', 'input'):
+        g.driver.switch_to_alert().send_keys(text)
+        g.driver.switch_to_alert().accept()
+    logger.info('--- Switch Frame: Alert')
+    w.frame = 'Alert'
