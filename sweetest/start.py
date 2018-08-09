@@ -14,13 +14,11 @@ sheet_name = 'baidu'
 
 # 环境配置信息
 # Chrome
-# desired_caps = {'platformName': 'Desktop', 'app': 'Chrome'}
-# server_url = ''
+desired_caps = {'platformName': 'Desktop', 'browserName': 'Chrome'}
+server_url = ''
 
 
 # 执行
-test = Autotest(project_name, sheet_name)
-# 如果需要指定环境信息，则执行如下语句
-#test = Autotest(project_name, sheet_name, desired_caps, server_url)
+test = Autotest(project_name, sheet_name, desired_caps, server_url)
 
 test.plan()
