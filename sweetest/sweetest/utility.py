@@ -173,23 +173,29 @@ def test_replace():
         print(repr(data))
 
 
-def read_csv(csv_file):
+def read_csv(csv_file, encoding=None):
     data = []
-    with open(csv_file, encoding='utf-8') as f:
+    with open(csv_file, encoding=encoding) as f:
         reader = csv.reader(f)
         for line in reader:
             data.append(line)
     return data
 
 
-def write_csv(csv_file, data):
-    with open(csv_file, 'w', encoding='utf-8', newline='') as f:
+def write_csv(csv_file, data, encoding=None):
+    with open(csv_file, 'w', encoding=encoding, newline='') as f:
         writer = csv.writer(f)
         writer.writerows(data)
 
 
 def get_record(data_file):
-    data = read_csv(data_file)
+    encoding = None
+    try:
+        data = read_csv(data_file, encoding='utf-8')
+        encoding='utf-8'
+    except:
+        data = read_csv(data_file)
+
     record = {}
     if data[0][-1].lower() != 'flag':
         for d in data[1:]:
@@ -214,7 +220,7 @@ def get_record(data_file):
                     else:
                         record[k] = d[i]
                 d[-1] = 'Y'
-                write_csv(data_file, data)
+                write_csv(data_file, data, encoding=encoding)
                 break
     return record
 
