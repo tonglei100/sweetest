@@ -8,7 +8,7 @@ QQ 交流群：158755338 (验证码：python)
 
 ## 介绍
 
-Sweetest 是一款同时支持 Web UI，Http 接口，DB 操作测试，Android App 测试，小程序测试，由于开始只支持 Web UI 测试，名字取自 Selenium，Web UI，Excel，Element， Test 含义。
+Sweetest 是一款小而美的自动化测试解决方案，同时支持 Web UI，Http 接口，DB 操作测试，Android App 测试，小程序测试；由于开始只支持 Web UI 测试，名字取自 Selenium，Web UI，Excel，Element， Test 含义。
 特点:
 
 1.  简单快速，轻松上手
@@ -480,7 +480,14 @@ then 语句 或者 else 语句，当不被执行时，测试结果为 '-'，不�
 
 | page | element | by  | value | custom |
 | ---- | ------- | --- | ----- | ------ |
-| 通用 | 查询  | id  | su  | #1   |
+| 通用 | 查询      | id  | su    | #1   |
+
+如果是多层 frame,则 custom 中要以依次写上以‘|’分割的值，如：
+
+| page | element | by  | value | custom |
+| ---- | ------- | --- | ----- | ------ |
+| 通用 | 查询      | id  | su    | frame1\|frame2   |
+
 
 ### 元素管理
 
