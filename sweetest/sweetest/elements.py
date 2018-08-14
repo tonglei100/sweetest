@@ -59,14 +59,14 @@ class Elements:
 
     def get(self, element, flag=False):
         ele = element.split('#')
-        _v = ''
+        # #号后面的值，即用户输入的变量
+        _v = []
         # 支持多个变量替代，但是顺序要对应
         if len(ele) >= 2:
             _el = ele[0] + '#'
             _v = ele[1:]
         else:
             _el = element
-            _v = [element]
         el = self.elements.get(_el, '')
         if not el:
             if flag:
