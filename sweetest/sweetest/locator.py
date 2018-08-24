@@ -8,7 +8,7 @@ from sweetest.log import logger
 from sweetest.config import element_wait_timeout
 
 
-def locating_element(element, action='', text=''):
+def locating_element(element, action=''):
     el_location = None
     try:
         el, value = e.get(element)
@@ -21,18 +21,6 @@ def locating_element(element, action='', text=''):
 
     if el['by'].lower() in ('title', 'url', 'current_url'):
         return None
-    # elif el['by'].lower() in ('alert'):
-    #     if value.lower() in ('确认', 'accept'):
-    #         g.driver.switch_to_alert().accept()
-    #     elif value.lower() in ('取消', '关闭', 'cancel', 'close'):
-    #         g.driver.switch_to_alert().dismiss()
-    #     elif value.lower() in ('输入', 'input'):
-    #         g.driver.switch_to_alert().send_keys(text)
-    #         g.driver.switch_to_alert().accept()
-    #     logger.info('--- Switch Frame: Alert')
-    #     w.frame = 'Alert'
-    #     return None
-
     elif action == 'CLICK':
         el_location = wait.until(EC.element_to_be_clickable(
             (getattr(By, el['by'].upper()), value)))

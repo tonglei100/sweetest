@@ -138,16 +138,19 @@ def notcheck(step):
 def input(step):
     data = step['data']
     element = step['element']
-    element_location = locating_element(element, text=data['text'])
+    element_location = locating_element(element)
 
-    if isinstance(data['text'], tuple):
-        element_location.send_keys(*data['text'])
-    elif element_location:
-        if step['data'].get('清除文本', '') == '否' or step['data'].get('clear', '').lower() == 'no':
-            pass
-        else:
-            element_location.clear()
-        element_location.send_keys(data['text'])
+    if step['data'].get('清除文本', '') == '否' or step['data'].get('clear', '').lower() == 'no':
+        pass
+    else:
+        element_location.clear()
+
+    for key in data:
+        if key.startswith('text'):
+            if isinstance(data[key], tuple):
+                element_location.send_keys(*data[key])
+            elif element_location:
+                element_location.send_keys(data[key])
 
 
 def click(step):
