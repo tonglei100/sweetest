@@ -28,6 +28,7 @@ class Global:
                 self.driver = webdriver.Ie()
             elif self.browserName.lower() == 'firefox':
                 self.driver = webdriver.Firefox()
+                self.driver.maximize_window()
             elif self.browserName.lower() == 'chrome':
                 options = webdriver.ChromeOptions()
                 options.add_argument("--start-maximized")

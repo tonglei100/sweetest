@@ -224,6 +224,19 @@ def drag_and_drop(step):
     sleep(0.5)
 
 
+def swipe(step):
+    actions = ActionChains(g.driver)
+    element = step['element']
+    data = step['data']
+
+    source = locating_element(element)
+    x = data.get('x', 0)
+    y = data.get('y', 0)
+    actions.drag_and_drop_by_offset(source, x, y)
+    actions.perform()
+    sleep(0.5)
+
+
 def script(step):
     element = step['element']
     el, value = e.get(element)
