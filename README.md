@@ -8,7 +8,7 @@ QQ 交流群：158755338 (验证码：python)
 
 | QQ 群 | 公众号 |
 | ----- | ------ |
-| ![sweetest](https://github.com/tonglei100/sweetest/blob/master/snapshot/QQ.jpg?raw=true)| ![sweetest](https://github.com/tonglei100/sweetest/blob/master/snapshot/WeChat.jpg?raw=true)|
+| ![sweetest](https://github.com/tonglei100/sweetest/blob/master/snapshot/QQ.jpg?raw=true =400x400)| ![sweetest](https://github.com/tonglei100/sweetest/blob/master/snapshot/WeChat.jpg?raw=true =400x400)|
 
 
 
