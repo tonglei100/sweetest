@@ -151,6 +151,7 @@ def input(step):
                 element_location.send_keys(*data[key])
             elif element_location:
                 element_location.send_keys(data[key])
+            sleep(0.5)
 
 
 def click(step):
