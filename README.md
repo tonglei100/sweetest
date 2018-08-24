@@ -6,6 +6,9 @@
 
 QQ 交流群：158755338 (验证码：python)
 
+扫描**公众号**及**QQ群**二维码加入我们
+
+![sweetest](https://github.com/tonglei100/sweetest/blob/master/snapshot/sweetest.jpg?raw=true)
 
 ## 介绍
 
@@ -557,6 +560,6 @@ then 语句 或者 else 语句，当不被执行时，测试结果为 '-'，不�
 
 **微信公众号** 及 **QQ群** 如下，欢迎关注或加入
 
-![sweetest](https://github.com/tonglei100/sweetest/blob/master/snapshot/share.png?raw=true)
+![sweetest](https://github.com/tonglei100/sweetest/blob/master/snapshot/sweetest.jpg?raw=true)
 
 QQ 交流群：158755338 (验证码：python)
