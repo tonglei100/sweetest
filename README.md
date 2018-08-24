@@ -555,11 +555,8 @@ then 语句 或者 else 语句，当不被执行时，测试结果为 '-'，不�
 
 见 report 目录
 
+欢迎加入 **微信公众号** 及 **QQ群**
 
-公众号：Sweetest自动化测试
-
-![sweetest](https://github.com/tonglei100/sweetest/blob/master/snapshot/WeChat.jpg?raw=true)
+![sweetest](https://github.com/tonglei100/sweetest/blob/master/snapshot/share.png?raw=true)
 
 QQ 交流群：158755338 (验证码：python)
-
-![sweetest](https://github.com/tonglei100/sweetest/blob/master/snapshot/QQ.jpg?raw=true)
