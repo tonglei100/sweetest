@@ -555,7 +555,7 @@ then 语句 或者 else 语句，当不被执行时，测试结果为 '-'，不�
 
 见 report 目录
 
-欢迎加入 **微信公众号** 及 **QQ群**
+**微信公众号** 及 **QQ群** 如下，欢迎关注或加入
 
 ![sweetest](https://github.com/tonglei100/sweetest/blob/master/snapshot/share.png?raw=true)
 
