@@ -248,7 +248,7 @@ def script(step):
 
 def message(step):
     data = step['data']
-    text=data.get('text', '')
+    text = data.get('text', '')
     element = step['element']
     el, value = e.get(element)
 
@@ -261,3 +261,24 @@ def message(step):
         g.driver.switch_to_alert().accept()
     logger.info('--- Switch Frame: Alert')
     w.frame = 'Alert'
+
+
+def upload(step):
+    import win32com.client
+
+    data = step['data']
+    element = step['element']
+    element_location = locating_element(element)
+    file_path = data.get('text', '') or data.get('file', '')
+
+    element_location.click()
+    sleep(3)
+    shell = win32com.client.Dispatch("WScript.Shell")
+    shell.Sendkeys(file_path)
+    sleep(2)
+    shell.Sendkeys("{ENTER}")
+    sleep(2)
+
+
+def refresh(step):
+    g.driver.refresh()

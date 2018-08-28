@@ -155,12 +155,21 @@ class TestCase:
                 # 操作后，等待0.2秒
                 sleep(0.2)
             except Exception as exception:
+                file_name = g.project_name + '-' + g.sheet_name + g.start_time + \
+                    '#' + self.testcase['id'] + \
+                    '-' + str(step['no']) + '.png'
+                snapshot_file = path.join('snapshot', file_name)
+
                 if g.platform.lower() in ('desktop',) and step['keyword'] in web_keywords:
-                    file_name = g.project_name + '-' + g.sheet_name + g.start_time + \
-                        '#' + self.testcase['id'] + \
-                        '-' + str(step['no']) + '.png'
-                    snapshot_file = path.join('snapshot', file_name)
                     try:
+                        g.driver.get_screenshot_as_file(snapshot_file)
+                    except:
+                        logger.exception('*** save the screenshot is fail ***')
+
+                elif g.platform.lower() in ('ios', 'android') and step['keyword'] in mobile_keywords:
+                    try:
+                        g.driver.switch_to_default_content()
+                        w.current_context = 'NATIVE_APP'
                         g.driver.get_screenshot_as_file(snapshot_file)
                     except:
                         logger.exception('*** save the screenshot is fail ***')

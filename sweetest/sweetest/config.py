@@ -24,7 +24,11 @@ web_keywords = {
     '脚本': 'SCRIPT',
     'SCRIPT': 'SCRIPT',
     '对话框': 'MESSAGE',
-    'MESSAGE': 'MESSAGE'
+    'MESSAGE': 'MESSAGE',
+    '上传文件': 'UPLOAD',
+    'UPLOAD': 'UPLOAD',
+    '刷新': 'REFRESH',
+    'REFRESH': 'REFRESH'
 }
 
 common_keywords = {

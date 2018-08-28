@@ -115,7 +115,7 @@ def notcheck(step):
 def input(step):
     data = step['data']
     element = step['element']
-    element_location = locating_element(element, text=data['text'])
+    element_location = locating_element(element)
 
     if isinstance(data['text'], tuple):
         element_location.send_keys(*data['text'])
@@ -130,7 +130,7 @@ def input(step):
 def set_value(step):
     data = step['data']
     element = step['element']
-    element_location = locating_element(element, text=data['text'])
+    element_location = locating_element(element)
 
     if isinstance(data['text'], tuple):
         element_location.set_value(*data['text'])

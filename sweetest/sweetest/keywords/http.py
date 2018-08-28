@@ -22,9 +22,8 @@ class Http:
 
         self.r = requests.Session()
         # 获取 headers
-        el, headers = e.get(step['page'] + '-' + 'headers', True)
-        if headers:
-            self.r.headers.update(eval(headers))
+        el, self.headers_get = e.get(step['page'] + '-' + 'headers_get', True)
+        el, self.headers_post = e.get(step['page'] + '-' + 'headers_post', True)
 
 
 def get(step):
@@ -42,24 +41,61 @@ def request(kw, step):
         url = url[1:]
 
     data = step['data']
-    data['headers'] = data.get('headers', '')
-    data['data'] = data.get('data', '{}')
+    _data = {}
+    _data['headers'] = eval(data.pop('headers', 'None'))
+    if kw == 'get':
+        _data['params'] = eval(data.pop('params', 'None')) or eval(data.pop('data', 'None'))
+    elif kw == 'post':
+        _data['data'] = eval(data.pop('data', 'None'))
+        _data['json'] = eval(data.pop('json', 'None'))
+        _data['files'] = eval(data.pop('files', 'None'))
+    elif kw in ('put', 'patch'):
+        _data['data'] = eval(data.pop('data', 'None'))
+
+    for k in data:
+        for s in ('{', '[', 'False', 'True'):
+            if s in data[k]:
+                try:
+                    data[k] = eval(data[k])
+                except Exception as exception:
+                    logger.warning('Try eval data fail: %s' %data[k])
+                break
     expected = step['expected']
-    _status_code = data.get('status_code', '')
-    _text = data.get('text', '')
-    _json = data.get('json', '')
-    expected['status_code'] = expected.get('status_code', _status_code)
-    expected['text'] = expected.get('text', _text)
-    expected['json'] = expected.get('json', _json)
+    expected['status_code'] = expected.get('status_code', None)
+    expected['text'] = expected.get('text', None)
+    expected['json'] = expected.get('json', None)
 
     if not g.http.get(step['page']):
         g.http[step['page']] = Http(step)
     http = g.http[step['page']]
 
-    logger.info('URL: \n%s' % http.baseurl + url)
-    if data['headers']:
-        http.r.headers.update(eval(data['headers']))
-    r = getattr(http.r, kw)(http.baseurl + url, data=eval(data['data']))
+    if kw == 'post':
+        if http.headers_post:
+            http.r.headers.update(eval(http.headers_post))
+    else:
+        if http.headers_get:
+            http.r.headers.update(eval(http.headers_get))
+
+    logger.info('URL: %s' % http.baseurl + url)
+    if _data['headers']:
+        for k in [x for x in _data['headers']]:
+            if not _data['headers'][k]:
+                del http.r.headers[k]
+                del _data['headers'][k]
+        http.r.headers.update(_data['headers'])
+
+    if kw == 'get':
+        r = getattr(http.r, kw)(http.baseurl + url,
+                                params=_data['params'], **data)
+    elif kw == 'post':
+        r = getattr(http.r, kw)(http.baseurl + url,
+            data=_data['data'], json=_data['json'], files=_data['files'], **data)
+    elif kw in ('put', 'patch'):
+        r = getattr(http.r, kw)(http.baseurl + url,
+            data=_data['params'], **data)
+    elif kw in ('delete', 'options'):
+        r = getattr(http.r, kw)(http.baseurl + url, **data)
+
     logger.info('Code: %s' % repr(r.status_code))
     logger.info('Http result: %s' % repr(r.text))
 
@@ -76,9 +112,8 @@ def request(kw, step):
         result = check(json.loads(expected['json']), r.json())
         if result['result']:
             step['remark'] += str(result['result'])
-        logger.info('expected result:\n%s' %result)
+        logger.info('Compare json result:\n%s' % result)
         assert result['code'] == 0
-
 
     output = step['output']
     if output:
@@ -92,5 +127,5 @@ def request(kw, step):
         elif k == 'json':
             sub = output.get('json')
             result = check(json.loads(sub), r.json())
-            logger.info('output result:\n%s' %result)
+            logger.info('Output data:\n%s' % result)
             g.var = dict(g.var, **result['var'])
