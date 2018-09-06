@@ -42,6 +42,7 @@ class DB:
         try:
             self.cursor.execute(sql)
             data = self.cursor.fetchone()
+            self.connect.commit()
             return data
         except:
             logger.exception('*** Fetchone fail ***')
@@ -51,6 +52,7 @@ class DB:
         try:
             self.cursor.execute(sql)
             data = self.cursor.fetchall()
+            self.connect.commit()
             return data
         except:
             logger.exception('*** Fetchall fail ***')

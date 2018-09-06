@@ -1,4 +1,6 @@
 from sweetest.autotest import Autotest
+import sys
+
 
 # 项目名称，和测试用例、页面元素表文件名称中的项目名称必须一致
 project_name = 'Baidu'
@@ -21,4 +23,10 @@ server_url = ''
 # 执行
 test = Autotest(project_name, sheet_name, desired_caps, server_url)
 
-test.plan()
+report = test.plan()
+
+#测试报告数据，可以自行写入其他测试报告系统
+#print(report)
+
+# 如果是集成到 CI/CD，需要给出退出码
+sys.exit(test.code)

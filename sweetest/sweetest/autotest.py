@@ -70,7 +70,8 @@ class Autotest:
         with open(self.report_xml, 'w', encoding='utf-8') as f:
             self.report.write(f)
 
-        sys.exit(self.code)
+        #sys.exit(self.code)
+        return self.report.data()
 
     def run(self, sheet_name):
         # 1.从 Excel 获取测试用例集
