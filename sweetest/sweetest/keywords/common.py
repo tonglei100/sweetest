@@ -85,11 +85,13 @@ def sql(step):
 
     if step['page'] not in g.db.keys():
         g.db[step['page']] = DB(arg)
-    row = g.db[step['page']].fetchone(_sql)
-    logger.info('SQL result: %s' % repr(row))
-
-    if not row:
-        raise Exception('*** Fetch None ***')
+    if _sql.lower().startswith('select'):
+        row = g.db[step['page']].fetchone(_sql)
+        logger.info('SQL result: %s' % repr(row))
+        if not row:
+            raise Exception('*** Fetch None ***')
+    else:
+        g.db[step['page']].execute(_sql)
 
     result = {}
     if _sql.lower().startswith('select'):
