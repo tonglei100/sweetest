@@ -588,4 +588,18 @@ then 语句 或者 else 语句，当不被执行时，测试结果为 '-'，不�
 
 # 测试报告
 
+## Excel 格式
+
 见 report 目录
+
+## Junit 格式
+
+见 junit 目录
+
+## 测试报告详细数据
+
+见启动脚本，其中 test.report_data 为测试报告详细数据
+```
+# 测试报告详细数据，可以自行处理后写入其他测试报告系统
+#print(test.report_data)
+```
