@@ -3,7 +3,7 @@ from os import path
 import time
 import sys
 import json
-from sweetest.data import testsuite_format, testsuite2data
+from sweetest.data import testsuite_format, testsuite2data, testsuite2report
 from sweetest.parse import parse
 from sweetest.elements import e
 from sweetest.globals import g
@@ -41,6 +41,7 @@ class Autotest:
 
         self.report_workbook = Excel(self.report_file.split('.')[
                                      0] + g.start_time + '.xlsx', 'w')
+        self.report_data = {}  #测试报告详细数据
 
     def plan(self):
         self.code = 0  # 返回码
@@ -70,8 +71,7 @@ class Autotest:
         with open(self.report_xml, 'w', encoding='utf-8') as f:
             self.report.write(f)
 
-        #sys.exit(self.code)
-        return self.report.data()
+        self.report.data()
 
     def run(self, sheet_name):
         # 1.从 Excel 获取测试用例集
@@ -121,6 +121,7 @@ class Autotest:
 
         # 6.保存测试结果
         try:
+            self.report_data[sheet_name] = testsuite2report(testsuite)
             data = testsuite2data(testsuite)
             self.report_workbook.write(data, sheet_name)
         except:

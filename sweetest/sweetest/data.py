@@ -57,7 +57,7 @@ def testsuite_format(data):
                 step['control'] = no[0]
                 step['no'] = no
             else:
-                step['no'] = int(d['step'])
+                step['no'] = str(int(d['step']))
             for key in ('keyword', 'page', 'element', 'data', 'expected', 'output', 'score', 'remark'):
                 step[key] = d.get(key, '')
 
@@ -96,3 +96,10 @@ def testsuite2data(data):
                 step.insert(8, s['_expected'])
             result.append(step)
     return result
+
+def testsuite2report(data):
+    report = []
+    for case in data:
+        if case['condition'] in ('BASE', 'SETUP', 'SNIPPET') or case['flag'] != 'N':
+            report.append(case)
+    return report

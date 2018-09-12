@@ -23,10 +23,10 @@ server_url = ''
 # 执行
 test = Autotest(project_name, sheet_name, desired_caps, server_url)
 
-report = test.plan()
+test.plan()
 
-#测试报告数据，可以自行写入其他测试报告系统
-#print(report)
+#测试报告详细数据，可以自行处理后写入其他测试报告系统
+#print(test.report_data)
 
-# 如果是集成到 CI/CD，需要给出退出码
-sys.exit(test.code)
+# 如果是集成到 CI/CD，可以给出退出码
+#sys.exit(test.code)

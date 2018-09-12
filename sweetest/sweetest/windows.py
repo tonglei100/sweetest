@@ -118,13 +118,11 @@ class Windows:
         self.new_window_flag = True
 
     def close(self):
-        for window in self.windows:
-
-            all_handles = g.driver.window_handles
-            for handle in all_handles:
-                # 切换到每一个窗口,并关闭它
-                g.driver.switch_to_window(handle)
-                g.driver.close()
+        all_handles = g.driver.window_handles
+        for handle in all_handles:
+            # 切换到每一个窗口,并关闭它
+            g.driver.switch_to_window(handle)
+            g.driver.close()
 
     def switch_context(self, context):
         if context.strip() == '':

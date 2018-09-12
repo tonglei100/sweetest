@@ -70,7 +70,6 @@ class TestSuite:
         # 1.执行用例
         for testcase in self.testsuite:
 
-
             # xml 测试报告-测试用例初始化
             if testcase['flag'] != 'N':
                 case = self.report.create_case(
@@ -139,8 +138,6 @@ class TestSuite:
         # 2.清理环境
         try:
             if g.platform.lower() in ('desktop',):
-                for handle in w.windows.values():
-                    g.driver.switch_to_window(handle)
-                    g.driver.close()
+                w.close()
         except:
             logger.exception('Clear the env is fail')

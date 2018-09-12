@@ -30,8 +30,9 @@ class Report():
     def data(self):
         self.data = {}
         for suite in self.testsuites:
-            s = self.data[suite.name] = {}
-            s['name'] = suite.name
+            s = self.data[suite.name+'-'+suite.hostname] = {}
+            s['project'] = suite.name
+            s['suite'] = suite.hostname
             s['timestamp'] = suite.timestamp
             s['tests'] = suite.tests
             s['failures'] = suite.failures
