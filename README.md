@@ -554,6 +554,16 @@ then 语句 或者 else 语句，当不被执行时，测试结果为 '-'，不�
 测试用例中，如果 page 不为“通用”，当 \\<page> + element 查找不到，会继续以 “通用” + element 为标识符来查找。
 
 
+### 自动义函数
+
+#### 定义
+在 lib/c.py 中添加自己定义的函数。
+
+### 调用
+
+在测试用例的测试数据/预期结果中，可以使用类似 <c.today()> 方式来调用。
+
+
 ### 窗口管理(浏览器标签页)
 
 在浏览器中，有可能会打开多个标签页，我们叫它为窗口。当你新打开一个标签页时，你可以在测试数据中给它起个名字，格式为：新窗口=&lt;window_name>, 如：
@@ -584,7 +594,18 @@ then 语句 或者 else 语句，当不被执行时，测试结果为 '-'，不�
 
 # 测试执行
 
-`python start.py`
+```python
+python start.py
+```
+按条件筛选用例执行,在启动脚本(start.py)里配置：
+
+```python
+# 按条件执行,支持筛选的属性有：'id', 'title', 'designer', 'priority'
+sweet.fliter(priority='H')
+# or
+sweet.fliter(priority=['H', 'L'])
+```
+
 
 # 测试报告
 
@@ -608,7 +629,8 @@ allure serve Junit
 ## 测试报告详细数据
 
 见启动脚本，其中 test.report_data 为测试报告详细数据
-```
+
+```python
 # 测试报告详细数据，可以自行处理后写入其他测试报告系统
-#print(sweet.report_data)
+print(sweet.report_data)
 ```

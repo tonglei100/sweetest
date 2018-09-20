@@ -70,10 +70,13 @@ class TestSuite:
 
         # 1.执行用例
         for testcase in self.testsuite:
-            flag = False
+
             # 根据筛选条件，把不需要执行的测试用例跳过
+            flag = False
             for k,v in self.conditions.items():
-                if testcase[k] != v:
+                if not isinstance(v, list):
+                    v = [v]
+                if testcase[k] not in v:
                     testcase['result'] = '-'
                     flag = True
             if flag:
