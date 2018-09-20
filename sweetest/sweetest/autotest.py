@@ -23,25 +23,33 @@ class Autotest:
         if desired_caps:
             self.desired_caps = desired_caps
         else:
-            self.desired_caps = {'platformName': 'Desktop', 'browserName': 'Chrome'}
+            self.desired_caps = {
+                'platformName': 'Desktop', 'browserName': 'Chrome'}
         self.server_url = server_url
 
+        self.conditions = {}
+        
         g.project_name = file_name.split('-')[0]
         self.testcase_file = path.join(
             'testcase', file_name + '-' + _testcase + '.xlsx')
         self.elements_file = path.join(
             'element', g.project_name + '-' + _elements + '.xlsx')
-        self.report_file = path.join(
-            'report', file_name + '-' + _report + '.xlsx')
         self.report_xml = path.join(
-            'junit', file_name + '-' + _report + '.xml')
+            'junit', file_name + '-' + _report + g.start_time + '.xml')
 
         self.testcase_workbook = Excel(self.testcase_file, 'r')
         self.sheet_names = self.testcase_workbook.get_sheet(sheet_name)
 
-        self.report_workbook = Excel(self.report_file.split('.')[
-                                     0] + g.start_time + '.xlsx', 'w')
-        self.report_data = {}  #测试报告详细数据
+        self.report_workbook = Excel(
+            path.join('report', file_name + '-' + _report + g.start_time + '.xlsx'), 'w')
+
+        self.report_data = {}  # 测试报告详细数据
+
+
+    def fliter(self, **kwargs):
+        # 筛选要执行的测试用例
+        self.conditions = kwargs
+
 
     def plan(self):
         self.code = 0  # 返回码
@@ -72,6 +80,7 @@ class Autotest:
             self.report.write(f)
 
         self.report.data()
+
 
     def run(self, sheet_name):
         # 1.从 Excel 获取测试用例集
@@ -111,7 +120,7 @@ class Autotest:
             sys.exit(self.code)
 
         # 4.执行测试套件
-        ts = TestSuite(testsuite, self.report_ts[sheet_name])
+        ts = TestSuite(testsuite, self.report_ts[sheet_name], self.conditions)
         ts.run()
 
         # 5.判断测试结果

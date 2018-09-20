@@ -594,12 +594,21 @@ then 语句 或者 else 语句，当不被执行时，测试结果为 '-'，不�
 
 ## Junit 格式
 
-见 junit 目录
+见 Junit 目录
+
+### Allure Report
+
+前提条件：已安装 Allure (https://docs.qameta.io/allure/)
+在自动化测试目录(如：sweetest_example)，使用如下命令启动 Allure Report：
+
+```shell
+allure serve Junit
+```
 
 ## 测试报告详细数据
 
 见启动脚本，其中 test.report_data 为测试报告详细数据
 ```
 # 测试报告详细数据，可以自行处理后写入其他测试报告系统
-#print(test.report_data)
+#print(sweet.report_data)
 ```

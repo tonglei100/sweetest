@@ -20,13 +20,17 @@ desired_caps = {'platformName': 'Desktop', 'browserName': 'Chrome'}
 server_url = ''
 
 
-# 执行
-test = Autotest(project_name, sheet_name, desired_caps, server_url)
+# 初始化自动化实例
+sweet = Autotest(project_name, sheet_name, desired_caps, server_url)
 
-test.plan()
+# 按条件执行,支持筛选的属性有：'id', 'title', 'designer', 'priority'
+# sweet.fliter(priority='H')
+
+# 执行自动化测试
+sweet.plan()
 
 #测试报告详细数据，可以自行处理后写入其他测试报告系统
-#print(test.report_data)
+#print(sweet.report_data)
 
 # 如果是集成到 CI/CD，可以给出退出码
-#sys.exit(test.code)
+#sys.exit(sweet.code)

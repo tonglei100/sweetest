@@ -29,10 +29,20 @@ class Http:
 def get(step):
     request('get', step)
 
-
 def post(step):
     request('post', step)
 
+def put(step):
+    request('put', step)
+
+def patch(step):
+    request('patch', step)
+
+def delete(step):
+    request('delete', step)
+
+def options(step):
+    request('options', step)
 
 def request(kw, step):
     element = step['element']
