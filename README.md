@@ -620,6 +620,7 @@ sweet.fliter(priority=['H', 'L'])
 ### Allure Report
 
 前提条件：已安装 Allure (https://docs.qameta.io/allure/)
+
 在自动化测试目录(如：sweetest_example)，使用如下命令启动 Allure Report：
 
 ```shell
@@ -628,7 +629,7 @@ allure serve Junit
 
 ## 测试报告详细数据
 
-见启动脚本，其中 test.report_data 为测试报告详细数据
+见启动脚本，其中 sweet.report_data 为测试报告详细数据
 
 ```python
 # 测试报告详细数据，可以自行处理后写入其他测试报告系统

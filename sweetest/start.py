@@ -11,7 +11,7 @@ sheet_name = 'baidu'
 # sheet 页面匹配模式，仅支持结尾带*
 #sheet_name = 'TestCase*'
 
-# #sheet 页面列表模式
+# sheet 页面列表模式
 #sheet_name = ['TestCase', 'test']
 
 # 环境配置信息
