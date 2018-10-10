@@ -39,7 +39,11 @@ common_keywords = {
 
 http_keywords = {
     'GET': 'GET',
-    'POST': 'POST'
+    'POST': 'POST',
+    'PUT': 'PUT',
+    'PATCH': 'PATCH',
+    'DELETE': 'DELETE',
+    'OPTIONS': 'OPTIONS'
 }
 
 mobile_keywords = {
