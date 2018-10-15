@@ -75,7 +75,7 @@ def request(kw, step):
     expected = step['expected']
     expected['status_code'] = expected.get('status_code', None)
     expected['text'] = expected.get('text', None)
-    expected['json'] = eval(expected.get('json', None))
+    expected['json'] = eval(expected.get('json', '{}'))
     expected['cookies'] = eval(expected.get('cookies', '{}'))
 
     if not g.http.get(step['page']):

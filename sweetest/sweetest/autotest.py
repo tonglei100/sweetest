@@ -28,14 +28,14 @@ class Autotest:
         self.server_url = server_url
 
         self.conditions = {}
-        
+
         g.project_name = file_name.split('-')[0]
         self.testcase_file = path.join(
             'testcase', file_name + '-' + _testcase + '.xlsx')
         self.elements_file = path.join(
             'element', g.project_name + '-' + _elements + '.xlsx')
         self.report_xml = path.join(
-            'junit', file_name + '-' + _report + g.start_time + '.xml')
+            'JUnit', file_name + '-' + _report + g.start_time + '.xml')
 
         self.testcase_workbook = Excel(self.testcase_file, 'r')
         self.sheet_names = self.testcase_workbook.get_sheet(sheet_name)
