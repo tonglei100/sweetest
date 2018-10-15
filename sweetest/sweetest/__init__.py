@@ -10,7 +10,7 @@ def extract(zfile, path):
 
 
 def sweetest():
-    sweetest_dir = Path.resolve(__file__)
+    sweetest_dir = Path(__file__).resolve().parents[0]
     example_dir = sweetest_dir /'example'
     extract(example_dir / 'sweetest_example.zip', Path.cwd())
 
