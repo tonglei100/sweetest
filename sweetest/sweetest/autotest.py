@@ -1,5 +1,5 @@
 
-from os import path
+from pathlib import Path
 import time
 import sys
 import json
@@ -10,7 +10,7 @@ from sweetest.globals import g
 from sweetest.windows import w
 from sweetest.testsuite import TestSuite
 from sweetest.testcase import TestCase
-from sweetest.utility import Excel, get_record
+from sweetest.utility import Excel, get_record, mkdir
 from sweetest.log import logger
 from sweetest.report import Report
 from sweetest.config import _testcase, _elements, _report
@@ -29,19 +29,18 @@ class Autotest:
 
         self.conditions = {}
 
-        g.project_name = file_name.split('-')[0]
-        self.testcase_file = path.join(
-            'testcase', file_name + '-' + _testcase + '.xlsx')
-        self.elements_file = path.join(
-            'element', g.project_name + '-' + _elements + '.xlsx')
-        self.report_xml = path.join(
-            'JUnit', file_name + '-' + _report + g.start_time + '.xml')
+        for p in ('JUnit', 'report', 'snapshot'):
+            mkdir(p)
 
+        g.project_name = file_name.split('-')[0]
+        self.testcase_file = Path('testcase') / (file_name + '-' + _testcase + '.xlsx')
+        self.elements_file = Path('element') / (g.project_name + '-' + _elements + '.xlsx')
+        self.report_xml = Path('JUnit')/ (file_name + '-' + _report + g.start_time + '.xml')
         self.testcase_workbook = Excel(self.testcase_file, 'r')
         self.sheet_names = self.testcase_workbook.get_sheet(sheet_name)
 
         self.report_workbook = Excel(
-            path.join('report', file_name + '-' + _report + g.start_time + '.xlsx'), 'w')
+            Path('report') / (file_name + '-' + _report + g.start_time + '.xlsx'), 'w')
 
         self.report_data = {}  # 测试报告详细数据
 
@@ -100,9 +99,8 @@ class Autotest:
             g.init(self.desired_caps, self.server_url)
             g.set_driver()
             # 如果测试数据文件存在，则从该文件里读取一行数据，赋值到全局变量列表里
-            data_file = path.join(
-                'data', g.project_name + '-' + sheet_name + '.csv')
-            if path.exists(data_file):
+            data_file = Path('data') / (g.project_name + '-' + sheet_name + '.csv')
+            if data_file.is_file():
                 g.var = get_record(data_file)
             w.init()
         except:

@@ -102,6 +102,8 @@ def sql(step):
         logger.info('keys result: %s' % repr(result))
 
     data = step['data']
+    if not data:
+        data = step['expected']
     if data:
         for key in data:
             logger.info('key: %s, expect: %s, real: %s' %

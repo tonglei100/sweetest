@@ -96,7 +96,7 @@ OK，如果一切顺利的话，sweetest 已经跑起来了
 | \\Baidu-baidu.csv   | 测试数据文件，名称格式：project_name + '-' + sheet_name +".csv" |
 | element\\     | 页面元素表目录               |
 | \\Baidu-Elements.xlsx | 页面元素表，名称格式：project_name + "-Elements.xlsx"    |
-| junit\\     | junit格式测试结果目录             |
+| JUnit\\     | JUnit格式测试结果目录             |
 | log\\       | 自动化测试运行日志目录               |
 | report\\      | Excel 格式测试结果目录              |
 | snapshot\\    | 错误截图目录                |
@@ -104,7 +104,9 @@ OK，如果一切顺利的话，sweetest 已经跑起来了
 | \\Baidu-TestCase.xlsx | 测试用例，名称格式：project_name + "-TestCase.xlsx"     |
 | start.py      | 启动脚本，`test = Autotest(project_name, sheet_name)`  |
 
-备注：以上3处的 project_name 必须一致
+备注：
+1. 以上3处的 project_name 必须一致
+2. data, JUnit, log, report, snapshot 目录可以不存在，程序启动后会自动判断并创建。
 
 # 页面元素表
 

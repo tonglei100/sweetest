@@ -1,4 +1,5 @@
 from selenium.webdriver.common.keys import Keys
+from pathlib import Path
 import xlrd
 import xlsxwriter
 import csv
@@ -249,3 +250,9 @@ def str2float(s):
     f = float(s[0]+ '.' +dot)
 
     return round(f, len(dot)), len(dot)
+
+
+def mkdir(p):
+    path = Path(p)
+    if not path.is_dir():
+        path.mkdir()

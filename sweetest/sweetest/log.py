@@ -1,7 +1,8 @@
 import logging
 import datetime
-from os import path
+from pathlib import Path
 import sys
+from sweetest.utility import mkdir
 
 
 def today():
@@ -16,8 +17,9 @@ logger = logging.getLogger("sweetest")
 formatter = logging.Formatter(
     '%(asctime)s [%(levelname)s] %(filename)s line:%(lineno)d: %(message)s')
 
+mkdir('log')
 # 文件日志
-log_file = path.join('log', '%s.log' % today())
+log_file = Path('log') / f'{today()}.log'
 file_handler = logging.FileHandler(filename=log_file, encoding="utf-8")
 file_handler.setFormatter(formatter)  # 可以通过setFormatter指定输出格式
 
