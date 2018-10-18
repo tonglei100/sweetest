@@ -6,6 +6,7 @@ from sweetest.globals import g
 from sweetest.elements import e
 from sweetest.log import logger
 from sweetest.parse import data_format
+from sweetest.lib import b
 
 
 class Http:
@@ -77,6 +78,7 @@ def request(kw, step):
     expected['text'] = expected.get('text', None)
     expected['json'] = eval(expected.get('json', '{}'))
     expected['cookies'] = eval(expected.get('cookies', '{}'))
+    expected['headers'] = eval(expected.get('headers', '{}'))
 
     if not g.http.get(step['page']):
         g.http[step['page']] = Http(step)
@@ -90,6 +92,12 @@ def request(kw, step):
             http.r.headers.update(eval(http.headers_get))
 
     logger.info('URL: %s' % http.baseurl + url)
+
+    # 处理 before_send
+    before_send = data.pop('before_send', '')
+    if before_send:
+        _data, data = getattr(b, before_send)(_data, data)
+
     if _data['headers']:
         for k in [x for x in _data['headers']]:
             if not _data['headers'][k]:
@@ -105,7 +113,7 @@ def request(kw, step):
             data=_data['data'], json=_data['json'], files=_data['files'], **data)
     elif kw in ('put', 'patch'):
         r = getattr(http.r, kw)(http.baseurl + url,
-            data=_data['params'], **data)
+            data=_data['data'], **data)
     elif kw in ('delete', 'options'):
         r = getattr(http.r, kw)(http.baseurl + url, **data)
 
@@ -115,26 +123,51 @@ def request(kw, step):
     except: # 其他响应
         logger.info('response text: %s' % repr(r.text))
 
+    response = {'status_code': r.status_code, 'headers':r.headers,
+                '_cookies': r.cookies, 'content': r.content, 'text': r.text}
+
+    try:
+        response['cookies'] = requests.utils.dict_from_cookiejar(r.cookies)
+    except:
+         response['cookies'] = r.cookies
+
+    try:
+        j = r.json()
+        response['json'] = j
+    except:
+        response['json'] = {}
+
+    # 处理 after_receive
+    after_receive = expected.pop('after_receive', '')
+    if after_receive:
+        response = getattr(b, after_receive)(response)
+
     if expected['status_code']:
-        assert str(expected['status_code']) == str(r.status_code)
+        assert str(expected['status_code']) == str(response['status_code'])
 
     if expected['text']:
         if expected['text'].startswith('*'):
-            assert expected['text'][1:] in r.text
+            assert expected['text'][1:] in response['text']
         else:
-            assert expected['text'] == r.text
+            assert expected['text'] == response['text']
+
+    if expected['headers']:
+        result = check(expected['headers'], response['headers'])
+        if result['result']:
+            step['remark'] += str(result['result'])
+        logger.info('headers check result: %s' % result)
+        assert result['code'] == 0
 
     if expected['cookies']:
-        cookies = requests.utils.dict_from_cookiejar(r.cookies)
-        logger.info('response cookies: %s' % cookies)
-        result = check(expected['cookies'], cookies)
+        logger.info('response cookies: %s' % response['cookies'])
+        result = check(expected['cookies'], response['cookies'])
         if result['result']:
             step['remark'] += str(result['result'])
         logger.info('cookies check result: %s' % result)
         assert result['code'] == 0
 
     if expected['json']:
-        result = check(expected['json'], r.json())
+        result = check(expected['json'], response['json'])
         if result['result']:
             step['remark'] += str(result['result'])
         logger.info('json check result: %s' % result)
@@ -146,21 +179,20 @@ def request(kw, step):
 
     for k, v in output.items():
         if v == 'status_code':
-            g.var[k] = r.status_code
+            g.var[k] = response['status_code']
             logger.info('%s: %s' %(k, repr(g.var[k])))
         elif v == 'text':
-            g.var[k] = r.text
+            g.var[k] = response['text']
             logger.info('%s: %s' %(k, repr(g.var[k])))
         elif k == 'json':
             sub = eval(output.get('json', '{}'))
-            result = check(sub, r.json())
+            result = check(sub, response['json'])
             # logger.info('Compare json result: %s' % result)
             g.var = dict(g.var, **result['var'])
             logger.info('json var: %s' %(repr(result['var'])))
         elif k == 'cookies':
             sub = eval(output.get('cookies', '{}'))
-            cookies = requests.utils.dict_from_cookiejar(r.cookies)
-            result = check(sub, cookies)
+            result = check(sub, response['cookies'])
             # logger.info('Compare json result: %s' % result)
             g.var = dict(g.var, **result['var'])
             logger.info('cookies var: %s' %(repr(result['var'])))

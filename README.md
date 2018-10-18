@@ -390,7 +390,7 @@ OK，如果一切顺利的话，sweetest 已经跑起来了
 
 | page | element | by  | value                 |  custom |
 | ---- | ------- | --- | --------------------- |---------|
-| 首页 | 点击链接  | js  | $("a.xxx")[0].click())| frame1  |
+| 首页 | 点击链接  | js  | $("a.xxx")[0].click() | frame1  |
 
 - 用例：
 
