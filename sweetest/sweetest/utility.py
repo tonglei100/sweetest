@@ -4,6 +4,7 @@ import xlrd
 import xlsxwriter
 import csv
 import re
+import json
 from sweetest.config import header
 from sweetest.globals import g
 from sweetest.lib import *
@@ -256,3 +257,17 @@ def mkdir(p):
     path = Path(p)
     if not path.is_dir():
         path.mkdir()
+
+
+def json2dict(s):
+    s= str(s)
+    d = {}
+    try:
+        d = json.loads(s)
+    except:
+        try:
+            d = eval(s)
+        except:
+            s = s.replace('true', 'True').replace('false', 'False').replace('null', 'None').replace('none', 'None')
+            d = eval(s)
+    return d

@@ -6,12 +6,14 @@ from sweetest.globals import g
 
 def escape(data):
     # 先把转义字符替换掉
-    return data.replace('\\,', comma_lower).replace('\\，', comma_upper).replace('\\=', equals)
+    # return data.replace('\\,', comma_lower).replace('\\，', comma_upper).replace('\\=', equals)
+    return data.replace('\\,', comma_lower)
 
 
 def recover(data):
     # 再把转义字符恢复
-    return data.replace(comma_lower, ',').replace(comma_upper, '，').replace(equals, '=')
+    # return data.replace(comma_lower, ',').replace(comma_upper, '，').replace(equals, '=')
+    return data.replace(comma_lower, ',')
 
 
 def check_keyword(kw):
@@ -25,10 +27,13 @@ def check_keyword(kw):
 
 def data_format(data):
     data = escape(data)
-    data = data.replace('，', ',')
-    data_list = {}
-    if data:
-        data_list = data.split(',')
+    if ',,' in data:
+        data_list = data.split(',,')
+    else:
+        # data = data.replace('，', ',')  # 中文逗号不再视为分隔符
+        data_list = {}
+        if data:
+            data_list = data.split(',')
     data_dict = {}
     for data in data_list:
         # 只需要分割第一个'='号

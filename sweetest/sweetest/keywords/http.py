@@ -7,6 +7,7 @@ from sweetest.elements import e
 from sweetest.log import logger
 from sweetest.parse import data_format
 from sweetest.lib import b
+from sweetest.utility import json2dict
 
 
 class Http:
@@ -53,17 +54,17 @@ def request(kw, step):
 
     data = step['data']
     _data = {}
-    _data['headers'] = eval(data.pop('headers', 'None'))
+    _data['headers'] = json2dict(data.pop('headers', '{}'))
     if data.get('cookies'):
-        data['cookies'] = eval(data['cookies'])
+        data['cookies'] = json2dict(data['cookies'])
     if kw == 'get':
-        _data['params'] = eval(data.pop('params', 'None')) or eval(data.pop('data', 'None'))
+        _data['params'] = json2dict(data.pop('params', '{}')) or json2dict(data.pop('data', '{}'))
     elif kw == 'post':
-        _data['data'] = eval(data.pop('data', 'None'))
-        _data['json'] = eval(data.pop('json', 'None'))
+        _data['data'] = json2dict(data.pop('data', '{}'))
+        _data['json'] = json2dict(data.pop('json', '{}'))
         _data['files'] = eval(data.pop('files', 'None'))
     elif kw in ('put', 'patch'):
-        _data['data'] = eval(data.pop('data', 'None'))
+        _data['data'] = json2dict(data.pop('data', '{}'))
 
     for k in data:
         for s in ('{', '[', 'False', 'True'):
@@ -76,9 +77,9 @@ def request(kw, step):
     expected = step['expected']
     expected['status_code'] = expected.get('status_code', None)
     expected['text'] = expected.get('text', None)
-    expected['json'] = eval(expected.get('json', '{}'))
-    expected['cookies'] = eval(expected.get('cookies', '{}'))
-    expected['headers'] = eval(expected.get('headers', '{}'))
+    expected['json'] = json2dict(expected.get('json', '{}'))
+    expected['cookies'] = json2dict(expected.get('cookies', '{}'))
+    expected['headers'] = json2dict(expected.get('headers', '{}'))
 
     if not g.http.get(step['page']):
         g.http[step['page']] = Http(step)
@@ -97,6 +98,8 @@ def request(kw, step):
     before_send = data.pop('before_send', '')
     if before_send:
         _data, data = getattr(b, before_send)(_data, data)
+    else:
+        _data, data = getattr(b, 'before_send')(_data, data)
 
     if _data['headers']:
         for k in [x for x in _data['headers']]:
@@ -141,6 +144,8 @@ def request(kw, step):
     after_receive = expected.pop('after_receive', '')
     if after_receive:
         response = getattr(b, after_receive)(response)
+    else:
+        response = getattr(b, 'after_receive')(response)
 
     if expected['status_code']:
         assert str(expected['status_code']) == str(response['status_code'])
@@ -185,13 +190,13 @@ def request(kw, step):
             g.var[k] = response['text']
             logger.info('%s: %s' %(k, repr(g.var[k])))
         elif k == 'json':
-            sub = eval(output.get('json', '{}'))
+            sub = json2dict(output.get('json', '{}'))
             result = check(sub, response['json'])
             # logger.info('Compare json result: %s' % result)
             g.var = dict(g.var, **result['var'])
             logger.info('json var: %s' %(repr(result['var'])))
         elif k == 'cookies':
-            sub = eval(output.get('cookies', '{}'))
+            sub = json2dict(output.get('cookies', '{}'))
             result = check(sub, response['cookies'])
             # logger.info('Compare json result: %s' % result)
             g.var = dict(g.var, **result['var'])
