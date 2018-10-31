@@ -75,9 +75,12 @@ class TestCase:
             step['page'], step['custom'], step['element'] = elements_format(
                 step['page'], step['element'])
             try:
+                after_function = step['data'].pop('AFTER_FUNCTION', '')
                 # 变量替换
                 replace_dict(step['data'])
                 replace_dict(step['expected'])
+
+                step['data'].pop('BEFORE_FUNCTION', '')
 
                 if isinstance(step['element'], str):
                     step['element'] = replace(step['element'])
@@ -88,10 +91,8 @@ class TestCase:
                 step['vdata'] = v_data(step['data'])
 
                 # 处理强制等待时间
-                t = step['data'].get('等待时间')
-                if t:
-                    del step['data']['等待时间']
-                    sleep(float(t))
+                t = step['data'].pop('等待时间', 0)
+                sleep(float(t))
 
                 if g.platform.lower() in ('desktop',) and step['keyword'] in web_keywords:
                     if step['keyword'] not in ('MESSAGE', '对话框'):
@@ -152,6 +153,8 @@ class TestCase:
                 if step['control'] == '^':
                     if_result = True
 
+                if after_function:
+                    replace_dict({'after_function':after_function})
                 # 操作后，等待0.2秒
                 sleep(0.2)
             except Exception as exception:

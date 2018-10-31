@@ -4,7 +4,7 @@ from sweetest.elements import e
 from sweetest.log import logger
 from sweetest.parse import data_format
 from sweetest.database import DB
-from sweetest.utility import replace_dict
+from sweetest.utility import replace_dict, check
 
 
 def execute(step):
@@ -110,37 +110,38 @@ def sql(step):
             logger.info('key: %s, expect: %s, real: %s' %
                         (repr(key), repr(sv), repr(pv)))
 
-            if isinstance(sv, str):
-
-                if sv.startswith('#'):
-                    assert sv[1:] != str(pv)
-
-                assert isinstance(pv, str)
-
-                if sv.startswith('*'):
-                    assert sv[1:] in pv
-
-                elif sv.startswith('^'):
-                    assert pv.startswith(sv[1:])
-
-                elif sv.startswith('$'):
-                    assert pv.endswith(sv[1:])
-
-                elif sv.startswith('\\'):
-                    sv = sv[1:]
-
-                assert sv == pv
-
-            elif isinstance(sv, int):
-                assert isinstance(pv, int)
-                assert sv == pv
-
-            elif isinstance(sv, float):
-                assert absisinstance(pv, float)
-                assert sv == pv
-
-            else:
-                assert sv == pv
+            check(sv, pv)
+            # if isinstance(sv, str):
+            #
+            #     if sv.startswith('#'):
+            #         assert sv[1:] != str(pv)
+            #
+            #     assert isinstance(pv, str)
+            #
+            #     if sv.startswith('*'):
+            #         assert sv[1:] in pv
+            #
+            #     elif sv.startswith('^'):
+            #         assert pv.startswith(sv[1:])
+            #
+            #     elif sv.startswith('$'):
+            #         assert pv.endswith(sv[1:])
+            #
+            #     elif sv.startswith('\\'):
+            #         sv = sv[1:]
+            #
+            #     assert sv == pv
+            #
+            # elif isinstance(sv, int):
+            #     assert isinstance(pv, int)
+            #     assert sv == pv
+            #
+            # elif isinstance(sv, float):
+            #     assert absisinstance(pv, float)
+            #     assert sv == pv
+            #
+            # else:
+            #     assert sv == pv
 
     output = step['output']
     if output:

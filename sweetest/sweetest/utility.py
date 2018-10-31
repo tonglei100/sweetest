@@ -123,10 +123,10 @@ def replace_list(data):
 def replace(data):
     # 正则匹配出 data 中所有 <> 中的变量，返回列表
     keys = re.findall(r'<(.*?)>', data)
-    for i,k in enumerate(keys):
+    for i, k in enumerate(keys):
         # 正则匹配出 k 中的 + - ** * // / % ( )，返回列表
         values = re.split(r'(\+|-|\*\*|\*|//|/|%|\(|\))', k)
-        for j,v in enumerate(values):
+        for j, v in enumerate(values):
             # 切片操作处理，正则匹配出 [] 中内容
             s = re.findall(r'\[.*?\]', v)
             if s:
@@ -138,7 +138,7 @@ def replace(data):
                 if isinstance(g.var[v], list):
                     values[j] = g.var[k].pop(0)
                     if s:
-                        values[j] = eval('values[j]'+s)
+                        values[j] = eval('values[j]' + s)
                     # 再判断一下此 list 是否只有一个值了，如果是，则从 list 变为该值
                     if len(g.var[v]) == 1:
                         g.var[v] = g.var[v][0]
@@ -146,7 +146,7 @@ def replace(data):
                 else:
                     values[j] = g.var[v]
                     if s:
-                        values[j] = eval('values[j]'+s)
+                        values[j] = eval('values[j]' + s)
 
         # 如果 values 长度大于 1，说明有算术运算符，则用 eval 运算
         # 注意，先要把元素中的数字变为字符串
@@ -169,8 +169,8 @@ def replace(data):
 
 def test_replace():
     g.var = {'a': 1, 'b': 'B'}
-    for d in ('<a+1>','<b>','abc<a>', 'abc<a+1>', '<a*(8+4)/2//3>', '<u.td(-3)>'):
-        print('data:%s' %d)
+    for d in ('<a+1>', '<b>', 'abc<a>', 'abc<a+1>', '<a*(8+4)/2//3>', '<u.td(-3)>'):
+        print('data:%s' % d)
         data = replace(d)
         print(repr(data))
 
@@ -194,7 +194,7 @@ def get_record(data_file):
     encoding = None
     try:
         data = read_csv(data_file, encoding='utf-8')
-        encoding='utf-8'
+        encoding = 'utf-8'
     except:
         data = read_csv(data_file)
 
@@ -248,7 +248,7 @@ def str2float(s):
     if len(s) == 2:
         dot = s[-1]
         dot = zero(dot)
-    f = float(s[0]+ '.' +dot)
+    f = float(s[0] + '.' + dot)
 
     return round(f, len(dot)), len(dot)
 
@@ -260,7 +260,7 @@ def mkdir(p):
 
 
 def json2dict(s):
-    s= str(s)
+    s = str(s)
     d = {}
     try:
         d = json.loads(s)
@@ -268,6 +268,56 @@ def json2dict(s):
         try:
             d = eval(s)
         except:
-            s = s.replace('true', 'True').replace('false', 'False').replace('null', 'None').replace('none', 'None')
+            s = s.replace('true', 'True').replace('false', 'False').replace(
+                'null', 'None').replace('none', 'None')
             d = eval(s)
     return d
+
+
+def check(data, real):
+    if isinstance(data, str):
+        
+        if data.startswith('%s'):
+            data = data[2:]
+        elif data.startswith('%d'):
+            data = str2int(data[2:])
+        elif data.startswith('%f'):
+            data, p1 = str2float(data[2:])
+
+    logger.info('DATA:%s' % repr(data))
+    logger.info('REAL:%s' % repr(real))
+
+    if isinstance(data, str):
+
+        if data.startswith('#'):
+            assert data[1:] != str(real)
+
+        assert isinstance(real, str)
+
+        if data.startswith('*'):
+            assert data[1:] in real
+
+        elif data.startswith('^'):
+            assert real.startswith(data[1:])
+
+        elif data.startswith('$'):
+            assert real.endswith(data[1:])
+
+        elif data.startswith('\\'):
+            data = data[1:]
+
+        assert data == real
+
+    elif isinstance(data, int):
+        assert isinstance(real, int)
+        assert data == real
+
+    elif isinstance(data, float):
+        assert absisinstance(real, float)
+        data, p1 = str2float(data)
+        real, p2 = str2float(real)
+        p = min(p1, p2)
+        assert round(data, p) == round(real, p)
+
+    else:
+        assert data == real
