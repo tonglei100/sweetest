@@ -161,7 +161,7 @@ class TestCase:
                 file_name = g.project_name + '-' + g.sheet_name + g.start_time + \
                     '#' + self.testcase['id'] + \
                     '-' + str(step['no']) + '.png'
-                snapshot_file = Path('snapshot') / file_name
+                snapshot_file = str(Path('snapshot') / file_name)
 
                 if g.platform.lower() in ('desktop',) and step['keyword'] in web_keywords:
                     try:
