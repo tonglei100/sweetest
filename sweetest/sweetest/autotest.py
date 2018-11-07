@@ -33,14 +33,13 @@ class Autotest:
             mkdir(p)
 
         g.project_name = file_name.split('-')[0]
-        self.testcase_file = Path('testcase') / (file_name + '-' + _testcase + '.xlsx')
-        self.elements_file = Path('element') / (g.project_name + '-' + _elements + '.xlsx')
-        self.report_xml = Path('JUnit')/ (file_name + '-' + _report + g.start_time + '.xml')
+        self.testcase_file = str(Path('testcase') / (file_name + '-' + _testcase + '.xlsx'))
+        self.elements_file = str(Path('element') / (g.project_name + '-' + _elements + '.xlsx'))
+        self.report_xml = str(Path('JUnit')/ (file_name + '-' + _report + g.start_time + '.xml'))
         self.testcase_workbook = Excel(self.testcase_file, 'r')
         self.sheet_names = self.testcase_workbook.get_sheet(sheet_name)
-
-        self.report_workbook = Excel(
-            Path('report') / (file_name + '-' + _report + g.start_time + '.xlsx'), 'w')
+        self.report_excel = str(Path('report') / (file_name + '-' + _report + g.start_time + '.xlsx'))
+        self.report_workbook = Excel(self.report_excel, 'w')
 
         self.report_data = {}  # 测试报告详细数据
 
@@ -101,7 +100,7 @@ class Autotest:
             # 如果测试数据文件存在，则从该文件里读取一行数据，赋值到全局变量列表里
             data_file = Path('data') / (g.project_name + '-' + sheet_name + '.csv')
             if data_file.is_file():
-                g.var = get_record(data_file)
+                g.var = get_record(str(data_file))
             w.init()
         except:
             logger.exception('*** Init global object fail ***')
