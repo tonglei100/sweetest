@@ -1,9 +1,6 @@
-![sweetest](https://sweeter.io/docs/_media/logo.png)
+![sweetest](https://sweeter.io/docs/_media/sweetest.png)
 
 # sweetest
-
-文档：https://sweeter.io
-
 
 ## 介绍
 
@@ -52,6 +49,7 @@ python start.py
 
 OK，如果一切顺利的话，sweetest 已经跑起来了
 
+详细文档：文档：https://sweeter.io/#/sweetest/
 
 ## 加入我们
 
