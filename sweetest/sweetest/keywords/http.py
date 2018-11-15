@@ -11,9 +11,9 @@ from pathlib import Path
 
 path = Path('lib')
 if path.is_dir():
-    from lib import b
+    from lib import http_handle
 else:
-    from sweetest.lib import b
+    from sweetest.lib import http_handle
 
 
 class Http:
@@ -103,9 +103,9 @@ def request(kw, step):
     # 处理 before_send
     before_send = data.pop('before_send', '')
     if before_send:
-        _data, data = getattr(b, before_send)(_data, data)
+        _data, data = getattr(http_handle, before_send)(kw, _data, data)
     else:
-        _data, data = getattr(b, 'before_send')(_data, data)
+        _data, data = getattr(http_handle, 'before_send')(kw, _data, data)
 
     if _data['headers']:
         for k in [x for x in _data['headers']]:
@@ -149,9 +149,9 @@ def request(kw, step):
     # 处理 after_receive
     after_receive = expected.pop('after_receive', '')
     if after_receive:
-        response = getattr(b, after_receive)(response)
+        response = getattr(http_handle, after_receive)(response)
     else:
-        response = getattr(b, 'after_receive')(response)
+        response = getattr(http_handle, 'after_receive')(response)
 
     if expected['status_code']:
         assert str(expected['status_code']) == str(response['status_code'])

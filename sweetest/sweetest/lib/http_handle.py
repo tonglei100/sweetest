@@ -1,6 +1,10 @@
+# 本文件为 Http 测试调用，请勿修改名称。
 
-def before_send(data, kwargs):
+def before_send(method, data, kwargs):
     '''
+    method: str, 请求类型 
+    值可以为：post, get, put, patch, delete, options
+
     data: dict，格式如下：
         {'headers':{},
          'params': {},
