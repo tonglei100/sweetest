@@ -6,8 +6,14 @@ from sweetest.globals import g
 from sweetest.elements import e
 from sweetest.log import logger
 from sweetest.parse import data_format
-from sweetest.lib import b
 from sweetest.utility import json2dict
+from pathlib import Path
+
+path = Path('lib')
+if path.is_dir():
+    from lib import b
+else:
+    from sweetest.lib import b
 
 
 class Http:

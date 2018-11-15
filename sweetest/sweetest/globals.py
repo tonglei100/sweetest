@@ -32,6 +32,8 @@ class Global:
             elif self.browserName.lower() == 'chrome':
                 options = webdriver.ChromeOptions()
                 options.add_argument("--start-maximized")
+                #指定浏览器分辨率，当"--start-maximized"无效时使用
+                #options.add_argument('window-size=1920x1080')
                 prefs = {"": ""}
                 prefs["credentials_enable_service"] = False
                 prefs["profile.password_manager_enabled"] = False
@@ -55,10 +57,6 @@ class Global:
         if self.platform.lower() == 'android':
             from appium import webdriver as appdriver
             self.driver = appdriver.Remote(self.server_url, self.desired_caps)
-
-
-    def close(self):
-        self.driver.close()
 
 
 g = Global()

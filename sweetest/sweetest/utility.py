@@ -7,8 +7,12 @@ import re
 import json
 from sweetest.config import header
 from sweetest.globals import g
-from sweetest.lib import *
 
+path = Path('lib')
+if path.is_dir():
+    from lib import *
+else:
+    from sweetest.lib import *   
 
 class Excel:
     def __init__(self, file_name, mode='r'):
@@ -276,7 +280,7 @@ def json2dict(s):
 
 def check(data, real):
     if isinstance(data, str):
-        
+
         if data.startswith('%s'):
             data = data[2:]
         elif data.startswith('%d'):

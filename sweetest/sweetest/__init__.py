@@ -14,5 +14,5 @@ def sweetest():
     example_dir = sweetest_dir /'example' / 'sweetest_example.zip'
     extract(str(example_dir), Path.cwd())
 
-    print('\n生成 sweetest example 成功\n\n详细使用说明请关注公众号：Sweetest自动化测试\nQQ交流群：158755338 (验证码：python)')
-    print('\n\n快速体验，请输入如下命令，进入示例目录，启动运行脚本\n\ncd sweetest_example\npython start.py')
+    print('\n使用文档: https://sweeter.io \n\n公众号：喜文测试\nQQ 群：158755338 (验证码：python)注意首字母小写')
+    print('\n\n生成 sweetest example 成功\n快速体验，请输入如下命令，进入示例目录，启动运行脚本\n\ncd sweetest_example\npython start.py')

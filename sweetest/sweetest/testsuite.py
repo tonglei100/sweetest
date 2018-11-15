@@ -151,5 +151,7 @@ class TestSuite:
         try:
             if g.platform.lower() in ('desktop',):
                 w.close()
+                g.driver.quit()
+                logger.info('--- Quit th Driver: %s' %g.browserName) 
         except:
             logger.exception('Clear the env is fail')

@@ -123,6 +123,7 @@ class Windows:
             # 切换到每一个窗口,并关闭它
             g.driver.switch_to_window(handle)
             g.driver.close()
+            logger.info('--- Close th Windows: %s' % repr(handle))
 
     def switch_context(self, context):
         if context.strip() == '':
