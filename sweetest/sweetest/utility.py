@@ -12,7 +12,7 @@ path = Path('lib')
 if path.is_dir():
     from lib import *
 else:
-    from sweetest.lib import *   
+    from sweetest.lib import *
 
 class Excel:
     def __init__(self, file_name, mode='r'):
@@ -151,6 +151,12 @@ def replace(data):
                     values[j] = g.var[v]
                     if s:
                         values[j] = eval('values[j]' + s)
+            # 如果值不在 g.var，且只有一个元素，则尝试 eval，比如<False>,<True>,<1>,<9.999>
+            elif len(values) == 1:
+                try:
+                    values[j] = eval(values[j])
+                except Exception as exception:
+                    pass
 
         # 如果 values 长度大于 1，说明有算术运算符，则用 eval 运算
         # 注意，先要把元素中的数字变为字符串
@@ -280,13 +286,6 @@ def json2dict(s):
 
 def check(data, real):
     if isinstance(data, str):
-
-        if data.startswith('%s'):
-            data = data[2:]
-        elif data.startswith('%d'):
-            data = str2int(data[2:])
-        elif data.startswith('%f'):
-            data, p1 = str2float(data[2:])
 
     logger.info('DATA:%s' % repr(data))
     logger.info('REAL:%s' % repr(real))
