@@ -4,7 +4,7 @@ from sweetest.elements import e
 from sweetest.log import logger
 from sweetest.parse import data_format
 from sweetest.database import DB
-from sweetest.utility import replace_dict, check
+from sweetest.utility import replace_dict, compare
 
 
 def execute(step):
@@ -110,7 +110,7 @@ def sql(step):
             logger.info('key: %s, expect: %s, real: %s' %
                         (repr(key), repr(sv), repr(pv)))
 
-            check(sv, pv)
+            compare(sv, pv)
             # if isinstance(sv, str):
             #
             #     if sv.startswith('#'):

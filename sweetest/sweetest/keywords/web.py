@@ -7,7 +7,7 @@ from sweetest.windows import w
 from sweetest.locator import locating_elements, locating_data, locating_element
 from sweetest.log import logger
 from sweetest.parse import data_format
-from sweetest.utility import check
+from sweetest.utility import compare
 
 
 class Common():
@@ -93,24 +93,9 @@ def check(step):
             if s:
                 real = eval('real' + s)
 
-            check(expected, real)
-            # logger.info('DATA:%s' % repr(expected))
-            # logger.info('REAL:%s' % repr(real))
-            # if isinstance(expected, str):
-            #     if expected.startswith('*'):
-            #         assert expected[1:] in real
-            #     else:
-            #         assert expected == real
-            # elif isinstance(expected, int):
-            #     real = str2int(real)
-            #     assert real == round(expected)
-            # elif isinstance(expected, float):
-            #     t, p1 = str2float(real)
-            #     d, p2 = str2float(expected)
-            #     p = min(p1, p2)
-            #     assert round(t, p) == round(d, p)
-            # elif expected is None:
-            #     assert real == ''
+            logger.info('DATA:%s' % repr(expected))
+            logger.info('REAL:%s' % repr(real))
+            compare(expected, real)
 
         # 获取元素其他属性
         for key in output:

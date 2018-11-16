@@ -284,28 +284,23 @@ def json2dict(s):
     return d
 
 
-def check(data, real):
-    if isinstance(data, str):
-
-    logger.info('DATA:%s' % repr(data))
-    logger.info('REAL:%s' % repr(real))
-
+def compare(data, real):
     if isinstance(data, str):
 
         if data.startswith('#'):
             assert data[1:] != str(real)
-
+            return
         assert isinstance(real, str)
 
         if data.startswith('*'):
             assert data[1:] in real
-
+            return
         elif data.startswith('^'):
             assert real.startswith(data[1:])
-
+            return
         elif data.startswith('$'):
             assert real.endswith(data[1:])
-
+            return
         elif data.startswith('\\'):
             data = data[1:]
 
@@ -314,13 +309,11 @@ def check(data, real):
     elif isinstance(data, int):
         assert isinstance(real, int)
         assert data == real
-
     elif isinstance(data, float):
         assert absisinstance(real, float)
         data, p1 = str2float(data)
         real, p2 = str2float(real)
         p = min(p1, p2)
         assert round(data, p) == round(real, p)
-
     else:
         assert data == real
