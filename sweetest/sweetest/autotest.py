@@ -1,6 +1,5 @@
 
 from pathlib import Path
-import time
 import sys
 import json
 from sweetest.data import testsuite_format, testsuite2data, testsuite2report
@@ -18,8 +17,6 @@ from sweetest.config import _testcase, _elements, _report
 
 class Autotest:
     def __init__(self, file_name, sheet_name, desired_caps={}, server_url=''):
-        g.start_time = time.strftime("@%Y%m%d_%H%M%S", time.localtime())
-
         if desired_caps:
             self.desired_caps = desired_caps
         else:
@@ -77,8 +74,6 @@ class Autotest:
         with open(self.report_xml, 'w', encoding='utf-8') as f:
             self.report.write(f)
 
-        self.report.data()
-
 
     def run(self, sheet_name):
         # 1.从 Excel 获取测试用例集
@@ -97,7 +92,7 @@ class Autotest:
         try:
             g.init(self.desired_caps, self.server_url)
             g.set_driver()
-            # 如果测试数据文件存在，则从该文件里读取一行数据，赋值到全局变量列表里
+            # 如果测试数据文件存在，则从该文件里读取数据，赋值到全局变量列表里
             data_file = Path('data') / (g.project_name + '-' + sheet_name + '.csv')
             if data_file.is_file():
                 g.var = get_record(str(data_file))

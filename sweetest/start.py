@@ -1,9 +1,9 @@
-from sweetest.autotest import Autotest
+from sweetest import Autotest
 import sys
 
 
 # 项目名称，和测试用例、页面元素表文件名称中的项目名称必须一致
-project_name = 'Baidu'
+plan_name = 'Baidu'
 
 # 单 sheet 页面模式
 sheet_name = 'baidu'
@@ -21,7 +21,7 @@ server_url = ''
 
 
 # 初始化自动化实例
-sweet = Autotest(project_name, sheet_name, desired_caps, server_url)
+sweet = Autotest(plan_name, sheet_name, desired_caps, server_url)
 
 # 按条件执行,支持筛选的属性有：'id', 'title', 'designer', 'priority'
 # sweet.fliter(priority='H')
@@ -29,8 +29,10 @@ sweet = Autotest(project_name, sheet_name, desired_caps, server_url)
 # 执行自动化测试
 sweet.plan()
 
+#group = WEB
+#project = Baidu
 #测试报告详细数据，可以自行处理后写入其他测试报告系统
 #print(sweet.report_data)
 
-# 如果是集成到 CI/CD，可以给出退出码
+# 如果是集成到 CI/CD，则给出退出码
 #sys.exit(sweet.code)

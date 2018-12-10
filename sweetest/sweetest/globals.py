@@ -1,10 +1,13 @@
+import time
 from selenium import webdriver
 from sweetest.config import element_wait_timeout, page_flash_timeout
 
 
 class Global:
     def __init__(self):
-        self.start_time = ''
+        now = time.time()
+        self.start_time = time.strftime("@%Y%m%d_%H%M%S", time.localtime(now))
+        self.plan_id = int(now * 1000)         
         self.project_name = ''
         self.sheet_name = ''
 
@@ -34,7 +37,7 @@ class Global:
                 options.add_argument("--start-maximized")
                 #指定浏览器分辨率，当"--start-maximized"无效时使用
                 #options.add_argument('window-size=1920x1080')
-                prefs = {"": ""}
+                prefs = {}
                 prefs["credentials_enable_service"] = False
                 prefs["profile.password_manager_enabled"] = False
                 options.add_experimental_option("prefs", prefs)
@@ -50,11 +53,11 @@ class Global:
             # 页面刷新超时时间
             self.driver.set_page_load_timeout(page_flash_timeout)  # seconds
 
-        if self.platform.lower() == 'ios':
+        elif self.platform.lower() == 'ios':
             from appium import webdriver as appdriver
             self.driver = appdriver.Remote(self.server_url, self.desired_caps)
 
-        if self.platform.lower() == 'android':
+        elif self.platform.lower() == 'android':
             from appium import webdriver as appdriver
             self.driver = appdriver.Remote(self.server_url, self.desired_caps)
 

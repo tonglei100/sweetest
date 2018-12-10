@@ -27,35 +27,35 @@ class Report():
         file.write(doc.toprettyxml())
 
 
-    def data(self):
-        self.data = {}
-        for suite in self.testsuites:
-            s = self.data[suite.name+'-'+suite.hostname] = {}
-            s['project'] = suite.name
-            s['suite'] = suite.hostname
-            s['timestamp'] = suite.timestamp
-            s['tests'] = suite.tests
-            s['failures'] = suite.failures
-            s['errors'] = suite.errors
-            s['time'] = suite.time
+    # def data(self):
+    #     self.data = {}
+    #     for suite in self.testsuites:
+    #         s = self.data[suite.name+'-'+suite.hostname] = {}
+    #         s['project'] = suite.name
+    #         s['suite'] = suite.hostname
+    #         s['timestamp'] = suite.timestamp
+    #         s['tests'] = suite.tests
+    #         s['failures'] = suite.failures
+    #         s['errors'] = suite.errors
+    #         s['time'] = suite.time
 
-            cases = s['cases'] = []
-            for case in suite.cases:
-                c = {}
-                c['name'] = case.name
-                c['classname'] = case.classname
-                c['priority'] = case.priority
-                c['time'] = case.time
-                c['state'] = case.state
-                if case.state != "success":
-                    c['type'] = case.type
-                    c['message'] = case.message
-                else:
-                    c['type'] = ''
-                    c['message'] = ''
-                cases.append(c)
+    #         cases = s['cases'] = []
+    #         for case in suite.cases:
+    #             c = {}
+    #             c['name'] = case.name
+    #             c['classname'] = case.classname
+    #             c['priority'] = case.priority
+    #             c['time'] = case.time
+    #             c['state'] = case.state
+    #             if case.state != "success":
+    #                 c['type'] = case.type
+    #                 c['message'] = case.message
+    #             else:
+    #                 c['type'] = ''
+    #                 c['message'] = ''
+    #             cases.append(c)
 
-        return self.data
+    #     return self.data
 
 
 class TestSuite():

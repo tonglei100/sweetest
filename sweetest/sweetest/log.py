@@ -15,7 +15,7 @@ logger = logging.getLogger("sweetest")
 
 # 指定logger输出格式
 formatter = logging.Formatter(
-    '%(asctime)s [%(levelname)s] %(filename)s line:%(lineno)d: %(message)s')
+    '%(asctime)s [%(levelname)s]: #  %(message)s')
 
 mkdir('log')
 # 文件日志
