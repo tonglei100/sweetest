@@ -93,7 +93,7 @@ def notcheck(step):
         data = step['expected']
 
     element = step['element']
-    element_location = locating_element(element)
+    # element_location = locating_element(element)
 
     if e.elements[element]['by'] == 'title':
         assert data['text'] != g.driver.title
@@ -306,7 +306,7 @@ def rocker(step):
     # 如果 action 中么有此摇杆名，则是新的遥感
     if not g.action.get(rocker_name):
         g.action[rocker_name] = TouchAction(g.driver)
-        action = g.action[rocker_name].press(x=postions[0][0], y=postions[0][1]).wait(duration*1000)
+        g.action[rocker_name].press(x=postions[0][0], y=postions[0][1]).wait(duration*1000)
         # 新摇杆的第一个点已操作，需要删除
         postions.pop(0)
     # 依次操作

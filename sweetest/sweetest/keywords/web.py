@@ -38,7 +38,7 @@ class Common():
 
 def open(step):
     element = step['element']
-    el, value = e.get(element)
+    value = e.get(element)[1]
     if step['data'].get('清理缓存', '') or step['data'].get('cookie', ''):
         g.driver.delete_all_cookies()
     if step['data'].get('打开方式', '') == '新标签页' or step['data'].get('mode', '').lower() == 'tab':
@@ -116,7 +116,7 @@ def notcheck(step):
         data = step['expected']
 
     element = step['element']
-    element_location = locating_element(element)
+    # element_location = locating_element(element)
 
     if e.elements[element]['by'] == 'title':
         assert data['text'] != g.driver.title
@@ -230,14 +230,14 @@ def swipe(step):
 
 def script(step):
     element = step['element']
-    el, value = e.get(element)
+    value = e.get(element)[1]
     g.driver.execute_script(value)
 
 def message(step):
     data = step['data']
     text = data.get('text', '')
     element = step['element']
-    el, value = e.get(element)
+    value = e.get(element)[1]
 
     if value.lower() in ('确认', 'accept'):
         g.driver.switch_to_alert().accept()

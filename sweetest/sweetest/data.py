@@ -84,22 +84,30 @@ def testsuite2data(data):
     result = [[g.header_custom[key.lower()] for key in header.values()]]
     for d in data:
         s = d['steps'][0]  # 第一步和用例标题同一行
-        testcase = [d['id'], d['title'], d['condition'], s['no'], s['_keyword'], s['page'], s['_element'],
-                s['vdata'], s['_output'], d['priority'], d['designer'], d['flag'], s['score'], d['result'], s['remark']]
+        testcase = [d['id'], d['title'], d['condition'], s['no'], s['keyword'], s['page'], s['element'],
+                s['data'], s['output'], d['priority'], d['designer'], d['flag'], s['score'], d['result'], s['remark']]
         if g.header_custom['expected']:
-            testcase.insert(8, s['_expected'])
+            testcase.insert(8, s['expected'])
         result.append(testcase)
         for s in d['steps'][1:]:
-            step = ['', '', '', s['no'], s['_keyword'], s['page'], s['_element'],
-                    s['vdata'], s['_output'], '', '', '', s['score'], '', s['remark']]
+            step = ['', '', '', s['no'], s['keyword'], s['page'], s['element'],
+                    s['data'], s['output'], '', '', '', s['score'], '', s['remark']]
             if g.header_custom['expected']:
-                step.insert(8, s['_expected'])
+                step.insert(8, s['expected'])
             result.append(step)
     return result
+
 
 def testsuite2report(data):
     report = []
     for case in data:
         if case['condition'] in ('BASE', 'SETUP', 'SNIPPET') or case['flag'] != 'N':
+            for step in case['steps']:
+                step['keyword'] = step.pop('_keyword')
+                step['element'] = step.pop('_element')
+                step['data'] = step.pop('_data')
+                step.pop('vdata')
+                step['expected'] = step.pop('_expected') 
+                step['output'] = step.pop('_output')                                                            
             report.append(case)
     return report

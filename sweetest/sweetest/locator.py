@@ -1,3 +1,4 @@
+from time import sleep
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -27,6 +28,16 @@ def locating_element(element, action=''):
     else:
         el_location = wait.until(EC.presence_of_element_located(
             (getattr(By, el['by'].upper()), value)))
+
+    try:
+        if g.driver.name in ('chrome', 'safari'):
+            g.driver.execute_script(
+                "arguments[0].scrollIntoViewIfNeeded(true)", el_location)
+        else:
+            g.driver.execute_script(
+                "arguments[0].scrollIntoView(false)", el_location)
+    except:
+        pass
 
     return el_location
 

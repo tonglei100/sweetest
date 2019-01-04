@@ -5,6 +5,7 @@ import xlsxwriter
 import csv
 import re
 import json
+import time
 from sweetest.config import header
 from sweetest.globals import g
 
@@ -56,8 +57,6 @@ class Excel:
         sheet = self.workbook.add_worksheet(sheet_name)
 
         red = self.workbook.add_format({'bg_color': 'red', 'color': 'white'})
-        yellow = self.workbook.add_format(
-            {'bg_color': 'yellow', 'color': 'black'})
         gray = self.workbook.add_format({'bg_color': 'gray', 'color': 'white'})
         green = self.workbook.add_format(
             {'bg_color': 'green', 'color': 'white'})
@@ -127,7 +126,7 @@ def replace_list(data):
 def replace(data):
     # 正则匹配出 data 中所有 <> 中的变量，返回列表
     keys = re.findall(r'<(.*?)>', data)
-    for i, k in enumerate(keys):
+    for k in keys:
         # 正则匹配出 k 中的 + - ** * // / % ( )，返回列表
         values = re.split(r'(\+|-|\*\*|\*|//|/|%|\(|\))', k)
         for j, v in enumerate(values):
@@ -155,7 +154,7 @@ def replace(data):
             elif len(values) == 1:
                 try:
                     values[j] = eval(values[j])
-                except Exception as exception:
+                except:
                     pass
 
         # 如果 values 长度大于 1，说明有算术运算符，则用 eval 运算
@@ -310,10 +309,15 @@ def compare(data, real):
         assert isinstance(real, int)
         assert data == real
     elif isinstance(data, float):
-        assert absisinstance(real, float)
+        assert isinstance(real, float)
         data, p1 = str2float(data)
         real, p2 = str2float(real)
         p = min(p1, p2)
         assert round(data, p) == round(real, p)
     else:
         assert data == real
+
+
+def timestamp():
+    # js 格式的时间戳
+    return int(time.time()  * 1000) 

@@ -3,6 +3,8 @@ import shutil
 import zipfile
 from pathlib import Path
 from sweetest.autotest import Autotest
+from sweetest.report import reporter
+
 
 def extract(zfile, path):
     f = zipfile.ZipFile(zfile, 'r')

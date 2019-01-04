@@ -11,7 +11,7 @@ from sweetest.testsuite import TestSuite
 from sweetest.testcase import TestCase
 from sweetest.utility import Excel, get_record, mkdir
 from sweetest.log import logger
-from sweetest.report import Report
+from sweetest.junit import JUnit
 from sweetest.config import _testcase, _elements, _report
 
 
@@ -29,9 +29,9 @@ class Autotest:
         for p in ('JUnit', 'report', 'snapshot'):
             mkdir(p)
 
-        g.project_name = file_name.split('-')[0]
+        g.plan_name = file_name.split('-')[0]
         self.testcase_file = str(Path('testcase') / (file_name + '-' + _testcase + '.xlsx'))
-        self.elements_file = str(Path('element') / (g.project_name + '-' + _elements + '.xlsx'))
+        self.elements_file = str(Path('element') / (g.plan_name + '-' + _elements + '.xlsx'))
         self.report_xml = str(Path('JUnit')/ (file_name + '-' + _report + g.start_time + '.xml'))
         self.testcase_workbook = Excel(self.testcase_file, 'r')
         self.sheet_names = self.testcase_workbook.get_sheet(sheet_name)
@@ -56,7 +56,7 @@ class Autotest:
             self.code = -1
             sys.exit(self.code)
 
-        self.report = Report()
+        self.report = JUnit()
         self.report_ts = {}
 
         # 2.逐个执行测试套件
@@ -64,13 +64,14 @@ class Autotest:
             g.sheet_name = sheet_name
             # xml 测试报告初始化
             self.report_ts[sheet_name] = self.report.create_suite(
-                g.project_name, sheet_name)
+                g.plan_name, sheet_name)
             self.report_ts[sheet_name].start()
 
             self.run(sheet_name)
 
+        self.plan_data = g.plan_end()
+        self.testsuite_data = g.testsuite_data
         self.report_workbook.close()
-
         with open(self.report_xml, 'w', encoding='utf-8') as f:
             self.report.write(f)
 
@@ -93,7 +94,7 @@ class Autotest:
             g.init(self.desired_caps, self.server_url)
             g.set_driver()
             # 如果测试数据文件存在，则从该文件里读取数据，赋值到全局变量列表里
-            data_file = Path('data') / (g.project_name + '-' + sheet_name + '.csv')
+            data_file = Path('data') / (g.plan_name + '-' + sheet_name + '.csv')
             if data_file.is_file():
                 g.var = get_record(str(data_file))
             w.init()
@@ -112,7 +113,7 @@ class Autotest:
             sys.exit(self.code)
 
         # 4.执行测试套件
-        ts = TestSuite(testsuite, self.report_ts[sheet_name], self.conditions)
+        ts = TestSuite(testsuite, sheet_name, self.report_ts[sheet_name], self.conditions)
         ts.run()
 
         # 5.判断测试结果

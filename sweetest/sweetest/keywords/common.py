@@ -76,11 +76,11 @@ def execute(step):
 
 def sql(step):
     element = step['element']
-    el, _sql = e.get(element)
+    _sql = e.get(element)[1]
 
     logger.info('SQL: %s' % repr(_sql))
     # 获取连接参数
-    el, value = e.get(step['page'] + '-' + 'config')
+    value = e.get(step['page'] + '-' + 'config')[1]
     arg = data_format(value)
 
     if step['page'] not in g.db.keys():
@@ -111,37 +111,6 @@ def sql(step):
                         (repr(key), repr(sv), repr(pv)))
 
             compare(sv, pv)
-            # if isinstance(sv, str):
-            #
-            #     if sv.startswith('#'):
-            #         assert sv[1:] != str(pv)
-            #
-            #     assert isinstance(pv, str)
-            #
-            #     if sv.startswith('*'):
-            #         assert sv[1:] in pv
-            #
-            #     elif sv.startswith('^'):
-            #         assert pv.startswith(sv[1:])
-            #
-            #     elif sv.startswith('$'):
-            #         assert pv.endswith(sv[1:])
-            #
-            #     elif sv.startswith('\\'):
-            #         sv = sv[1:]
-            #
-            #     assert sv == pv
-            #
-            # elif isinstance(sv, int):
-            #     assert isinstance(pv, int)
-            #     assert sv == pv
-            #
-            # elif isinstance(sv, float):
-            #     assert absisinstance(pv, float)
-            #     assert sv == pv
-            #
-            # else:
-            #     assert sv == pv
 
     output = step['output']
     if output:

@@ -9,8 +9,8 @@ from sweetest.parse import data_format
 from sweetest.utility import json2dict
 from pathlib import Path
 
-path = Path('lib')
-if path.is_dir():
+path = Path('lib') / 'http_handle.py'
+if path.is_file():
     from lib import http_handle
 else:
     from sweetest.lib import http_handle
@@ -20,7 +20,7 @@ class Http:
 
     def __init__(self, step):
         # 获取 baseurl
-        el, baseurl = e.get(step['page'] + '-' + 'baseurl', True)
+        baseurl = e.get(step['page'] + '-' + 'baseurl', True)[1]
         if not baseurl:
             self.baseurl = ''
         else:
@@ -30,8 +30,8 @@ class Http:
 
         self.r = requests.Session()
         # 获取 headers
-        el, self.headers_get = e.get(step['page'] + '-' + 'headers_get', True)
-        el, self.headers_post = e.get(step['page'] + '-' + 'headers_post', True)
+        self.headers_get = e.get(step['page'] + '-' + 'headers_get', True)[1]
+        self.headers_post = e.get(step['page'] + '-' + 'headers_post', True)[1]
 
 
 def get(step):
@@ -54,7 +54,7 @@ def options(step):
 
 def request(kw, step):
     element = step['element']
-    el, url = e.get(element)
+    url = e.get(element)[1]
     if url.startswith('/'):
         url = url[1:]
 
@@ -77,7 +77,7 @@ def request(kw, step):
             if s in data[k]:
                 try:
                     data[k] = eval(data[k])
-                except Exception as exception:
+                except:
                     logger.warning('Try eval data fail: %s' %data[k])
                 break
     expected = step['expected']

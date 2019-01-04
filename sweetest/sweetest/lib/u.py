@@ -10,14 +10,13 @@ days = ['20180422', '20180423', '20180424','20180425', '20180426', '20180427', '
 
 def td(t=0):
     day = today()
-    td = ''
+    td = '19700101'
 
     for i,d in enumerate(days):
         if d >= day:
-            T0 = d
             td = days[i+t]
-            return td
-
+            break
+    return td
 
 def test_trade_day():
     assert '20180422' == td(-3)

@@ -3,13 +3,25 @@ from selenium import webdriver
 from sweetest.config import element_wait_timeout, page_flash_timeout
 
 
+def now():
+        t = time.time()
+        return time.strftime("@%Y%m%d_%H%M%S", time.localtime(t))
+
+
+def timestamp():
+    # js 格式的时间戳
+    return int(time.time()  * 1000) 
+
+
 class Global:
     def __init__(self):
-        now = time.time()
-        self.start_time = time.strftime("@%Y%m%d_%H%M%S", time.localtime(now))
-        self.plan_id = int(now * 1000)         
-        self.project_name = ''
+        self.start_time = now()
+        self.start_timestamp = timestamp()
+        self.plan_name = ''
         self.sheet_name = ''
+        self.plan_data = {}
+        self.testsuite_data = {}
+        self.no = 1
 
     def init(self, desired_caps, server_url):
         self.desired_caps = desired_caps
@@ -60,6 +72,14 @@ class Global:
         elif self.platform.lower() == 'android':
             from appium import webdriver as appdriver
             self.driver = appdriver.Remote(self.server_url, self.desired_caps)
+
+    def plan_end(self):
+        self.plan_data['plan_id'] = self.start_timestamp
+        self.plan_data['plan'] = self.plan_name
+        self.plan_data['start_timestamp'] = self.start_timestamp
+        self.plan_data['end_timestamp'] =  int(time.time()  * 1000)
+
+        return self.plan_data
 
 
 g = Global()

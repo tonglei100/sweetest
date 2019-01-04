@@ -1,7 +1,7 @@
 from time import sleep
 from pathlib import Path
 from sweetest.log import logger
-from sweetest.globals import g
+from sweetest.globals import g, timestamp
 from sweetest.elements import e
 from sweetest.windows import w
 from sweetest.locator import locating_elements, locating_data, locating_element
@@ -59,6 +59,9 @@ class TestCase:
         if_result = ''
 
         for index, step in enumerate(self.testcase['steps']):
+            # 统计开始时间
+            step['start_timestamp'] = timestamp()
+
             # if 为否，不执行 then 语句
             if step['control'] == '>' and not if_result:
                 step['score'] = '-'
@@ -108,7 +111,7 @@ class TestCase:
                 elif g.platform.lower() in ('ios', 'android') and step['keyword'] in mobile_keywords:
                     # 切換 context 處理
                     context = replace(step['custom']).strip()
-                    current_context = w.switch_context(context)
+                    w.switch_context(context)
 
                     if w.current_context.startswith('WEBVIEW'):
                         # 切换标签页
@@ -158,11 +161,10 @@ class TestCase:
                 # 操作后，等待0.2秒
                 sleep(0.2)
             except Exception as exception:
-                file_name = g.project_name + '-' + g.sheet_name + g.start_time + \
-                    '#' + self.testcase['id'] + \
-                    '-' + str(step['no']) + '.png'
+                step['snapshot'] = file_name = g.plan_name + '-' + g.sheet_name + g.start_time + \
+                    '#' + self.testcase['id'] + '-' + str(step['no']) + '.png'
                 snapshot_file = str(Path('snapshot') / file_name)
-
+                
                 if g.platform.lower() in ('desktop',) and step['keyword'] in web_keywords:
                     try:
                         g.driver.get_screenshot_as_file(snapshot_file)
@@ -191,6 +193,9 @@ class TestCase:
                     step['no'], step['keyword'], step['element'], exception)
                 step['remark'] += str(exception)
                 break
+
+            # 统计结束时间
+            step['end_timestamp'] = timestamp()
 
         steps = []
         i = 0
