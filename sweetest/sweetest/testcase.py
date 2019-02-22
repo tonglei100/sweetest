@@ -79,6 +79,11 @@ class TestCase:
                 step['page'], step['element'])
             try:
                 after_function = step['data'].pop('AFTER_FUNCTION', '')
+
+                # 处理强制等待时间
+                t = step['data'].pop('等待时间', 0)
+                sleep(float(t))
+
                 # 变量替换
                 replace_dict(step['data'])
                 replace_dict(step['expected'])
@@ -92,10 +97,6 @@ class TestCase:
                         step['element'][i] = replace(step['element'][i])
 
                 step['vdata'] = v_data(step['data'])
-
-                # 处理强制等待时间
-                t = step['data'].pop('等待时间', 0)
-                sleep(float(t))
 
                 if g.platform.lower() in ('desktop',) and step['keyword'] in web_keywords:
                     if step['keyword'] not in ('MESSAGE', '对话框'):
@@ -130,13 +131,14 @@ class TestCase:
                     getattr(http, step['keyword'].lower())(step)
 
                 elif step['keyword'].lower() == 'execute':
+                    result, steps = getattr(
+                        common, step['keyword'].lower())(step)
+                    self.testcase['result'] = result
                     if step['page'] in ('SNIPPET', '用例片段'):
-                        result, steps = getattr(
-                            common, step['keyword'].lower())(step)
-                        self.testcase['result'] = result
                         self.snippet_steps[index + 1] = steps
-                        if result != 'Pass':
-                            break
+                    if result != 'Pass':
+                        break
+
                     # elif step['page'] in ('SCRIPT', '脚本'):
                     #     # 判断页面是否已和窗口做了关联，如果没有，就关联当前窗口，如果已关联，则判断是否需要切换
                     #     w.switch_window(step['page'])

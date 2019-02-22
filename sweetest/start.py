@@ -17,6 +17,8 @@ sheet_name = 'baidu'
 # 环境配置信息
 # Chrome
 desired_caps = {'platformName': 'Desktop', 'browserName': 'Chrome'}
+# headless
+#desired_caps = {'platformName': 'Desktop', 'browserName': 'Chrome', 'headless': True}
 server_url = ''
 
 

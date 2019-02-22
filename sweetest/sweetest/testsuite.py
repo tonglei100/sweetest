@@ -178,7 +178,7 @@ class TestSuite:
         # 2.清理环境
         try:
             if g.platform.lower() in ('desktop',):
-                w.close()
+                #w.close()
                 g.driver.quit()
                 logger.info('--- Quit th Driver: %s' %g.browserName) 
         except:

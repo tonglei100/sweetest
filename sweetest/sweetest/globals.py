@@ -28,6 +28,7 @@ class Global:
         self.server_url = server_url
         self.platform = desired_caps.get('platformName', '')
         self.browserName = desired_caps.get('browserName', '')
+        self.headless = desired_caps.pop('headless', False)
         self.var = {}
         self.snippet = {}
         self.current_page = '通用'
@@ -40,13 +41,35 @@ class Global:
     def set_driver(self):
         if self.platform.lower() == 'desktop':
             if self.browserName.lower() == 'ie':
+                #capabilities = webdriver.DesiredCapabilities().INTERNETEXPLORER
+                #capabilities['acceptInsecureCerts'] = True
                 self.driver = webdriver.Ie()
             elif self.browserName.lower() == 'firefox':
-                self.driver = webdriver.Firefox()
+                profile = webdriver.FirefoxProfile()
+                profile.accept_untrusted_certs = True
+
+                options = webdriver.FirefoxOptions()
+                # 如果配置了 headless 模式
+                if self.headless:                    
+                    options.set_headless()
+                    # options.add_argument('-headless')
+                    options.add_argument('--disable-gpu')
+                    options.add_argument("--no-sandbox")
+
+                self.driver = webdriver.Firefox(firefox_profile=profile, firefox_options=options)
                 self.driver.maximize_window()
             elif self.browserName.lower() == 'chrome':
                 options = webdriver.ChromeOptions()
+
+                # 如果配置了 headless 模式
+                if self.headless:
+                    options.set_headless()
+                    # options.add_argument('--headless')
+                    options.add_argument('--disable-gpu')
+                    options.add_argument("--no-sandbox")
+
                 options.add_argument("--start-maximized")
+                options.add_argument('--ignore-certificate-errors')
                 #指定浏览器分辨率，当"--start-maximized"无效时使用
                 #options.add_argument('window-size=1920x1080')
                 prefs = {}
@@ -54,8 +77,6 @@ class Global:
                 prefs["profile.password_manager_enabled"] = False
                 options.add_experimental_option("prefs", prefs)
                 options.add_argument('disable-infobars')
-                options.add_experimental_option(
-                    "excludeSwitches", ["ignore-certificate-errors"])
                 self.driver = webdriver.Chrome(chrome_options=options)
             else:
                 raise Exception(
@@ -74,8 +95,8 @@ class Global:
             self.driver = appdriver.Remote(self.server_url, self.desired_caps)
 
     def plan_end(self):
-        self.plan_data['plan_id'] = self.start_timestamp
         self.plan_data['plan'] = self.plan_name
+        self.plan_data['task'] = self.start_timestamp
         self.plan_data['start_timestamp'] = self.start_timestamp
         self.plan_data['end_timestamp'] =  int(time.time()  * 1000)
 
