@@ -29,6 +29,7 @@ class Global:
         self.platform = desired_caps.get('platformName', '')
         self.browserName = desired_caps.get('browserName', '')
         self.headless = desired_caps.pop('headless', False)
+        self.snapshot = desired_caps.pop('snapshot', False)
         self.var = {}
         self.snippet = {}
         self.current_page = '通用'

@@ -1,7 +1,8 @@
 from time import sleep
 from pathlib import Path
+from selenium.webdriver.support import expected_conditions as EC
 from sweetest.log import logger
-from sweetest.globals import g, timestamp
+from sweetest.globals import g, now, timestamp
 from sweetest.elements import e
 from sweetest.windows import w
 from sweetest.locator import locating_elements, locating_data, locating_element
@@ -108,6 +109,11 @@ class TestCase:
 
                     # 根据关键字调用关键字实现
                     getattr(web, step['keyword'].lower())(step)
+                    # 截图
+                    if not EC.alert_is_present()(g.driver) and g.snapshot:
+                        file_name = self.testcase['id'] + '#' + str(step['no']) + now() + '.png'
+                        step['snapshot'] = str(Path(g.snapshot_folder) / file_name)
+                        g.driver.get_screenshot_as_file(step['snapshot'])
 
                 elif g.platform.lower() in ('ios', 'android') and step['keyword'] in mobile_keywords:
                     # 切換 context 處理
@@ -163,13 +169,12 @@ class TestCase:
                 # 操作后，等待0.2秒
                 sleep(0.2)
             except Exception as exception:
-                step['snapshot'] = file_name = g.plan_name + '-' + g.sheet_name + g.start_time + \
-                    '#' + self.testcase['id'] + '-' + str(step['no']) + '.png'
-                snapshot_file = str(Path('snapshot') / file_name)
-                
+                file_name = '^' + self.testcase['id'] + '-' + str(step['no']) + now() + '.png'
+                step['snapshot'] = str(Path(g.snapshot_folder) / file_name)
+
                 if g.platform.lower() in ('desktop',) and step['keyword'] in web_keywords:
                     try:
-                        g.driver.get_screenshot_as_file(snapshot_file)
+                        g.driver.get_screenshot_as_file(step['snapshot'])
                     except:
                         logger.exception('*** save the screenshot is fail ***')
 

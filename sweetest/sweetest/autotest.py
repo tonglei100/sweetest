@@ -26,10 +26,12 @@ class Autotest:
 
         self.conditions = {}
 
-        for p in ('JUnit', 'report', 'snapshot'):
+        g.plan_name = file_name.split('-')[0]
+        g.plan_folder = 'snapshot/' + g.plan_name
+        g.snapshot_folder = g.plan_folder + '/' + g.start_time[1:]
+        for p in ('JUnit', 'report', 'snapshot', g.plan_folder, g.snapshot_folder):
             mkdir(p)
 
-        g.plan_name = file_name.split('-')[0]
         self.testcase_file = str(Path('testcase') / (file_name + '-' + _testcase + '.xlsx'))
         self.elements_file = str(Path('element') / (g.plan_name + '-' + _elements + '.xlsx'))
         self.report_xml = str(Path('JUnit')/ (file_name + '-' + _report + g.start_time + '.xml'))

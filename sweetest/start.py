@@ -19,6 +19,8 @@ sheet_name = 'baidu'
 desired_caps = {'platformName': 'Desktop', 'browserName': 'Chrome'}
 # headless
 #desired_caps = {'platformName': 'Desktop', 'browserName': 'Chrome', 'headless': True}
+# 设置全局截图
+#desired_caps = {'platformName': 'Desktop', 'browserName': 'Chrome', 'snapshot': True}
 server_url = ''
 
 
