@@ -1,4 +1,5 @@
 import time
+from copy import deepcopy
 from sweetest.globals import g, timestamp
 from sweetest.windows import w
 from sweetest.testcase import TestCase
@@ -55,13 +56,12 @@ class TestSuite:
             else:
                 flag = 'O'
             return flag
-
-        setup_flag = run_setup(self.setup_testcase)
+        setup_flag = run_setup(deepcopy(self.setup_testcase))
 
         if setup_flag == 'N':
-            base_flag = run_setup(self.base_testcase)
+            base_flag = run_setup(deepcopy(self.base_testcase))
             if base_flag == 'Y':
-                setup_flag = run_setup(self.setup_testcase)
+                setup_flag = run_setup(deepcopy(self.setup_testcase))
                 if setup_flag == 'N':
                     testcase['result'] = 'Block'
                     case.block('Blocked', 'SETUP is not Pass')

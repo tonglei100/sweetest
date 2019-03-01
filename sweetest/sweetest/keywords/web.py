@@ -109,6 +109,9 @@ def check(step):
             else:
                 g.var[key] = element_location.get_attribute(output[key])
 
+    return element_location
+
+
 
 def notcheck(step):
     data = step['data']
@@ -139,6 +142,8 @@ def input(step):
             elif element_location:
                 element_location.send_keys(data[key])
             sleep(0.5)
+
+    return element_location
 
 
 def click(step):
@@ -173,6 +178,8 @@ def click(step):
         if handle not in w.windows.values():
             w.register(step, handle)
 
+    return element_location
+
 
 def select(step):
     pass
@@ -181,28 +188,34 @@ def select(step):
 def move(step):
     actions = ActionChains(g.driver)
     element = step['element']
-    el = locating_element(element)
-    actions.move_to_element(el)
+    element_location = locating_element(element)
+    actions.move_to_element(element_location)
     actions.perform()
     sleep(0.5)
+
+    return element_location
 
 
 def context_click(step):
     actions = ActionChains(g.driver)
     element = step['element']
-    el = locating_element(element)
-    actions.context_click(el)
+    element_location = locating_element(element)
+    actions.context_click(element_location)
     actions.perform()
     sleep(0.5)
+
+    return element_location
 
 
 def double_click(step):
     actions = ActionChains(g.driver)
     element = step['element']
-    el = locating_element(element)
-    actions.double_click(el)
+    element_location = locating_element(element)
+    actions.double_click(element_location)
     actions.perform()
     sleep(0.5)
+
+    return element_location
 
 
 def drag_and_drop(step):
@@ -232,6 +245,7 @@ def script(step):
     element = step['element']
     value = e.get(element)[1]
     g.driver.execute_script(value)
+
 
 def message(step):
     data = step['data']

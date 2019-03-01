@@ -8,7 +8,6 @@ from sweetest.elements import e
 from sweetest.globals import g
 from sweetest.windows import w
 from sweetest.testsuite import TestSuite
-from sweetest.testcase import TestCase
 from sweetest.utility import Excel, get_record, mkdir
 from sweetest.log import logger
 from sweetest.junit import JUnit
@@ -27,9 +26,7 @@ class Autotest:
         self.conditions = {}
 
         g.plan_name = file_name.split('-')[0]
-        g.plan_folder = 'snapshot/' + g.plan_name
-        g.snapshot_folder = g.plan_folder + '/' + g.start_time[1:]
-        for p in ('JUnit', 'report', 'snapshot', g.plan_folder, g.snapshot_folder):
+        for p in ('JUnit', 'report', 'snapshot'):
             mkdir(p)
 
         self.testcase_file = str(Path('testcase') / (file_name + '-' + _testcase + '.xlsx'))
