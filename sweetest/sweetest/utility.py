@@ -65,15 +65,15 @@ class Excel:
             {'bg_color': 'orange', 'color': 'white'})
         for i in range(len(data)):
             for j in range(len(data[i])):
-                if str(data[i][j]) == 'Fail':
+                if str(data[i][j]) == 'failure':
                     sheet.write(i, j, str(data[i][j]), red)
                 elif str(data[i][j]) == 'NO':
                     sheet.write(i, j, str(data[i][j]), gray)
-                elif str(data[i][j]) == 'Block':
+                elif str(data[i][j]) == 'blocked':
                     sheet.write(i, j, str(data[i][j]), orange)
-                elif str(data[i][j]) == 'Skip':
+                elif str(data[i][j]) == 'skipped':
                     sheet.write(i, j, str(data[i][j]), blue)
-                elif str(data[i][j]) == 'Pass':
+                elif str(data[i][j]) == 'success':
                     sheet.write(i, j, str(data[i][j]), green)
                 else:
                     sheet.write(i, j, str(data[i][j]))

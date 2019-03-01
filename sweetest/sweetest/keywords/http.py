@@ -78,7 +78,7 @@ def request(kw, step):
                 try:
                     data[k] = eval(data[k])
                 except:
-                    logger.warning('Try eval data fail: %s' %data[k])
+                    logger.warning('Try eval data failure: %s' %data[k])
                 break
     expected = step['expected']
     expected['status_code'] = expected.get('status_code', None)

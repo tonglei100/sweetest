@@ -22,13 +22,12 @@ class Autotest:
             self.desired_caps = {
                 'platformName': 'Desktop', 'browserName': 'Chrome'}
         self.server_url = server_url
-
         self.conditions = {}
-
-        g.plan_name = file_name.split('-')[0]
+        
         for p in ('JUnit', 'report', 'snapshot'):
             mkdir(p)
 
+        g.plan_name = file_name.split('-')[0]
         self.testcase_file = str(Path('testcase') / (file_name + '-' + _testcase + '.xlsx'))
         self.elements_file = str(Path('element') / (g.plan_name + '-' + _elements + '.xlsx'))
         self.report_xml = str(Path('JUnit')/ (file_name + '-' + _report + g.start_time + '.xml'))
@@ -51,7 +50,7 @@ class Autotest:
         try:
             e.get_elements(self.elements_file)
         except:
-            logger.exception('*** Parse config file fail ***')
+            logger.exception('*** Parse config file failure ***')
             self.code = -1
             sys.exit(self.code)
 
@@ -84,7 +83,7 @@ class Autotest:
                         json.dumps(testsuite, ensure_ascii=False, indent=4))
             logger.info('From Excel import testsuite success')
         except:
-            logger.exception('*** From Excel import testsuite fail ***')
+            logger.exception('*** From Excel import testsuite failure ***')
             self.code = -1
             sys.exit(self.code)
 
@@ -98,7 +97,7 @@ class Autotest:
                 g.var = get_record(str(data_file))
             w.init()
         except:
-            logger.exception('*** Init global object fail ***')
+            logger.exception('*** Init global object failure ***')
             self.code = -1
             sys.exit(self.code)
 
@@ -107,7 +106,7 @@ class Autotest:
             parse(testsuite)
             logger.debug('testsuite has been parsed:\n' + str(testsuite))
         except:
-            logger.exception('*** Parse testsuite fail ***')
+            logger.exception('*** Parse testsuite failure ***')
             self.code = -1
             sys.exit(self.code)
 
@@ -122,8 +121,8 @@ class Autotest:
 
         # 6.保存测试结果
         try:
-            self.report_data[sheet_name] = testsuite2report(testsuite)
             data = testsuite2data(testsuite)
+            self.report_data[sheet_name] = testsuite2report(testsuite)
             self.report_workbook.write(data, sheet_name)
         except:
-            logger.exception('*** Save the report is fail ***')
+            logger.exception('*** Save the report is failure ***')

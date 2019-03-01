@@ -433,4 +433,4 @@ def tab_name(step):
             except Exception as exception:
                 pass
     if not flag:
-        raise Exception('Tab Name Fail: the element:%s in all tab is not found' %element)
+        raise Exception('Tab Name failure: the element:%s in all tab is not found' %element)

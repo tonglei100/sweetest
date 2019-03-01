@@ -281,5 +281,12 @@ def upload(step):
     sleep(2)
 
 
-def refresh(step):
-    g.driver.refresh()
+def navigate(step):
+    element = step['element']
+
+    if element.lower() in ('刷新', 'refresh'):
+        g.driver.refresh()
+    elif element.lower() in ('前进', 'forward'):
+        g.driver.forward()
+    elif element.lower() in ('后退', 'back'):
+        g.driver.back()

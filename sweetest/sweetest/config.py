@@ -28,8 +28,8 @@ web_keywords = {
     'MESSAGE': 'MESSAGE',
     '上传文件': 'UPLOAD',
     'UPLOAD': 'UPLOAD',
-    '刷新': 'REFRESH',
-    'REFRESH': 'REFRESH'
+    '导航': 'NAVIGATE',
+    'NAVIGATE': 'NAVIGATE'
 }
 
 common_keywords = {

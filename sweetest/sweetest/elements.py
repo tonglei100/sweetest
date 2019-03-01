@@ -48,13 +48,12 @@ class Elements:
         if self.elements.get(elem, ''):
             return self.elements[elem]['custom'], page + '-' + element
         else:
-            # 查不到就在通用里查,还是查不到就报错
+            # 查不到就在通用里查,还是查不到，可能是不在 element.xlsx 中定义的元素
             elem = '通用' + '-' + _el
             if self.elements.get(elem, ''):
                 return self.elements[elem]['custom'], '通用' + '-' + element
             else:
-                logger.warning('Page:%s element:%s is not exist' %
-                               (page, element))
+                logger.info('Page:%s element:%s' %(page, element))
                 return '', element
 
     def get(self, element, flag=False):

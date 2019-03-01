@@ -14,10 +14,10 @@ def execute(step):
         if step['data'].get(k):
             condition = step['data'].get(k)
             del step['data'][k]
-    if condition.lower() in ('成功', 'pass'):
-        condition = 'Pass'
-    elif condition.lower() in ('失败', 'fail'):
-        condition = 'Fail'
+    if condition.lower() in ('成功', 'success'):
+        condition = 'success'
+    elif condition.lower() in ('失败', 'failure'):
+        condition = 'failure'
 
     # 执行赋值操作
     data = step['data']
@@ -39,7 +39,7 @@ def execute(step):
         times = int(_element[1])
 
     # 初始化测试片段执行结果
-    result = 'Pass'
+    result = 'success'
     steps = []
     if element != '变量赋值':
         for t in range(times):
@@ -55,22 +55,22 @@ def execute(step):
                 s['no'] = str(step['no']) + '*' + str(t+1) + '-' + str(s['no'])
             steps += testcase['steps']
             # 用例片段执行失败时
-            if testcase['result'] != 'Pass':
+            if testcase['result'] != 'success':
                 result = testcase['result']
-                # 循环退出条件为失败，则直接返回，返回结果是 Pass
-                if condition == 'Fail':
-                    return 'Pass', testcase['steps']
+                # 循环退出条件为失败，则直接返回，返回结果是 success
+                if condition == 'failure':
+                    return 'success', testcase['steps']
                 # 如果没有结束条件，且失败直接退出标志位真，则返回结果
                 if not condition and flag:
                     return result, steps
             # 用例片段执行成功时
             else:
-                # 如果循环退出条件是成功，则直接返回，返回结果是 Pass
-                if condition == 'Pass':
-                    return 'Pass', testcase['steps']
-        # 执行结束，还没有触发循环退出条件，则返回结果为 Fail
+                # 如果循环退出条件是成功，则直接返回，返回结果是 success
+                if condition == 'success':
+                    return 'success', testcase['steps']
+        # 执行结束，还没有触发循环退出条件，则返回结果为 failure
         if condition:
-            return 'Fail', testcase['steps']
+            return 'failure', testcase['steps']
     return result, steps
 
 

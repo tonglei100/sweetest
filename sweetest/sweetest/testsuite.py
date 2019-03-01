@@ -49,7 +49,7 @@ class TestSuite:
             if testcase:
                 tc = TestCase(testcase)
                 tc.run()
-                if testcase['result'] == 'Pass':
+                if testcase['result'] == 'success':
                     flag = 'Y'
                 else:
                     flag = 'N'
@@ -63,15 +63,15 @@ class TestSuite:
             if base_flag == 'Y':
                 setup_flag = run_setup(deepcopy(self.setup_testcase))
                 if setup_flag == 'N':
-                    testcase['result'] = 'Block'
-                    case.block('Blocked', 'SETUP is not Pass')
-                    logger.warn('Run the testcase: %s|%s Blocked, SETUP is not Pass' % (
+                    testcase['result'] = 'blocked'
+                    case.block('Blocked', 'SETUP is not success')
+                    logger.warn('Run the testcase: %s|%s blocked, SETUP is not success' % (
                         testcase['id'], testcase['title']))
                     return False
             elif base_flag == 'O':
-                testcase['result'] = 'Block'
-                case.block('Blocked', 'SETUP is not Pass')
-                logger.warn('Run the testcase: %s|%s Blocked, SETUP is not Pass' % (
+                testcase['result'] = 'blocked'
+                case.block('Blocked', 'SETUP is not success')
+                logger.warn('Run the testcase: %s|%s blocked, SETUP is not success' % (
                     testcase['id'], testcase['title']))
                 return False
 
@@ -82,7 +82,7 @@ class TestSuite:
         self.testsuite_start()
 
         # 当前测试用例
-        current = {'result': 'Pass'}
+        current = {'result': 'success'}
         # 上一个测试用例
         previous = {}
 
@@ -94,7 +94,7 @@ class TestSuite:
                 if not isinstance(v, list):
                     v = [v]
                 if testcase[k] not in v:
-                    testcase['result'] = '-'
+                    testcase['result'] = 'skipped'
                     flag = True
             if flag:
                 continue
@@ -110,9 +110,9 @@ class TestSuite:
                 previous = current
                 current = testcase
             else:
-                testcase['result'] = 'Skip'
+                testcase['result'] = 'skipped'
                 # case.skip('Skip', 'Autotest Flag is N')
-                logger.info('Run the testcase: %s|%s Skipped, because the flag=N or the condition=snippet' % (
+                logger.info('Run the testcase: %s|%s skipped, because the flag=N or the condition=snippet' % (
                     testcase['id'], testcase['title']))
                 # 统计结束时间
                 testcase['end_timestamp'] = timestamp()
@@ -120,17 +120,17 @@ class TestSuite:
 
             if testcase['condition'].lower() not in ('base', 'setup'):
                 if testcase['condition'].lower() == 'sub':
-                    if previous['result'] != 'Pass':
-                        testcase['result'] = 'Block'
+                    if previous['result'] != 'success':
+                        testcase['result'] = 'blocked'
                         case.block(
-                            'Blocked', 'Main or pre Sub testcase is not pass')
-                        logger.warn('Run the testcase: %s|%s Blocked, Main or pre Sub TestCase is not Pass' % (
+                            'Blocked', 'Main or pre Sub testcase is not success')
+                        logger.warn('Run the testcase: %s|%s blocked, Main or pre Sub TestCase is not success' % (
                             testcase['id'], testcase['title']))
                         # 统计结束时间
                         testcase['end_timestamp'] = timestamp()    
                         continue
                 # 如果前置条件为 skip，则此用例不执行前置条件
-                elif testcase['condition'].lower() == 'skip':
+                elif testcase['condition'].lower() == 'skipped':
                     pass
                 else:
                     result = self.setup(testcase, case)
@@ -147,29 +147,29 @@ class TestSuite:
                 # 统计结束时间
                 testcase['end_timestamp'] = timestamp()
 
-                if testcase['result'] == 'Pass':
+                if testcase['result'] == 'success':
                     case.succeed()
-                elif testcase['result'] == 'Fail':
-                    case.fail('Fail', testcase['report'])
+                elif testcase['result'] == 'failure':
+                    case.fail('Failure', testcase['report'])
                     if testcase['condition'].lower() == 'base':
-                        logger.warn('Run the testcase: %s|%s Fail, BASE is not Pass. Break the AutoTest' % (
+                        logger.warn('Run the testcase: %s|%s Failure, BASE is not success. Break the AutoTest' % (
                             testcase['id'], testcase['title']))
                         break
                     if testcase['condition'].lower() == 'setup':
-                        logger.warn('Run the testcase: %s|%s Fail, SETUP is not Pass. Break the AutoTest' % (
+                        logger.warn('Run the testcase: %s|%s failure, SETUP is not success. Break the AutoTest' % (
                             testcase['id'], testcase['title']))
                         break
             except Exception as exception:
                 case.error('Error', 'Remark:%s |||Exception:%s' %
                            (testcase['remark'], exception))
-                logger.exception('Run the testcase: %s|%s fail' %
+                logger.exception('Run the testcase: %s|%s failure' %
                                  (testcase['id'], testcase['title']))
                 if testcase['condition'].lower() == 'base':
-                    logger.warn('Run the testcase: %s|%s Error, BASE is not Pass. Break the AutoTest' % (
+                    logger.warn('Run the testcase: %s|%s error, BASE is not success. Break the AutoTest' % (
                         testcase['id'], testcase['title']))
                     break
                 if testcase['condition'].lower() == 'setup':
-                    logger.warn('Run the testcase: %s|%s Error, SETUP is not Pass. Break the AutoTest' % (
+                    logger.warn('Run the testcase: %s|%s error, SETUP is not success. Break the AutoTest' % (
                         testcase['id'], testcase['title']))
                     break
 

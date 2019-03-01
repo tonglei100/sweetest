@@ -55,7 +55,7 @@ class TestCase:
     def run(self):
         logger.info('Run the TestCase: %s|%s' %
                     (self.testcase['id'], self.testcase['title']))
-        self.testcase['result'] = 'Pass'
+        self.testcase['result'] = 'success'
         self.testcase['report'] = ''
         if_result = ''
 
@@ -66,11 +66,13 @@ class TestCase:
             # if 为否，不执行 then 语句
             if step['control'] == '>' and not if_result:
                 step['score'] = '-'
+                step['end_timestamp'] = timestamp()
                 continue
 
             # if 为真，不执行 else 语句
             if step['control'] == '<' and if_result:
                 step['score'] = '-'
+                step['end_timestamp'] = timestamp()
                 continue
 
             logger.info('Run the Step: %s|%s|%s' %
@@ -138,12 +140,12 @@ class TestCase:
                     getattr(http, step['keyword'].lower())(step)
 
                 elif step['keyword'].lower() == 'execute':
-                    result, steps = getattr(
-                        common, step['keyword'].lower())(step)
+                    result, steps = getattr(common, step['keyword'].lower())(step)
                     self.testcase['result'] = result
                     if step['page'] in ('SNIPPET', '用例片段'):
                         self.snippet_steps[index + 1] = steps
-                    if result != 'Pass':
+                    if result != 'success':
+                        step['end_timestamp'] = timestamp()
                         break
 
                     # elif step['page'] in ('SCRIPT', '脚本'):
@@ -157,7 +159,7 @@ class TestCase:
                 else:
                     # 根据关键字调用关键字实现
                     getattr(common, step['keyword'].lower())(step)
-                logger.info('Run the Step: %s|%s|%s is Pass' %
+                logger.info('Run the Step: %s|%s|%s is success' %
                             (step['no'], step['keyword'], step['element']))
                 step['score'] = 'OK'
 
@@ -177,7 +179,7 @@ class TestCase:
                     try:
                         g.driver.get_screenshot_as_file(step['snapshot'])
                     except:
-                        logger.exception('*** save the screenshot is fail ***')
+                        logger.exception('*** save the screenshot is failure ***')
 
                 elif g.platform.lower() in ('ios', 'android') and step['keyword'] in mobile_keywords:
                     try:
@@ -185,21 +187,23 @@ class TestCase:
                         w.current_context = 'NATIVE_APP'
                         g.driver.get_screenshot_as_file(snapshot_file)
                     except:
-                        logger.exception('*** save the screenshot is fail ***')
+                        logger.exception('*** save the screenshot is failure ***')
 
-                logger.exception('Run the Step: %s|%s|%s is Failure' %
+                logger.exception('Run the Step: %s|%s|%s is failure' %
                                  (step['no'], step['keyword'], step['element']))
                 step['score'] = 'NO'
 
                 # if 语句结果赋值
                 if step['control'] == '^':
                     if_result = False
+                    step['end_timestamp'] = timestamp()                                   
                     continue
 
-                self.testcase['result'] = 'Fail'
+                self.testcase['result'] = 'failure'
                 self.testcase['report'] = 'step-%s|%s|%s: %s' % (
                     step['no'], step['keyword'], step['element'], exception)
                 step['remark'] += str(exception)
+                step['end_timestamp'] = timestamp()                                   
                 break
 
             # 统计结束时间
