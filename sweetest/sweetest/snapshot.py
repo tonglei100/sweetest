@@ -34,7 +34,7 @@ class Snapshot:
         self.screen_flag = False
         # 处理输出数据中的截图设置
         self.output = {}
-        for k,v in dict(step['output'].items()).items():
+        for k, v in dict(step['output'].items()).items():
             if v == '#ScreenShot':
                 self.output['#ScreenShot'] = k
                 step['output'].pop(k)
@@ -49,18 +49,19 @@ class Snapshot:
         for data in (step['data'], step['expected']):
             if '#ScreenShot' in data:
                 self.screen_flag = True
-                if  Path(data['#ScreenShot']).is_file():
+                if Path(data['#ScreenShot']).is_file():
                     self.expected['#ScreenShot'] = data['#ScreenShot']
                 else:
-                    self.expected['#ScreenShot'] = self.expected_folder + '/' + data.pop('#ScreenShot')
-                
+                    self.expected['#ScreenShot'] = self.expected_folder + \
+                        '/' + data.pop('#ScreenShot')
+
             if '#ElementShot' in data:
                 self.screen_flag = True
                 if Path(data['#ElementShot']).is_file():
                     self.expected['#ElementShot'] = data['#ElementShot']
                 else:
-                    self.expected['#ElementShot'] = self.expected_folder + '/' + data.pop('#ElementShot')                    
-                
+                    self.expected['#ElementShot'] = self.expected_folder + \
+                        '/' + data.pop('#ElementShot')
 
     def screen(self, step, element):
         # 截图
@@ -83,7 +84,6 @@ class Snapshot:
             crop(element, step['ScreenShot'], step['ElementShot'])
             g.var[element_v] = step['ElementShot']
 
-
     def check(self, step, element):
         if Path(self.expected.get('#ScreenShot', '')).is_file():
             # 屏幕截图比较
@@ -99,7 +99,8 @@ class Snapshot:
                 logger.info('SnapShot: ScreenShot is the same')
             else:
                 file_name = '#' + self.label + now() + '.png'
-                step['diffScreen'] = str(Path(self.snapshot_folder) / file_name)
+                step['diffScreen'] = str(
+                    Path(self.snapshot_folder) / file_name)
                 diff.save(step['diffScreen'])
                 raise Exception('SnapShot: ScreenShot is diff: %s' % differ)
         elif self.expected.get('ScreenShot'):
@@ -108,7 +109,7 @@ class Snapshot:
         if Path(self.expected.get('#ElementShot', '')).is_file():
             file_name = self.label + now() + '#Element' + '.png'
             step['ElementShot'] = str(Path(self.snapshot_folder) / file_name)
-            crop(element, step['ScreenShot'], step['ElementShot'])           
+            crop(element, step['ScreenShot'], step['ElementShot'])
 
             # 屏幕截图比较
             image1 = Image.open(self.expected['#ElementShot'])
@@ -125,10 +126,9 @@ class Snapshot:
                 step['diffElement'] = str(
                     Path(self.snapshot_folder) / file_name)
                 diff.save(step['diffElement'])
-                raise Exception('SnapShot: ElementShot is diff: %s' %differ)
+                raise Exception('SnapShot: ElementShot is diff: %s' % differ)
         elif self.expected.get('#ElementShot'):
-            crop(element, step['ScreenShot'], self.expected['#ElementShot'])   
-
+            crop(element, step['ScreenShot'], self.expected['#ElementShot'])
 
     def shot(self, step, element):
         self.screen(step, element)

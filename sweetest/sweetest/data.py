@@ -85,7 +85,7 @@ def testsuite2data(data):
     for d in data:
         s = d['steps'][0]  # 第一步和用例标题同一行
         testcase = [d['id'], d['title'], d['condition'], s['no'], s['_keyword'], s['page'], s['_element'],
-                s['_data'], s['_output'], d['priority'], d['designer'], d['flag'], s['score'], d['result'], s['remark']]
+                    s['_data'], s['_output'], d['priority'], d['designer'], d['flag'], s['score'], d['result'], s['remark']]
         if g.header_custom['expected']:
             testcase.insert(8, s['_expected'])
         result.append(testcase)
@@ -107,7 +107,7 @@ def testsuite2report(data):
                 step['element'] = step.pop('_element')
                 step['data'] = step.pop('_data')
                 step.pop('vdata')
-                step['expected'] = step.pop('_expected') 
-                step['output'] = step.pop('_output')                                                            
+                step['expected'] = step.pop('_expected')
+                step['output'] = step.pop('_output')
             report.append(case)
     return report

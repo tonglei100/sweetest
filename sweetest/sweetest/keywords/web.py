@@ -112,7 +112,6 @@ def check(step):
     return element_location
 
 
-
 def notcheck(step):
     data = step['data']
     if not data:

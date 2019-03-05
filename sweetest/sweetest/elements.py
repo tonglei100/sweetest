@@ -53,7 +53,7 @@ class Elements:
             if self.elements.get(elem, ''):
                 return self.elements[elem]['custom'], '通用' + '-' + element
             else:
-                logger.info('Page:%s element:%s' %(page, element))
+                logger.info('Page:%s element:%s' % (page, element))
                 return '', element
 
     def get(self, element, flag=False):

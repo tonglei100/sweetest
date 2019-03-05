@@ -15,6 +15,7 @@ if path.is_dir():
 else:
     from sweetest.lib import *
 
+
 class Excel:
     def __init__(self, file_name, mode='r'):
         if mode == 'r':
@@ -76,7 +77,7 @@ class Excel:
                 elif str(data[i][j]) == 'success':
                     sheet.write(i, j, str(data[i][j]), green)
                 else:
-                    sheet.write(i, j, str(data[i][j]))
+                    sheet.write(i, j, data[i][j])
 
     def close(self):
         self.workbook.close()
@@ -320,4 +321,4 @@ def compare(data, real):
 
 def timestamp():
     # js 格式的时间戳
-    return int(time.time()  * 1000) 
+    return int(time.time() * 1000)

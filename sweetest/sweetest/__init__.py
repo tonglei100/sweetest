@@ -14,7 +14,7 @@ def extract(zfile, path):
 
 def sweetest():
     sweetest_dir = Path(__file__).resolve().parents[0]
-    example_dir = sweetest_dir /'example' / 'sweetest_example.zip'
+    example_dir = sweetest_dir / 'example' / 'sweetest_example.zip'
     extract(str(example_dir), Path.cwd())
 
     print('\n文档: https://doc.sweeter.io\n社区: https://sweeter.io\n\n公众号：喜文测试\nQ Q 群：158755338 (验证码：python)注意首字母小写')

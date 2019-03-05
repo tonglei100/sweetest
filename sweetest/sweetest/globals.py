@@ -4,13 +4,13 @@ from sweetest.config import element_wait_timeout, page_flash_timeout
 
 
 def now():
-        t = time.time()
-        return time.strftime("@%Y%m%d_%H%M%S", time.localtime(t))
+    t = time.time()
+    return time.strftime("@%Y%m%d_%H%M%S", time.localtime(t))
 
 
 def timestamp():
     # js 格式的时间戳
-    return int(time.time()  * 1000) 
+    return int(time.time() * 1000)
 
 
 class Global:
@@ -51,13 +51,14 @@ class Global:
 
                 options = webdriver.FirefoxOptions()
                 # 如果配置了 headless 模式
-                if self.headless:                    
+                if self.headless:
                     options.set_headless()
                     # options.add_argument('-headless')
                     options.add_argument('--disable-gpu')
                     options.add_argument("--no-sandbox")
 
-                self.driver = webdriver.Firefox(firefox_profile=profile, firefox_options=options)
+                self.driver = webdriver.Firefox(
+                    firefox_profile=profile, firefox_options=options)
                 self.driver.maximize_window()
             elif self.browserName.lower() == 'chrome':
                 options = webdriver.ChromeOptions()
@@ -71,8 +72,8 @@ class Global:
 
                 options.add_argument("--start-maximized")
                 options.add_argument('--ignore-certificate-errors')
-                #指定浏览器分辨率，当"--start-maximized"无效时使用
-                #options.add_argument('window-size=1920x1080')
+                # 指定浏览器分辨率，当"--start-maximized"无效时使用
+                # options.add_argument('window-size=1920x1080')
                 prefs = {}
                 prefs["credentials_enable_service"] = False
                 prefs["profile.password_manager_enabled"] = False
@@ -99,7 +100,7 @@ class Global:
         self.plan_data['plan'] = self.plan_name
         self.plan_data['task'] = self.start_timestamp
         self.plan_data['start_timestamp'] = self.start_timestamp
-        self.plan_data['end_timestamp'] =  int(time.time()  * 1000)
+        self.plan_data['end_timestamp'] = int(time.time() * 1000)
 
         return self.plan_data
 

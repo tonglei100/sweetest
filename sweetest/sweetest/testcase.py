@@ -80,7 +80,8 @@ class TestCase:
 
             step['page'], step['custom'], step['element'] = elements_format(
                 step['page'], step['element'])
-            label = g.sheet_name + '.' + self.testcase['id'] + '#' + str(step['no'])                
+            label = g.sheet_name + '.' + \
+                self.testcase['id'] + '#' + str(step['no'])
             try:
                 after_function = step['data'].pop('AFTER_FUNCTION', '')
 
@@ -140,7 +141,8 @@ class TestCase:
                     getattr(http, step['keyword'].lower())(step)
 
                 elif step['keyword'].lower() == 'execute':
-                    result, steps = getattr(common, step['keyword'].lower())(step)
+                    result, steps = getattr(
+                        common, step['keyword'].lower())(step)
                     self.testcase['result'] = result
                     if step['page'] in ('SNIPPET', '用例片段'):
                         self.snippet_steps[index + 1] = steps
@@ -168,7 +170,7 @@ class TestCase:
                     if_result = True
 
                 if after_function:
-                    replace_dict({'after_function':after_function})
+                    replace_dict({'after_function': after_function})
                 # 操作后，等待0.2秒
                 sleep(0.2)
             except Exception as exception:
@@ -179,7 +181,8 @@ class TestCase:
                     try:
                         g.driver.get_screenshot_as_file(step['snapshot'])
                     except:
-                        logger.exception('*** save the screenshot is failure ***')
+                        logger.exception(
+                            '*** save the screenshot is failure ***')
 
                 elif g.platform.lower() in ('ios', 'android') and step['keyword'] in mobile_keywords:
                     try:
@@ -187,7 +190,8 @@ class TestCase:
                         w.current_context = 'NATIVE_APP'
                         g.driver.get_screenshot_as_file(snapshot_file)
                     except:
-                        logger.exception('*** save the screenshot is failure ***')
+                        logger.exception(
+                            '*** save the screenshot is failure ***')
 
                 logger.exception('Run the Step: %s|%s|%s is failure' %
                                  (step['no'], step['keyword'], step['element']))
@@ -196,14 +200,14 @@ class TestCase:
                 # if 语句结果赋值
                 if step['control'] == '^':
                     if_result = False
-                    step['end_timestamp'] = timestamp()                                   
+                    step['end_timestamp'] = timestamp()
                     continue
 
                 self.testcase['result'] = 'failure'
                 self.testcase['report'] = 'step-%s|%s|%s: %s' % (
                     step['no'], step['keyword'], step['element'], exception)
                 step['remark'] += str(exception)
-                step['end_timestamp'] = timestamp()                                   
+                step['end_timestamp'] = timestamp()
                 break
 
             # 统计结束时间

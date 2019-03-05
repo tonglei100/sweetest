@@ -28,18 +28,15 @@ class TestSuite:
                 g.snippet[testcase['id']] = testcase
                 testcase['flag'] = 'N'
 
-
     def testsuite_start(self):
         self.result['no'] = g.no
-        g.no += 1      
-        self.result['testsuite'] = self.sheet_name  
+        g.no += 1
+        self.result['testsuite'] = self.sheet_name
         self.result['start_timestamp'] = timestamp()
 
-
     def testsuite_end(self):
-        self.result['end_timestamp'] = timestamp() 
-        g.testsuite_data[self.sheet_name] =  self.result
-
+        self.result['end_timestamp'] = timestamp()
+        g.testsuite_data[self.sheet_name] = self.result
 
     def setup(self, testcase, case):
         logger.info('Start running the SETUP testcase...')
@@ -90,7 +87,7 @@ class TestSuite:
         for testcase in self.testsuite:
             # 根据筛选条件，把不需要执行的测试用例跳过
             flag = False
-            for k,v in self.conditions.items():
+            for k, v in self.conditions.items():
                 if not isinstance(v, list):
                     v = [v]
                 if testcase[k] not in v:
@@ -127,14 +124,14 @@ class TestSuite:
                         logger.warn('Run the testcase: %s|%s blocked, Main or pre Sub TestCase is not success' % (
                             testcase['id'], testcase['title']))
                         # 统计结束时间
-                        testcase['end_timestamp'] = timestamp()    
+                        testcase['end_timestamp'] = timestamp()
                         continue
                 # 如果前置条件为 skip，则此用例不执行前置条件
                 elif testcase['condition'].lower() == 'skipped':
                     pass
                 else:
                     result = self.setup(testcase, case)
-                    #if result == 'N':
+                    # if result == 'N':
                     if not result:
                         # 统计结束时间
                         testcase['end_timestamp'] = timestamp()
@@ -178,9 +175,9 @@ class TestSuite:
         # 2.清理环境
         try:
             if g.platform.lower() in ('desktop',):
-                #w.close()
+                # w.close()
                 g.driver.quit()
-                logger.info('--- Quit th Driver: %s' %g.browserName) 
+                logger.info('--- Quit th Driver: %s' % g.browserName)
         except:
             logger.exception('Clear the env is fail')
 

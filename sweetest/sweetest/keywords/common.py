@@ -32,7 +32,7 @@ def execute(step):
     # snippet 执行失败是否退出标志
     flag = True
     if element[-1] == '*':
-       flag = False
+        flag = False
 
     if len(_element) >= 2:
         element = _element[0]
@@ -52,7 +52,8 @@ def execute(step):
             tc = TestCase(testcase)
             tc.run()
             for s in testcase['steps']:
-                s['no'] = str(step['no']) + '*' + str(t+1) + '-' + str(s['no'])
+                s['no'] = str(step['no']) + '*' + \
+                    str(t + 1) + '-' + str(s['no'])
             steps += testcase['steps']
             # 用例片段执行失败时
             if testcase['result'] != 'success':
@@ -96,7 +97,7 @@ def sql(step):
     result = {}
     if _sql.lower().startswith('select'):
         keys = _sql[6:].split('FROM')[0].split('from')[0].strip().split(',')
-        for i,k in enumerate(keys):
+        for i, k in enumerate(keys):
             keys[i] = k.split(' ')[-1]
         result = dict(zip(keys, row))
         logger.info('keys result: %s' % repr(result))

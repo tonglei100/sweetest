@@ -37,20 +37,26 @@ class Http:
 def get(step):
     request('get', step)
 
+
 def post(step):
     request('post', step)
+
 
 def put(step):
     request('put', step)
 
+
 def patch(step):
     request('patch', step)
+
 
 def delete(step):
     request('delete', step)
 
+
 def options(step):
     request('options', step)
+
 
 def request(kw, step):
     element = step['element']
@@ -64,7 +70,8 @@ def request(kw, step):
     if data.get('cookies'):
         data['cookies'] = json2dict(data['cookies'])
     if kw == 'get':
-        _data['params'] = json2dict(data.pop('params', '{}')) or json2dict(data.pop('data', '{}'))
+        _data['params'] = json2dict(
+            data.pop('params', '{}')) or json2dict(data.pop('data', '{}'))
     elif kw == 'post':
         _data['data'] = json2dict(data.pop('data', '{}'))
         _data['json'] = json2dict(data.pop('json', '{}'))
@@ -78,7 +85,7 @@ def request(kw, step):
                 try:
                     data[k] = eval(data[k])
                 except:
-                    logger.warning('Try eval data failure: %s' %data[k])
+                    logger.warning('Try eval data failure: %s' % data[k])
                 break
     expected = step['expected']
     expected['status_code'] = expected.get('status_code', None)
@@ -119,26 +126,26 @@ def request(kw, step):
                                 params=_data['params'], **data)
     elif kw == 'post':
         r = getattr(http.r, kw)(http.baseurl + url,
-            data=_data['data'], json=_data['json'], files=_data['files'], **data)
+                                data=_data['data'], json=_data['json'], files=_data['files'], **data)
     elif kw in ('put', 'patch'):
         r = getattr(http.r, kw)(http.baseurl + url,
-            data=_data['data'], **data)
+                                data=_data['data'], **data)
     elif kw in ('delete', 'options'):
         r = getattr(http.r, kw)(http.baseurl + url, **data)
 
     logger.info('status_code: %s' % repr(r.status_code))
-    try: # json 响应
+    try:  # json 响应
         logger.info('response json: %s' % repr(r.json()))
-    except: # 其他响应
+    except:  # 其他响应
         logger.info('response text: %s' % repr(r.text))
 
-    response = {'status_code': r.status_code, 'headers':r.headers,
+    response = {'status_code': r.status_code, 'headers': r.headers,
                 '_cookies': r.cookies, 'content': r.content, 'text': r.text}
 
     try:
         response['cookies'] = requests.utils.dict_from_cookiejar(r.cookies)
     except:
-         response['cookies'] = r.cookies
+        response['cookies'] = r.cookies
 
     try:
         j = r.json()
@@ -191,19 +198,19 @@ def request(kw, step):
     for k, v in output.items():
         if v == 'status_code':
             g.var[k] = response['status_code']
-            logger.info('%s: %s' %(k, repr(g.var[k])))
+            logger.info('%s: %s' % (k, repr(g.var[k])))
         elif v == 'text':
             g.var[k] = response['text']
-            logger.info('%s: %s' %(k, repr(g.var[k])))
+            logger.info('%s: %s' % (k, repr(g.var[k])))
         elif k == 'json':
             sub = json2dict(output.get('json', '{}'))
             result = check(sub, response['json'])
             # logger.info('Compare json result: %s' % result)
             g.var = dict(g.var, **result['var'])
-            logger.info('json var: %s' %(repr(result['var'])))
+            logger.info('json var: %s' % (repr(result['var'])))
         elif k == 'cookies':
             sub = json2dict(output.get('cookies', '{}'))
             result = check(sub, response['cookies'])
             # logger.info('Compare json result: %s' % result)
             g.var = dict(g.var, **result['var'])
-            logger.info('cookies var: %s' %(repr(result['var'])))
+            logger.info('cookies var: %s' % (repr(result['var'])))

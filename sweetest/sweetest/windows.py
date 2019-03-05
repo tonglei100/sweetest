@@ -47,7 +47,8 @@ class Windows:
                 logger.info('--- Switch Windows: %s' % repr(tw))
                 g.driver.switch_to_window(tw)
                 self.current_window = self.pages[page]
-                logger.info('--- Current Windows: %s' % repr(self.current_window))
+                logger.info('--- Current Windows: %s' %
+                            repr(self.current_window))
 
     def switch_frame(self, frame):
         if frame.strip():
@@ -62,7 +63,7 @@ class Windows:
                     elif '#' in f:
                         from sweetest.testcase import elements_format
                         from sweetest.locator import locating_element
-                        element = elements_format('通用',f)[2]
+                        element = elements_format('通用', f)[2]
                         f = locating_element(element)
                     logger.info('--- Switch Frame: %s' % repr(f))
                     g.driver.switch_to.frame(f)

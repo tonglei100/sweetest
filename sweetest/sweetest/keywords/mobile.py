@@ -68,7 +68,7 @@ def check(step):
             else:
                 real = element_location.get_attribute(key)
             if s:
-                real = eval('real'+s)
+                real = eval('real' + s)
 
             logger.info('DATA:%s' % repr(expected))
             logger.info('REAL:%s' % repr(real))
@@ -176,14 +176,14 @@ def tap(step):
             position = element.replace('，', ',').split(',')
             x = int(position[0])
             y = int(position[1])
-            position = (x,y)
+            position = (x, y)
             g.driver.tap([position])
         else:
             element_location = locating_element(element, 'CLICK')
             action.tap(element_location).perform()
     elif isinstance(element, list):
         if ',' in element[0] or '，' in element[0]:
-            positions = [eval('('+ _e + ')') for _e in element]
+            positions = [eval('(' + _e + ')') for _e in element]
             g.driver.tap([positions])
         else:
             for _e in element:
@@ -223,7 +223,8 @@ def press_keycode(step):
 def swipe(step):
     element = step['element']
     duration = step['data'].get('持续时间', 0.3)
-    assert isinstance(element, list) and len(element) == 2, '坐标格式或数量不对，正确格式如：100,200|300,400'
+    assert isinstance(element, list) and len(
+        element) == 2, '坐标格式或数量不对，正确格式如：100,200|300,400'
 
     start = element[0].replace('，', ',').split(',')
     start_x = int(start[0])
@@ -242,7 +243,8 @@ def swipe(step):
 def line(step):
     element = step['element']
     duration = float(step['data'].get('持续时间', 0.3))
-    assert isinstance(element, list) and len(element) > 1, '坐标格式或数量不对，正确格式如：258,756|540,1032'
+    assert isinstance(element, list) and len(
+        element) > 1, '坐标格式或数量不对，正确格式如：258,756|540,1032'
     postions = []
     for _e in element:
         _e = _e.replace('，', ',')
@@ -250,38 +252,42 @@ def line(step):
         postions.append(p)
 
     action = TouchAction(g.driver)
-    action = action.press(x=postions[0][0], y=postions[0][1]).wait(duration*1000)
+    action = action.press(
+        x=postions[0][0], y=postions[0][1]).wait(duration * 1000)
     for i in range(1, len(postions)):
-        action.move_to(x=postions[i][0], y=postions[i][1]).wait(duration*1000)
+        action.move_to(x=postions[i][0], y=postions[i]
+                       [1]).wait(duration * 1000)
     action.release().perform()
 
 
 def line_unlock(step):
     element = step['element']
     duration = float(step['data'].get('持续时间', 0.3))
-    assert isinstance(element, list) and len(element) > 2, '坐标格式或数量不对，正确格式如：lock_pattern|1|4|7|8|9'
+    assert isinstance(element, list) and len(
+        element) > 2, '坐标格式或数量不对，正确格式如：lock_pattern|1|4|7|8|9'
     _e = locating_element(element[0])
     rect = _e.rect
-    w = rect['width']/6
-    h = rect['height']/6
+    w = rect['width'] / 6
+    h = rect['height'] / 6
 
     key = {}
-    key['1'] = (rect['x'] + 1*w, rect['y'] + 1*h)
-    key['2'] = (rect['x'] + 3*w, rect['y'] + 1*h)
-    key['3'] = (rect['x'] + 5*w, rect['y'] + 1*h)
-    key['4'] = (rect['x'] + 1*w, rect['y'] + 3*h)
-    key['5'] = (rect['x'] + 3*w, rect['y'] + 3*h)
-    key['6'] = (rect['x'] + 5*w, rect['y'] + 3*h)
-    key['7'] = (rect['x'] + 1*w, rect['y'] + 5*h)
-    key['8'] = (rect['x'] + 3*w, rect['y'] + 5*h)
-    key['9'] = (rect['x'] + 5*w, rect['y'] + 5*h)
+    key['1'] = (rect['x'] + 1 * w, rect['y'] + 1 * h)
+    key['2'] = (rect['x'] + 3 * w, rect['y'] + 1 * h)
+    key['3'] = (rect['x'] + 5 * w, rect['y'] + 1 * h)
+    key['4'] = (rect['x'] + 1 * w, rect['y'] + 3 * h)
+    key['5'] = (rect['x'] + 3 * w, rect['y'] + 3 * h)
+    key['6'] = (rect['x'] + 5 * w, rect['y'] + 3 * h)
+    key['7'] = (rect['x'] + 1 * w, rect['y'] + 5 * h)
+    key['8'] = (rect['x'] + 3 * w, rect['y'] + 5 * h)
+    key['9'] = (rect['x'] + 5 * w, rect['y'] + 5 * h)
 
     action = TouchAction(g.driver)
     for i in range(1, len(element)):
         k = element[i]
         if i == 1:
-            action = action.press(x=key[k][0], y=key[k][1]).wait(duration*1000)
-        action.move_to(x=key[k][0], y=key[k][1]).wait(duration*1000)
+            action = action.press(
+                x=key[k][0], y=key[k][1]).wait(duration * 1000)
+        action.move_to(x=key[k][0], y=key[k][1]).wait(duration * 1000)
     action.release().perform()
 
 
@@ -306,12 +312,14 @@ def rocker(step):
     # 如果 action 中么有此摇杆名，则是新的遥感
     if not g.action.get(rocker_name):
         g.action[rocker_name] = TouchAction(g.driver)
-        g.action[rocker_name].press(x=postions[0][0], y=postions[0][1]).wait(duration*1000)
+        g.action[rocker_name].press(
+            x=postions[0][0], y=postions[0][1]).wait(duration * 1000)
         # 新摇杆的第一个点已操作，需要删除
         postions.pop(0)
     # 依次操作
     for i in range(len(postions)):
-        g.action[rocker_name].move_to(x=postions[i][0], y=postions[i][1]).wait(duration*1000)
+        g.action[rocker_name].move_to(
+            x=postions[i][0], y=postions[i][1]).wait(duration * 1000)
 
     if release:
         # 释放摇杆，并删除摇杆
@@ -323,7 +331,8 @@ def rocker(step):
 
 def scroll(step):
     element = step['element']
-    assert isinstance(element, list) and len(element) == 2, '元素格式或数量不对，正确格式如：origin_el|destination_el'
+    assert isinstance(element, list) and len(
+        element) == 2, '元素格式或数量不对，正确格式如：origin_el|destination_el'
     origin = locating_element(element[0])
     destination = locating_element(element[1])
     g.driver.scroll(origin, destination)
@@ -332,7 +341,8 @@ def scroll(step):
 def flick_element(step):
     element = step['element']
     speed = step['data'].get('持续时间', 10)
-    assert isinstance(element, list) and len(element) == 2, '坐标格式或数量不对，正确格式如：elment|200,300'
+    assert isinstance(element, list) and len(
+        element) == 2, '坐标格式或数量不对，正确格式如：elment|200,300'
     _e = eval(element[0])
 
     end = element[1].replace('，', ',').split(',')
@@ -345,7 +355,8 @@ def flick_element(step):
 
 def flick(step):
     element = step['element']
-    assert isinstance(element, list) and len(element) == 2, '坐标格式或数量不对，正确格式如：100,200|300,400'
+    assert isinstance(element, list) and len(
+        element) == 2, '坐标格式或数量不对，正确格式如：100,200|300,400'
 
     start = element[0].replace('，', ',').split(',')
     start_x = int(start[0])
@@ -360,7 +371,8 @@ def flick(step):
 
 def drag_and_drop(step):
     element = step['element']
-    assert isinstance(element, list) and len(element) == 2, '元素格式或数量不对，正确格式如：origin_el|destination_el'
+    assert isinstance(element, list) and len(
+        element) == 2, '元素格式或数量不对，正确格式如：origin_el|destination_el'
     origin = locating_element(element[0])
     destination = locating_element(element[1])
     g.driver.drag_and_drop(origin, destination)
@@ -422,7 +434,7 @@ def tab_name(step):
             g.driver.switch_to_window(handle)
             try:
                 # 成功定位到关键元素
-                element_location = locating_element(element, 'CLICK')
+                locating_element(element, 'CLICK')
                 # 添加到窗口资源池 g.windows
                 w.windows[name] = handle
                 # 把当前窗口名字改为新窗口名称
@@ -430,7 +442,8 @@ def tab_name(step):
                 flag = True
                 logger.info('Current Window: %s' % repr(name))
                 logger.info('Current Handle: %s' % repr(handle))
-            except Exception as exception:
+            except:
                 pass
     if not flag:
-        raise Exception('Tab Name failure: the element:%s in all tab is not found' %element)
+        raise Exception(
+            'Tab Name failure: the element:%s in all tab is not found' % element)
