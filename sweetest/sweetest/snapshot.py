@@ -23,10 +23,11 @@ def crop(element, src, target):
 
 class Snapshot:
     def __init__(self):
-        self.plan_folder = 'snapshot/' + g.plan_name
-        self.snapshot_folder = self.plan_folder + '/' + g.start_time[1:]
-        self.expected_folder = 'snapshot/expected/' + g.plan_name
-        for p in (self.plan_folder, self.snapshot_folder, self.expected_folder):
+        snapshot_plan = Path('snapshot') / g.plan_name
+        self.snapshot_folder = snapshot_plan / g.start_time[1:]
+        snapshot_expected = Path('snapshot') / 'expected'
+        self.expected_folder = snapshot_expected / g.plan_name
+        for p in (snapshot_plan, self.snapshot_folder, snapshot_expected, self.expected_folder):
             mkdir(p)
 
     def pre(self, step, label):
@@ -52,16 +53,14 @@ class Snapshot:
                 if Path(data['#ScreenShot']).is_file():
                     self.expected['#ScreenShot'] = data['#ScreenShot']
                 else:
-                    self.expected['#ScreenShot'] = self.expected_folder + \
-                        '/' + data.pop('#ScreenShot')
+                    self.expected['#ScreenShot'] = str(self.expected_folder / data.pop('#ScreenShot'))
 
             if '#ElementShot' in data:
                 self.screen_flag = True
                 if Path(data['#ElementShot']).is_file():
                     self.expected['#ElementShot'] = data['#ElementShot']
                 else:
-                    self.expected['#ElementShot'] = self.expected_folder + \
-                        '/' + data.pop('#ElementShot')
+                    self.expected['#ElementShot'] = str(self.expected_folder / data.pop('#ElementShot'))
 
     def screen(self, step, element):
         # 截图

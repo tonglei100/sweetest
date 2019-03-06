@@ -82,6 +82,7 @@ class TestCase:
                 step['page'], step['element'])
             label = g.sheet_name + '.' + \
                 self.testcase['id'] + '#' + str(step['no'])
+            snap = Snapshot()
             try:
                 after_function = step['data'].pop('AFTER_FUNCTION', '')
 
@@ -105,7 +106,6 @@ class TestCase:
 
                 if g.platform.lower() in ('desktop',) and step['keyword'] in web_keywords:
                     # 处理截图数据
-                    snap = Snapshot()
                     snap.pre(step, label)
 
                     if step['keyword'] not in ('MESSAGE', '对话框'):
@@ -175,7 +175,7 @@ class TestCase:
                 sleep(0.2)
             except Exception as exception:
                 file_name = '^' + label + now() + '.png'
-                step['snapshot'] = str(Path(snap.snapshot_folder) / file_name)
+                step['snapshot'] = str(snap.snapshot_folder / file_name)
 
                 if g.platform.lower() in ('desktop',) and step['keyword'] in web_keywords:
                     try:
