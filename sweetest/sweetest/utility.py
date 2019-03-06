@@ -187,7 +187,7 @@ def test_replace():
 
 def read_csv(csv_file, encoding=None):
     data = []
-    with open(csv_file, encoding=encoding) as f:
+    with open(csv_file, encoding='gbk') as f:
         reader = csv.reader(f)
         for line in reader:
             data.append(line)

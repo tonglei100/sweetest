@@ -29,6 +29,7 @@ class Global:
         self.platform = desired_caps.get('platformName', '')
         self.browserName = desired_caps.get('browserName', '')
         self.headless = desired_caps.pop('headless', False)
+        self.chromeDriver = desired_caps.pop('chromeDriver', '')
         self.snapshot = desired_caps.pop('snapshot', False)
         self.var = {}
         self.snippet = {}
@@ -79,7 +80,7 @@ class Global:
                 prefs["profile.password_manager_enabled"] = False
                 options.add_experimental_option("prefs", prefs)
                 options.add_argument('disable-infobars')
-                self.driver = webdriver.Chrome(chrome_options=options)
+                self.driver = webdriver.Chrome(chrome_options=options, executable_path=self.chromeDriver)
             else:
                 raise Exception(
                     'Error: this browser is not supported or mistake name：%s' % self.browserName)

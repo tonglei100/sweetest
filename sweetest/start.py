@@ -21,6 +21,8 @@ desired_caps = {'platformName': 'Desktop', 'browserName': 'Chrome'}
 #desired_caps = {'platformName': 'Desktop', 'browserName': 'Chrome', 'headless': True}
 # 设置全局截图
 #desired_caps = {'platformName': 'Desktop', 'browserName': 'Chrome', 'snapshot': True}
+# lunix自定义chromeDriver
+#desired_caps = {'platformName': 'Desktop', 'browserName': 'Chrome', 'chromeDriver': '/usr/bin/chromeDriver'}
 server_url = ''
 
 
