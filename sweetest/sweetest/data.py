@@ -34,14 +34,14 @@ def testsuite_format(data):
     }
     '''
     testsuite = []
-    testcase = {}
+    testcase = {'testsuite': '', 'no': 0}
     data = data2dict(data)
 
     for d in data:
         # 如果用例编号不为空，则为新的用例
         if d['id'].strip():
-            # 如果 testcase 非空，则添加到 testsuite 里，并重新初始化 testcase
-            if testcase:
+            # 如果 testcase[id] 非空，则添加到 testsuite 里，并重新初始化 testcase
+            if testcase.get('id'):
                 testsuite.append(testcase)
                 testcase = {'testsuite': '', 'no': 0}
             for key in ('id', 'title', 'condition', 'designer', 'flag', 'result', 'remark'):

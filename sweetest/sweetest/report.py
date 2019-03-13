@@ -1,9 +1,10 @@
+import time
 
 
 def reporter(plan_data, testsuite_data, report_data, extra_data):
 
     extra_data['plan'] = plan_data['plan']
-    extra_data['task'] = plan_data['task']
+    extra_data['task'] = int(time.time() * 1000)
 
     testcase = []
     for key, ts in report_data.items():
@@ -11,6 +12,7 @@ def reporter(plan_data, testsuite_data, report_data, extra_data):
                  'success': 0, 'failure': 0, 'blocked': 0}
         no = 1
         for tc in ts:
+            tc['testsuite'] = key
             tc['no'] = no
             no += 1
             tc = {**extra_data, **tc}

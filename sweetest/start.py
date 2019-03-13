@@ -21,6 +21,8 @@ desired_caps = {'platformName': 'Desktop', 'browserName': 'Chrome'}
 #desired_caps = {'platformName': 'Desktop', 'browserName': 'Chrome', 'headless': True}
 # 设置全局截图
 #desired_caps = {'platformName': 'Desktop', 'browserName': 'Chrome', 'snapshot': True}
+# 指定 driver 路径
+#desired_caps = {'platformName': 'Desktop', 'browserName': 'Chrome', 'executable_path': 'D:\drivers\chromedriver.exe'}
 server_url = ''
 
 

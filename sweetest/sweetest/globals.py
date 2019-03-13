@@ -30,6 +30,7 @@ class Global:
         self.browserName = desired_caps.get('browserName', '')
         self.headless = desired_caps.pop('headless', False)
         self.snapshot = desired_caps.pop('snapshot', False)
+        self.executable_path = desired_caps.pop('executable_path', False)
         self.var = {}
         self.snippet = {}
         self.current_page = '通用'
@@ -44,7 +45,10 @@ class Global:
             if self.browserName.lower() == 'ie':
                 #capabilities = webdriver.DesiredCapabilities().INTERNETEXPLORER
                 #capabilities['acceptInsecureCerts'] = True
-                self.driver = webdriver.Ie()
+                if self.executable_path:
+                    self.driver = webdriver.Ie(executable_path=self.executable_path)
+                else:    
+                    self.driver = webdriver.Ie()
             elif self.browserName.lower() == 'firefox':
                 profile = webdriver.FirefoxProfile()
                 profile.accept_untrusted_certs = True
@@ -57,8 +61,12 @@ class Global:
                     options.add_argument('--disable-gpu')
                     options.add_argument("--no-sandbox")
 
-                self.driver = webdriver.Firefox(
-                    firefox_profile=profile, firefox_options=options)
+                if self.executable_path:
+                    self.driver = webdriver.Firefox(
+                        firefox_profile=profile, firefox_options=options, executable_path=self.executable_path)
+                else:
+                    self.driver = webdriver.Firefox(
+                        firefox_profile=profile, firefox_options=options)
                 self.driver.maximize_window()
             elif self.browserName.lower() == 'chrome':
                 options = webdriver.ChromeOptions()
@@ -79,7 +87,11 @@ class Global:
                 prefs["profile.password_manager_enabled"] = False
                 options.add_experimental_option("prefs", prefs)
                 options.add_argument('disable-infobars')
-                self.driver = webdriver.Chrome(chrome_options=options)
+                if self.executable_path:
+                    self.driver = webdriver.Chrome(
+                        chrome_options=options, executable_path=self.executable_path)
+                else:
+                    self.driver = webdriver.Chrome(chrome_options=options)
             else:
                 raise Exception(
                     'Error: this browser is not supported or mistake name：%s' % self.browserName)
@@ -98,7 +110,7 @@ class Global:
 
     def plan_end(self):
         self.plan_data['plan'] = self.plan_name
-        self.plan_data['task'] = self.start_timestamp
+        #self.plan_data['task'] = self.start_timestamp
         self.plan_data['start_timestamp'] = self.start_timestamp
         self.plan_data['end_timestamp'] = int(time.time() * 1000)
 
