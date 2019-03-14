@@ -1,4 +1,4 @@
-![sweetest](https://doc.sweeter.io/docs/_media/sweeter)
+![sweetest](https://doc.sweeter.io/docs/_media/sweeter.png)
 
 # sweetest
 
