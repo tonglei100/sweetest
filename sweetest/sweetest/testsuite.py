@@ -127,7 +127,7 @@ class TestSuite:
                         testcase['end_timestamp'] = timestamp()
                         continue
                 # 如果前置条件为 skip，则此用例不执行前置条件
-                elif testcase['condition'].lower() == 'skipped':
+                elif testcase['condition'].lower() == 'skip':
                     pass
                 else:
                     result = self.setup(testcase, case)

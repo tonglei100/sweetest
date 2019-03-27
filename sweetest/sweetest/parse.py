@@ -31,7 +31,7 @@ def data_format(data):
         data_list = data.split(',,')
     else:
         # data = data.replace('，', ',')  # 中文逗号不再视为分隔符
-        data_list = {}
+        data_list = []
         if data:
             data_list = data.split(',')
     data_dict = {}
@@ -41,7 +41,8 @@ def data_format(data):
         d[-1] = recover(d[-1])  # 只有值需要转义恢复，<元素属性> or <变量名> 不应该出现转义字符
         if len(d) == 1:
             # 如果没有=号分割，说明只有内容，默认赋值给 text
-            data_dict['text'] = d[0]
+            if not data_dict.get('text'):
+                data_dict['text'] = d[0]
         elif len(d) == 2:
             d[0] = d[0].strip()  # 清除 <元素属性> 2边的空格，如果有的话
             data_dict[d[0]] = d[1]

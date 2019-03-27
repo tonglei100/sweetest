@@ -128,29 +128,36 @@ def replace(data):
     # 正则匹配出 data 中所有 <> 中的变量，返回列表
     keys = re.findall(r'<(.*?)>', data)
     for k in keys:
-        # 正则匹配出 k 中的 + - ** * // / % ( )，返回列表
-        values = re.split(r'(\+|-|\*\*|\*|//|/|%|\(|\))', k)
+        # 正则匹配出 k 中的 + - ** * // / % , ( ) 返回列表
+        values = re.split(r'(\+|-|\*\*|\*|//|/|%|,|\(|\))', k)
         for j, v in enumerate(values):
-            # 切片操作处理，正则匹配出 [] 中内容
-            s = re.findall(r'\[.*?\]', v)
-            if s:
-                s = s[0]
-                v = v.replace(s, '')
+            #切片操作处理，正则匹配出 [] 中内容
+            s = v.split('[', 1)
+            index = ''
+            if len(s) == 2:
+                v = s[0]
+                index = '[' + s[1]
 
             if v in g.var:
-                # 如果在 g.var 中是 list，则 pop 第一个值
+                # 如果在 g.var 中是 list，
                 if isinstance(g.var[v], list):
-                    values[j] = g.var[k].pop(0)
-                    if s:
-                        values[j] = eval('values[j]' + s)
-                    # 再判断一下此 list 是否只有一个值了，如果是，则从 list 变为该值
-                    if len(g.var[v]) == 1:
-                        g.var[v] = g.var[v][0]
-                # 如果在 g.var 中是值，则直接赋值
+                    if index:
+                        # list 切片取值（值应该是动态赋值的变量，如自定义脚本的返回值）
+                        values[j] = eval('g.var[v]' + index)
+                    else:
+                        # 是测试数据文件中的值，则 pop 第一个值
+                        values[j] = g.var[v].pop(0)
+                        # 再判断一下此 list 是否只有一个值了，如果是，则从 list 变为该值
+                        if len(g.var[v]) == 1:
+                            g.var[v] = g.var[v][0]
+                elif isinstance(g.var[v], dict) and index:
+                    # 如果是 dict 取键值
+                    values[j] = eval('g.var[v]' + index)
                 else:
+                    # 如果在 g.var 中是值，则直接赋值
                     values[j] = g.var[v]
-                    if s:
-                        values[j] = eval('values[j]' + s)
+                    if index:
+                        values[j] = eval('g.var[v]' + index)
             # 如果值不在 g.var，且只有一个元素，则尝试 eval，比如<False>,<True>,<1>,<9.999>
             elif len(values) == 1:
                 try:
