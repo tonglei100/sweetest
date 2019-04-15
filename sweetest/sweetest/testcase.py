@@ -179,6 +179,9 @@ class TestCase:
 
                 if g.platform.lower() in ('desktop',) and step['keyword'] in web_keywords:
                     try:
+                        if w.frame != 0:
+                            g.driver.switch_to.default_content()
+                            w.frame = 0
                         g.driver.get_screenshot_as_file(step['snapshot'])
                     except:
                         logger.exception(
