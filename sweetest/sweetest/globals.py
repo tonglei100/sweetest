@@ -36,6 +36,7 @@ class Global:
         self.current_page = '通用'
         self.db = {}
         self.http = {}
+        self.win = {}
         self.baseurl = {}
         self.driver = ''
         self.action = {}
@@ -109,6 +110,19 @@ class Global:
         elif self.platform.lower() == 'android':
             from appium import webdriver as appdriver
             self.driver = appdriver.Remote(self.server_url, self.desired_caps)
+
+        elif self.platform.lower() == 'windows':
+            from pywinauto.application import Application
+            from sweetest.keywords.windows import Windows
+            self.desired_caps.pop('platformName')
+            backend = self.desired_caps.pop('backend', 'win32')
+            if self.desired_caps.get('cmd_line'):
+                self.app = Application(backend).start(**self.desired_caps)
+            elif self.desired_caps.get('path'):
+                self.app = Application(backend).connect(**self.desired_caps)
+            else:
+                raise Exception('Error: Windows GUI start/connect args error')
+            self.windows = Windows(self.app)
 
     def plan_end(self):
         self.plan_data['plan'] = self.plan_name

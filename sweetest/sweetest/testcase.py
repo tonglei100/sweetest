@@ -7,7 +7,7 @@ from sweetest.windows import w
 from sweetest.snapshot import Snapshot
 from sweetest.locator import locating_elements, locating_data, locating_element
 from sweetest.keywords import web, common, mobile, http
-from sweetest.config import web_keywords, common_keywords, mobile_keywords, http_keywords
+from sweetest.config import web_keywords, common_keywords, mobile_keywords, http_keywords, windows_keywords
 from sweetest.utility import replace_dict, replace
 
 
@@ -78,8 +78,9 @@ class TestCase:
             logger.info('Run the Step: %s|%s|%s' %
                         (step['no'], step['keyword'], step['element']))
 
-            step['page'], step['custom'], step['element'] = elements_format(
-                step['page'], step['element'])
+            if not (g.platform.lower() in ('windows',) and step['keyword'] in windows_keywords):
+                step['page'], step['custom'], step['element'] = elements_format(
+                    step['page'], step['element'])
             label = g.sheet_name + '.' + \
                 self.testcase['id'] + '#' + str(step['no'])
             snap = Snapshot()
@@ -135,6 +136,14 @@ class TestCase:
 
                     # 根据关键字调用关键字实现
                     getattr(mobile, step['keyword'].lower())(step)
+
+                elif g.platform.lower() in ('windows',) and step['keyword'] in windows_keywords:
+                    from sweetest.keywords import windows
+                    dialog = g.windows.dialog(step['page'])
+                    #dialog.wait('ready')
+                    # 根据关键字调用关键字实现
+                    getattr(windows, step['keyword'].lower())(dialog, step)
+                    sleep(1)
 
                 elif step['keyword'] in http_keywords:
                     # 根据关键字调用关键字实现

@@ -9,7 +9,7 @@ from sweetest.globals import g
 from sweetest.windows import w
 from sweetest.testsuite import TestSuite
 from sweetest.utility import Excel, get_record, mkdir
-from sweetest.log import logger
+from sweetest.log import logger, set_log
 from sweetest.junit import JUnit
 from sweetest.report import summary
 from sweetest.config import _testcase, _elements, _report
@@ -28,6 +28,8 @@ class Autotest:
 
         for p in ('JUnit', 'report', 'snapshot', 'report/' + g.plan_name):
             mkdir(p)
+            
+        set_log(logger)
 
         self.testcase_file = str(
             Path('testcase') / (file_name + '-' + _testcase + '.xlsx'))

@@ -25,6 +25,11 @@ desired_caps = {'platformName': 'Desktop', 'browserName': 'Chrome'}
 #desired_caps = {'platformName': 'Desktop', 'browserName': 'Chrome', 'executable_path': 'D:\drivers\chromedriver.exe'}
 server_url = ''
 
+# Windows GUI
+# notepad start
+#desired_caps = {'platformName': 'Windows', 'cmd_line': r'notepad.exe', 'timeout': 5, 'backend': 'uia'}
+# notepad connect
+#desired_caps = {'platformName': 'Windows', 'path': r'C:\Program Files\Microsoft Office\Office16\EXCEL.EXE'}
 
 # 初始化自动化实例
 sweet = Autotest(plan_name, sheet_name, desired_caps, server_url)

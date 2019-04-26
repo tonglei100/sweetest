@@ -85,13 +85,13 @@ def testsuite2data(data):
     for d in data:
         s = d['steps'][0]  # 第一步和用例标题同一行
         testcase = [d['id'], d['title'], d['condition'], s['no'], s['_keyword'], s['page'], s['_element'],
-                    s['_data'], s['_output'], d['priority'], d['designer'], d['flag'], s['score'], d['result'], s['remark']]
+                    s['vdata'], s['_output'], d['priority'], d['designer'], d['flag'], s['score'], d['result'], s['remark']]
         if g.header_custom['expected']:
             testcase.insert(8, s['_expected'])
         result.append(testcase)
         for s in d['steps'][1:]:
             step = ['', '', '', s['no'], s['_keyword'], s['page'], s['_element'],
-                    s['_data'], s['_output'], '', '', '', s['score'], '', s['remark']]
+                    s['vdata'], s['_output'], '', '', '', s['score'], '', s['remark']]
             if g.header_custom['expected']:
                 step.insert(8, s['_expected'])
             result.append(step)
@@ -105,8 +105,7 @@ def testsuite2report(data):
             for step in case['steps']:
                 step['keyword'] = step.pop('_keyword')
                 step['element'] = step.pop('_element')
-                step['data'] = step.pop('_data')
-                step.pop('vdata')
+                step['data'] = str(step.pop('vdata'))
                 step['expected'] = step.pop('_expected')
                 step['output'] = step.pop('_output')
             report.append(case)

@@ -92,8 +92,25 @@ mobile_keywords = {
     'TAB_NAME': 'TAB_NAME'
 }
 
+windows_keywords = {
+    '菜单': 'MENU_SELECT',
+    'MENU_SELECT': 'MENU_SELECT',
+    '选择': 'SELECT',
+    'SELECT': 'SELECT',
+    '点击': 'CLICK',
+    'CLICK': 'CLICK',
+    '输入': 'INPUT',    
+    'INPUT': 'INPUT',
+    '填写': 'SET_TEXT',
+    'SET_TEXT': 'SET_TEXT',
+    '按键': 'SEND_KEYS',
+    'SEND_KEYS': 'SEND_KEYS',
+    '窗口': 'WINDOW',
+    'WINDOW': 'WINDOW'
+}
+
 all_keywords = {}
-for keywords in (web_keywords, common_keywords, http_keywords, mobile_keywords):
+for keywords in (web_keywords, common_keywords, http_keywords, mobile_keywords, windows_keywords):
     all_keywords = dict(all_keywords, **keywords)
 
 # 文件名后缀
