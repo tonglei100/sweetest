@@ -277,6 +277,8 @@ def mkdir(p):
 
 
 def json2dict(s):
+    if isinstance(s, dict):
+        return s
     s = str(s)
     d = {}
     try:

@@ -7,7 +7,7 @@ from sweetest.windows import w
 from sweetest.locator import locating_elements, locating_data, locating_element
 from sweetest.log import logger
 from sweetest.parse import data_format
-from sweetest.utility import compare
+from sweetest.utility import compare, json2dict
 
 
 class Common():
@@ -39,7 +39,7 @@ class Common():
 def open(step):
     element = step['element']
     value = e.get(element)[1]
-    if step['data'].get('清理缓存', '') or step['data'].get('cookie', ''):
+    if step['data'].get('清理缓存', '') or step['data'].get('clear', ''):
         g.driver.delete_all_cookies()
     if step['data'].get('打开方式', '') == '新标签页' or step['data'].get('mode', '').lower() == 'tab':
         js = "window.open('%s')" % value
@@ -56,6 +56,11 @@ def open(step):
             w.init()
         g.driver.get(value)
         w.open(step)
+    cookie = step['data'].get('cookie', '')
+    if cookie:
+        g.driver.add_cookie(json2dict(cookie))
+        co = g.driver.get_cookie(json2dict(cookie).get('name', ''))
+        logger.info(f'cookie is add: {co}')
     sleep(0.5)
 
 
