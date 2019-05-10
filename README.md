@@ -49,7 +49,7 @@ python start.py
 
 OK，如果一切顺利的话，sweetest 已经跑起来了
 
-> 详细文档：https://doc.sweeter.io/#/sweetest/
+> 详细文档：https://doc.sweeter.io/sweetest/
 
 ## 加入我们
 
