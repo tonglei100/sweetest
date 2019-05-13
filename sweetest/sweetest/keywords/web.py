@@ -294,3 +294,31 @@ def navigate(step):
         g.driver.forward()
     elif element.lower() in ('后退', 'back'):
         g.driver.back()
+
+
+def scroll(step):
+    data = step['data']
+    x = data.get('x')
+    y = data.get('y') or data.get('text')
+
+    element = step['element']
+    if element == '':
+        # if x is None:
+        #     x = '0'
+        # g.driver.execute_script(
+        #     f"window.scrollTo({x},{y})")
+        if y:
+            g.driver.execute_script(
+                f"document.documentElement.scrollTop={y}")
+        if x:
+            g.driver.execute_script(
+                f"document.documentElement.scrollLeft={x}")         
+    else:
+        element_location = locating_element(element)
+
+        if y:
+            g.driver.execute_script(
+                f"arguments[0].scrollTop={y}", element_location)
+        if x:
+            g.driver.execute_script(
+                f"arguments[0].scrollLeft={x}", element_location)               

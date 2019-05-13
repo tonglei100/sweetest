@@ -23,9 +23,6 @@ def locating_element(element, action=''):
 
     if el['by'].lower() in ('title', 'url', 'current_url'):
         return None
-    elif action == 'CLICK':
-        el_location = wait.until(EC.element_to_be_clickable(
-            (getattr(By, el['by'].upper()), value)))
     else:
         el_location = wait.until(EC.presence_of_element_located(
             (getattr(By, el['by'].upper()), value)))
@@ -39,6 +36,13 @@ def locating_element(element, action=''):
                 "arguments[0].scrollIntoView(false)", el_location)
     except:
         pass
+
+    if action == 'CLICK':
+        el_location = wait.until(EC.element_to_be_clickable(
+            (getattr(By, el['by'].upper()), value)))
+    else:
+        el_location = wait.until(EC.visibility_of_element_located(
+            (getattr(By, el['by'].upper()), value)))
 
     return el_location
 

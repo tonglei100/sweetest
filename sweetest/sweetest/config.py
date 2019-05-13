@@ -29,7 +29,9 @@ web_keywords = {
     '上传文件': 'UPLOAD',
     'UPLOAD': 'UPLOAD',
     '导航': 'NAVIGATE',
-    'NAVIGATE': 'NAVIGATE'
+    'NAVIGATE': 'NAVIGATE',
+    '滚动条': 'SCROLL',    
+    'SCROLL': 'SCROLL'
 }
 
 common_keywords = {
