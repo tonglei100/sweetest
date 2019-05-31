@@ -95,12 +95,14 @@ mobile_keywords = {
 }
 
 windows_keywords = {
+    '检查': 'CHECK',
+    'CHECK': 'CHECK',    
     '菜单': 'MENU_SELECT',
     'MENU_SELECT': 'MENU_SELECT',
     '选择': 'SELECT',
     'SELECT': 'SELECT',
     '点击': 'CLICK',
-    'CLICK': 'CLICK',
+    'CLICK': 'CLICK',   
     '输入': 'INPUT',    
     'INPUT': 'INPUT',
     '填写': 'SET_TEXT',

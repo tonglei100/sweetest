@@ -1,74 +1,85 @@
 from pywinauto.application import Application
 from pywinauto.keyboard import send_keys as sendkeys
+import re
+from sweetest.log import logger
 from sweetest.globals import g
-
+from sweetest.utility import compare
 
 class Windows():
     def __init__(self, app):
         self.app = app
         self.backend = app.backend.name
         self.dialogs = []
-        if self.backend == 'win32':
-            self.func = 'window'
-        else:
-            self.func = 'child_window'
 
     def dialog(self, page):
-        if page.startswith('>'):
-            if self.dialogs:
-                if self.backend == 'win32':
-                    current_dialog = self.app.window(best_match=page[1:])
-                elif self.backend == 'uia':
-                    current_dialog = self.dialogs[-1].child_window(best_match=page[1:])
-                self.dialogs.append(current_dialog)
-                return current_dialog
-            else:
-                raise Exception('Dialog: your page start with ">", but there is no parent dialog')
-        elif page.startswith('<'):
-            if len(self.dialogs) >= 2:
-                self.dialogs.pop()
-                return self.dialogs[-1]
-            else:
-                raise Exception('Dialog: your page start with "<", but the parent is less than 1 dialog')
-        elif page.strip() == '':
+        if page == []:
             if self.dialogs:
                 return self.dialogs[-1]
             else:           
-                raise Exception('Dialog: your page start with "", but there is no parent dialog') 
+                raise Exception('Dialog: your page start with "", but there is no parent dialog')
+        elif  page[0] == '<':
+            if len(self.dialogs) >= 2:
+                self.dialogs.pop()
+                return self.dialog(page[1:])
+            else:
+                raise Exception('Dialog: your page start with "<", but the parent is less than 1 dialog')            
+        elif page[0] == '>':
+            if self.dialogs:
+                if self.backend == 'win32':
+                    current_dialog = self.app.window(best_match=page[1])
+                elif self.backend == 'uia':
+                    current_dialog = self.dialogs[-1].child_window(best_match=page[1])
+                self.dialogs.append(current_dialog)
+                return self.dialog(page[2:])
+            else:
+                raise Exception('Dialog: your page start with ">", but there is no parent dialog')
         else:
-            current_dialog = self.app.window(best_match=page)
+            current_dialog = self.app.window(best_match=page[0])
             self.dialogs = [current_dialog]
-            return current_dialog            
+            return self.dialog(page[1:])            
 
 
 def menu_select(dialog, step):
     element = step['element']
-    if dialog.backend.name == 'win32':
+    try:
         dialog.menu_select(element)
-    elif dialog.backend.name == 'uia':
+    except:
         for el in element.split('->'):
             dialog.child_window(best_match=el).select()
 
 
 def select(dialog, step):
     element = step['element']
-    getattr(dialog, g.windows.func)(best_match=element).select()
+    if dialog.backend.name == 'win32':
+        dialog.window(best_match=element).select()
+    elif dialog.backend.name == 'uia':
+        dialog.child_window(best_match=element).select()
 
 
 def click(dialog, step):
     element = step['element']
-    getattr(dialog, g.windows.func)(best_match=element).click()
+    if dialog.backend.name == 'win32':
+        dialog.window(best_match=element).click_input()
+    elif dialog.backend.name == 'uia':
+        dialog.child_window(best_match=element).click_input()
+
 
 def input(dialog, step):
     element = step['element']
     vaule = step['data']['text']
-    getattr(dialog, g.windows.func)(best_match=element).type_keys(vaule, with_spaces=True)
+    if dialog.backend.name == 'win32':
+        dialog.window(best_match=element).type_keys(vaule, with_spaces=True)
+    elif dialog.backend.name == 'uia':
+        dialog.child_window(best_match=element).type_keys(vaule, with_spaces=True)
 
 
 def set_text(dialog, step):
     element = step['element']
     vaule = step['data']['text']
-    getattr(dialog, g.windows.func)(best_match=element).set_edit_text(vaule)
+    if dialog.backend.name == 'win32':
+        dialog.window(best_match=element).set_edit_text(vaule)
+    elif dialog.backend.name == 'uia':
+        dialog.child_window(best_match=element).set_edit_text(vaule)
 
 
 def send_keys(dialog, step):
@@ -76,10 +87,60 @@ def send_keys(dialog, step):
     vaule = step['data'].get('text')
     dialog.set_focus()
     if element:
-        getattr(dialog, g.windows.func)(best_match=element).set_focus()
+        if dialog.backend.name == 'win32':
+            dialog.window(best_match=element).set_focus()
+        elif dialog.backend.name == 'uia':
+            dialog.child_window(best_match=element).set_focus()
         sendkeys(vaule)
     else:
         sendkeys(vaule)
+
+
+def check(dialog, step):
+    element = step['element']
+    data = step['data']
+    if not data:
+        data = step['expected']
+    output = step['output']
+    for key in data:
+        # 预期结果
+        expected = data[key]
+        # 切片操作处理
+        s = re.findall(r'\[.*?\]', key)
+        if s:
+            s = s[0]
+            key = key.replace(s, '')
+
+        if key == 'text':
+            if dialog.backend.name == 'win32':
+                real = dialog.window(best_match=element).texts()[0]
+            elif dialog.backend.name == 'uia':
+                real = dialog.child_window(best_match=element).texts()[0]
+        elif key == 'vaule':
+            if dialog.backend.name == 'win32':
+                real = dialog.window(best_match=element).text_block()
+            elif dialog.backend.name == 'uia':
+                real = dialog.child_window(best_match=element).get_value()          
+        if s:
+            real = eval('real' + s)
+
+        logger.info('DATA:%s' % repr(expected))
+        logger.info('REAL:%s' % repr(real))
+        compare(expected, real)
+
+    # 获取元素其他属性
+    for key in output:
+
+        if output[key] == 'text':
+            if dialog.backend.name == 'win32':
+                g.var[key] = dialog.window(best_match=element).texts()[0]
+            elif dialog.backend.name == 'uia':
+                g.var[key] = dialog.child_window(best_match=element).texts()[0]
+        elif output[key] == 'vaule':
+            if dialog.backend.name == 'win32':
+                g.var[key] = dialog.window(best_match=element).get_value()
+            elif dialog.backend.name == 'uia':
+                g.var[key] = dialog.child_window(best_match=element).get_value()  
 
 
 def window(dialog, step):
