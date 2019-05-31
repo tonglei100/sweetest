@@ -1,5 +1,6 @@
 from time import sleep
 from pathlib import Path
+import re
 from sweetest.log import logger
 from sweetest.globals import g, now, timestamp
 from sweetest.elements import e
@@ -139,7 +140,17 @@ class TestCase:
 
                 elif g.platform.lower() in ('windows',) and step['keyword'] in windows_keywords:
                     from sweetest.keywords import windows
-                    dialog = g.windows.dialog(step['page'])
+                    _page = ''
+                    if step['page'].startswith('#'):
+                        _page = step['page'][1:]
+                        page = [x for x in re.split(r'(<|>)', _page) if x !='']
+                    else:
+                        page = [x for x in re.split(r'(<|>)', step['page']) if x !='']
+
+                    if _page:
+                        dialog = g.windows['#'].dialog(page)
+                    else:    
+                        dialog = g.windows['default'].dialog(page)
                     #dialog.wait('ready')
                     # 根据关键字调用关键字实现
                     getattr(windows, step['keyword'].lower())(dialog, step)

@@ -36,7 +36,7 @@ class Global:
         self.current_page = '通用'
         self.db = {}
         self.http = {}
-        self.win = {}
+        self.windows = {}
         self.baseurl = {}
         self.driver = ''
         self.action = {}
@@ -116,13 +116,23 @@ class Global:
             from sweetest.keywords.windows import Windows
             self.desired_caps.pop('platformName')
             backend = self.desired_caps.pop('backend', 'win32')
+            _path = ''
+            if self.desired_caps.get('#path'):
+                _path = self.desired_caps.pop('#path')
+                _backend = self.desired_caps.pop('#backend')
+
             if self.desired_caps.get('cmd_line'):
-                self.app = Application(backend).start(**self.desired_caps)
+                app = Application(backend).start(**self.desired_caps)
             elif self.desired_caps.get('path'):
-                self.app = Application(backend).connect(**self.desired_caps)
+                app = Application(backend).connect(**self.desired_caps)
             else:
                 raise Exception('Error: Windows GUI start/connect args error')
-            self.windows = Windows(self.app)
+            self.windows['default'] = Windows(app)
+            
+            if _path:
+                _app = Application(_backend).connect(path=_path)
+                self.windows['#'] = Windows(_app)
+
 
     def plan_end(self):
         self.plan_data['plan'] = self.plan_name
