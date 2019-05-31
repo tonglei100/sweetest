@@ -98,7 +98,7 @@ class Snapshot:
     def check(self, step, element):
         if Path(self.expected.get('#ScreenShot', '')).is_file():
             # 屏幕截图比较
-            image1 = Image.open(step['ScreenShot'])
+            image1 = Image.open(self.expected['#ScreenShot'])
             image2 = Image.open(step['ScreenShot'])
             histogram1 = image1.histogram()
             histogram2 = image2.histogram()
@@ -115,7 +115,7 @@ class Snapshot:
                 diff.save(step['diffScreen'])
                 raise Exception('SnapShot: ScreenShot is diff: %s' % differ)
         elif self.expected.get('#ScreenShot'):
-            get_screenshot(self.expected['ScreenShot'])
+            get_screenshot(self.expected['#ScreenShot'])
 
         if Path(self.expected.get('#ElementShot', '')).is_file():
             file_name = self.label + now() + '#Element' + '.png'
