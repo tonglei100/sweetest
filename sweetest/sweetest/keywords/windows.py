@@ -68,9 +68,9 @@ def input(dialog, step):
     element = step['element']
     vaule = step['data']['text']
     if dialog.backend.name == 'win32':
-        dialog.window(best_match=element).type_keys(vaule, with_spaces=True)
+        dialog.window(best_match=element).type_keys(vaule, with_spaces=True, with_newlines='\r\n')
     elif dialog.backend.name == 'uia':
-        dialog.child_window(best_match=element).type_keys(vaule, with_spaces=True)
+        dialog.child_window(best_match=element).type_keys(vaule, with_spaces=True, with_newlines='\r\n')
 
 
 def set_text(dialog, step):
@@ -113,14 +113,14 @@ def check(dialog, step):
 
         if key == 'text':
             if dialog.backend.name == 'win32':
-                real = dialog.window(best_match=element).texts()[0]
+                real = dialog.window(best_match=element).texts()[0].replace('\r\n', '\n')
             elif dialog.backend.name == 'uia':
-                real = dialog.child_window(best_match=element).texts()[0]
+                real = dialog.child_window(best_match=element).texts()[0].replace('\r\n', '\n')
         elif key == 'vaule':
             if dialog.backend.name == 'win32':
-                real = dialog.window(best_match=element).text_block()
+                real = dialog.window(best_match=element).text_block().replace('\r\n', '\n')
             elif dialog.backend.name == 'uia':
-                real = dialog.child_window(best_match=element).get_value()          
+                real = dialog.child_window(best_match=element).get_value().replace('\r\n', '\n')          
         if s:
             real = eval('real' + s)
 
