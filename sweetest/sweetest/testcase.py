@@ -119,7 +119,7 @@ class TestCase:
 
                     # 根据关键字调用关键字实现
                     element = getattr(web, step['keyword'].lower())(step)
-                    snap.shot(step, element)
+                    snap.web_shot(step, element)
 
                 elif g.platform.lower() in ('ios', 'android') and step['keyword'] in mobile_keywords:
                     # 切換 context 處理
@@ -152,9 +152,12 @@ class TestCase:
                     else:    
                         dialog = g.windows['default'].dialog(page)
                     #dialog.wait('ready')
+
+                    snap.pre(step, label)
+
                     # 根据关键字调用关键字实现
                     getattr(windows, step['keyword'].lower())(dialog, step)
-                    sleep(1)
+                    snap.windows_shot(dialog, step)
 
                 elif step['keyword'] in http_keywords:
                     # 根据关键字调用关键字实现
