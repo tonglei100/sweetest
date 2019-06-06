@@ -75,6 +75,24 @@ def execute(step):
     return result, steps
 
 
+def dedup(text):
+    '''
+    去掉 text 中括号及其包含的字符
+    '''
+    _text = ''
+    n = 0
+
+    for s in text:
+        if s not in ( '(', ')'):
+            if n <= 0:
+                _text += s
+        elif s == '(':
+            n += 1
+        elif s == ')':
+            n -= 1
+    return _text    
+
+
 def sql(step):
     element = step['element']
     _sql = e.get(element)[1]
@@ -96,7 +114,8 @@ def sql(step):
 
     result = {}
     if _sql.lower().startswith('select'):
-        keys = _sql[6:].split('FROM')[0].split('from')[0].strip().split(',')
+        text = _sql[6:].split('FROM')[0].split('from')[0].strip()
+        keys = dedup(text).split(',')
         for i, k in enumerate(keys):
             keys[i] = k.split(' ')[-1]
         result = dict(zip(keys, row))
