@@ -64,6 +64,22 @@ def click(dialog, step):
         dialog.child_window(best_match=element).click_input()
 
 
+def check_off(dialog, step):
+    element = step['element']
+    if dialog.backend.name == 'win32':
+        dialog.window(best_match=element).check()
+    elif dialog.backend.name == 'uia':
+        dialog.child_window(best_match=element).check()
+
+
+def double_click(dialog,step):
+    element = step['element']
+    if dialog.backend.name == 'win32':
+        dialog.window(best_match=element).double_click_input()
+    elif dialog.backend.name == 'uia':
+        dialog.child_window(best_match=element).double_click_input()    
+
+
 def input(dialog, step):
     element = step['element']
     vaule = step['data']['text']
@@ -120,9 +136,25 @@ def check(dialog, step):
             if dialog.backend.name == 'win32':
                 real = dialog.window(best_match=element).text_block().replace('\r\n', '\n')
             elif dialog.backend.name == 'uia':
-                real = dialog.child_window(best_match=element).get_value().replace('\r\n', '\n')          
+                real = dialog.child_window(best_match=element).get_value().replace('\r\n', '\n')                                         
         if s:
             real = eval('real' + s)
+
+        if key == 'selected':
+            if dialog.backend.name == 'win32':
+                real = dialog.window(best_match=element).is_selected()
+            elif dialog.backend.name == 'uia':
+                real = dialog.child_window(best_match=element).is_selected()          
+        elif key == 'checked':
+            if dialog.backend.name == 'win32':
+                real = dialog.window(best_match=element).is_checked()
+            elif dialog.backend.name == 'uia':
+                real = dialog.child_window(best_match=element).is_checked()
+        elif key == 'focused':
+            if dialog.backend.name == 'win32':
+                real = dialog.window(best_match=element).is_focused()
+            elif dialog.backend.name == 'uia':
+                real = dialog.child_window(best_match=element).is_focused() 
 
         logger.info('DATA:%s' % repr(expected))
         logger.info('REAL:%s' % repr(real))
@@ -133,14 +165,14 @@ def check(dialog, step):
 
         if output[key] == 'text':
             if dialog.backend.name == 'win32':
-                g.var[key] = dialog.window(best_match=element).texts()[0]
+                g.var[key] = dialog.window(best_match=element).texts()[0].replace('\r\n', '\n') 
             elif dialog.backend.name == 'uia':
-                g.var[key] = dialog.child_window(best_match=element).texts()[0]
+                g.var[key] = dialog.child_window(best_match=element).texts()[0].replace('\r\n', '\n') 
         elif output[key] == 'vaule':
             if dialog.backend.name == 'win32':
-                g.var[key] = dialog.window(best_match=element).get_value()
+                g.var[key] = dialog.window(best_match=element).text_block().replace('\r\n', '\n') 
             elif dialog.backend.name == 'uia':
-                g.var[key] = dialog.child_window(best_match=element).get_value()  
+                g.var[key] = dialog.child_window(best_match=element).get_value().replace('\r\n', '\n')   
 
 
 def window(dialog, step):
