@@ -36,7 +36,7 @@ class Windows():
         else:
             current_dialog = self.app.window(best_match=page[0])
             self.dialogs = [current_dialog]
-            return self.dialog(page[1:])            
+            return self.dialog(page[1:])
 
 
 def menu_select(dialog, step):
@@ -132,7 +132,7 @@ def check(dialog, step):
                 real = dialog.window(best_match=element).texts()[0].replace('\r\n', '\n')
             elif dialog.backend.name == 'uia':
                 real = dialog.child_window(best_match=element).texts()[0].replace('\r\n', '\n')
-        elif key == 'vaule':
+        elif key == 'value':
             if dialog.backend.name == 'win32':
                 real = dialog.window(best_match=element).text_block().replace('\r\n', '\n')
             elif dialog.backend.name == 'uia':
@@ -150,6 +150,16 @@ def check(dialog, step):
                 real = dialog.window(best_match=element).is_checked()
             elif dialog.backend.name == 'uia':
                 real = dialog.child_window(best_match=element).is_checked()
+        elif key == 'enabled':
+            if dialog.backend.name == 'win32':
+                real = dialog.window(best_match=element).is_enabled()
+            elif dialog.backend.name == 'uia':
+                real = dialog.child_window(best_match=element).is_enabled()
+        elif key == 'visible':
+            if dialog.backend.name == 'win32':
+                real = dialog.window(best_match=element).is_visible()
+            elif dialog.backend.name == 'uia':
+                real = dialog.child_window(best_match=element).is_visible()                
         elif key == 'focused':
             if dialog.backend.name == 'win32':
                 real = dialog.window(best_match=element).is_focused()
@@ -162,13 +172,17 @@ def check(dialog, step):
 
     # 获取元素其他属性
     for key in output:
-
-        if output[key] == 'text':
+        k = output[key]
+        if dialog.window(best_match=element).class_name() == 'Edit' and k == 'text':
+            k = 'value'
+                        
+        if k == 'text':
             if dialog.backend.name == 'win32':
                 g.var[key] = dialog.window(best_match=element).texts()[0].replace('\r\n', '\n') 
             elif dialog.backend.name == 'uia':
-                g.var[key] = dialog.child_window(best_match=element).texts()[0].replace('\r\n', '\n') 
-        elif output[key] == 'vaule':
+                g.var[key] = dialog.child_window(best_match=element).texts()[0].replace('\r\n', '\n')
+
+        if k == 'value':
             if dialog.backend.name == 'win32':
                 g.var[key] = dialog.window(best_match=element).text_block().replace('\r\n', '\n') 
             elif dialog.backend.name == 'uia':
@@ -186,4 +200,23 @@ def window(dialog, step):
     elif element.lower() in ('关闭', 'close'):
         dialog.close()
     elif element.lower() in ('前台', 'set_focus'):
-        dialog.set_focus()        
+        dialog.set_focus()
+    elif element.lower() in ('重置', 'reset'):
+        for i in range(10):
+            if not dialog.has_focus():
+                try:
+                    # 如果弹出保存窗口
+                    save = dialog.get_active()
+                    element = '(N)'
+                    if dialog.backend.name == 'win32':
+                        save.window(best_match=element).click_input()
+                    elif dialog.backend.name == 'uia':
+                        save.child_window(best_match=element).click_input()                
+                except:
+                    pass
+                #按 Alt+F4 关闭窗口
+                sendkeys('%{F4}')
+            else:
+                break
+        else:
+            raise Exception(f'Reset the Windows is failure: try Alt+F4 for {i+1} times')

@@ -129,7 +129,7 @@ def replace(data):
     keys = re.findall(r'<(.*?)>', data)
     for k in keys:
         # 正则匹配出 k 中的 + - ** * // / % , ( ) 返回列表
-        values = re.split(r'(\+|-|\*\*|\*|//|/|%|,|\(|\))', k)
+        values = re.split(r'(\+|-|\*\*|\*|//|/|%|,|\(|\)|\'|\")', k)
         for j, v in enumerate(values):
             #切片操作处理，正则匹配出 [] 中内容
             s = v.split('[', 1)
@@ -245,7 +245,7 @@ def get_record(data_file):
 
 
 def str2int(s):
-    s = s.replace(',', '').split('.', 1)
+    s = str(s).replace(',', '').split('.', 1)
     if len(s) == 2:
         dot = s[-1]
         assert int(dot) == 0
@@ -259,13 +259,18 @@ def zero(s):
     return s
 
 
-def str2float(s):
-    s = str(s).replace(',', '').split('.', 1)
+def str2float(s, n=None):
+    s = str(s).replace(',', '')
+    number = s.split('.', 1)
+    if n:
+        f = float(s)
+        return round(f, n), n
+
     dot = '0'
-    if len(s) == 2:
-        dot = s[-1]
+    if len(number) == 2:
+        dot = number[-1]
         dot = zero(dot)
-    f = float(s[0] + '.' + dot)
+    f = float(number[0] + '.' + dot)
 
     return round(f, len(dot)), len(dot)
 
