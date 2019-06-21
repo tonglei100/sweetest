@@ -124,7 +124,7 @@ def replace_list(data):
         data[i] = replace(data[i])
 
 
-def replace(data):
+def replace_old(data):
     # 正则匹配出 data 中所有 <> 中的变量，返回列表
     keys = re.findall(r'<(.*?)>', data)
     for k in keys:
@@ -139,7 +139,7 @@ def replace(data):
                 index = '[' + s[1]
 
             if v in g.var:
-                # 如果在 g.var 中是 list，
+                # 如果在 g.var 中是 list
                 if isinstance(g.var[v], list):
                     if index:
                         # list 切片取值（值应该是动态赋值的变量，如自定义脚本的返回值）
@@ -181,6 +181,41 @@ def replace(data):
         # 否则需要替换，此时变量强制转换为为字符串
         else:
             data = data.replace('<' + k + '>', str(values))
+    return data
+
+
+def replace(data):
+    # 正则匹配出 data 中所有 <> 中的变量，返回列表
+    keys = re.findall(r'<(.*?)>', data)
+    _vars = {}
+
+    for k in keys:
+        # 正则匹配出 k 中的 + - ** * // / % , ( ) 返回列表
+        values = re.split(r'(\+|-|\*\*|\*|//|/|%|,|\(|\))', k)
+        for j, v in enumerate(values):
+            #切片操作处理，正则匹配出 [] 中内容
+            s = v.split('[', 1)
+            index = ''
+            if len(s) == 2:
+                v = s[0]
+                index = '[' + s[1]
+
+            if v in g.var and v not in _vars:
+                # 如果在 var 中是 list
+                if isinstance(g.var[v], list) and not index:
+                    # 是测试数据文件中的值，则 pop 第一个值
+                    _vars[v] = g.var[v].pop(0)
+                    # 再判断一下此 list 是否只有一个值了，如果是，则从 list 变为该值
+                    if len(g.var[v]) == 1:
+                        g.var[v] = g.var[v][0]
+                else:
+                    _vars[v] = g.var[v]
+        value = eval(k, globals(), _vars)
+        if data == '<' + keys[0] + '>':
+            data = value
+        # 否则需要替换，此时变量强制转换为为字符串
+        else:
+            data = data.replace('<' + k + '>', str(value))
     return data
 
 
@@ -275,6 +310,20 @@ def str2float(s, n=None):
     return round(f, len(dot)), len(dot)
 
 
+def f(v, e, n=2):
+    '''
+    判断2个 float 数值是否相同，类型可以是 str 或 float 
+    v: 实际值，如：12.345, '1234.56', '1,234.5600' 
+    e: 预期结果, 示例值同 v
+    n: 小数点精确位数
+    '''
+    v = str(v).replace(',', '')
+    e = str(e).replace(',', '') 
+    _v = round(float(v), n)
+    _e = round(float(e), n)
+    assert round(_v, n) == round(_e, n)
+
+
 def mkdir(p):
     path = Path(p)
     if not path.is_dir():
@@ -304,6 +353,10 @@ def compare(data, real):
         if data.startswith('#'):
             assert data[1:] != str(real)
             return
+        elif data.startswith(':'):
+            exec('v=real;'+data[1:])
+            return
+                    
         assert isinstance(real, str)
 
         if data.startswith('*'):
@@ -315,6 +368,7 @@ def compare(data, real):
         elif data.startswith('$'):
             assert real.endswith(data[1:])
             return
+
         elif data.startswith('\\'):
             data = data[1:]
 
