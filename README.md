@@ -1,4 +1,4 @@
-![sweetest](https://doc.sweeter.io/docs/_media/sweeter.png)
+![sweetest](https://sweeter.io/docs/_media/sweeter.png)
 
 # sweetest
 
@@ -45,11 +45,11 @@ cd sweetest_example
 python start.py
 ```
 
-![install](https://doc.sweeter.io/docs/_snapshot/install.png)
+![install](https://sweeter.io/docs/_snapshot/install.png)
 
 OK，如果一切顺利的话，sweetest 已经跑起来了
 
-> 详细文档：https://doc.sweeter.io/#/sweetest/
+> 详细文档：https://sweeter.io/#/sweetest/
 
 ## 加入我们
 
@@ -58,4 +58,4 @@ QQ 交流群：**158755338**
 
 微信公众号：**喜文测试**
 
-![QQ2](https://doc.sweeter.io/docs/_media/QQ.png)![WeChat](https://doc.sweeter.io/docs/_media/WeChat.png)
+![QQ2](https://sweeter.io/docs/_media/QQ.png)![WeChat](https://sweeter.io/docs/_media/WeChat.png)
