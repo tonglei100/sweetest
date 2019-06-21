@@ -100,9 +100,11 @@ class TestCase:
 
                 if isinstance(step['element'], str):
                     step['element'] = replace(step['element'])
+                    step['_element'] = step['element']
                 elif isinstance(step['element'], list):
                     for i in range(len(step['element'])):
                         step['element'][i] = replace(step['element'][i])
+                    step['_element'] = '|'.join(step['element'])
 
                 step['vdata'] = v_data(step['data'])
 
