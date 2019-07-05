@@ -1,4 +1,5 @@
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.common.exceptions import ElementClickInterceptedException
 from time import sleep
 import re
 from sweetest.globals import g
@@ -155,11 +156,19 @@ def click(step):
     if isinstance(element, str):
         element_location = locating_element(element, 'CLICK')
         if element_location:
-            element_location.click()
+            try:
+                element_location.click()
+            except ElementClickInterceptedException:  # 如果元素为不可点击状态，则等待1秒，再重试一次
+                sleep(1)
+                element_location.click()
     elif isinstance(element, list):
         for _e in element:
             element_location = locating_element(_e, 'CLICK')
-            element_location.click()
+            try:
+                element_location.click()
+            except ElementClickInterceptedException:  # 如果元素为不可点击状态，则等待1秒，再重试一次
+                sleep(1)
+                element_location.click()            
             sleep(0.5)
     sleep(0.5)
 

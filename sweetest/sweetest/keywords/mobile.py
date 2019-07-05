@@ -8,6 +8,7 @@ from sweetest.log import logger
 from sweetest.parse import data_format
 from sweetest.utility import compare
 from appium.webdriver.common.touch_action import TouchAction
+from selenium.common.exceptions import ElementClickInterceptedException
 
 
 class Common():
@@ -134,12 +135,20 @@ def click(step):
     if isinstance(element, str):
         #element_location = locating_element(element, 'CLICK')
         element_location = locating_element(element)
-        element_location.click()
+        try:
+            element_location.click()
+        except ElementClickInterceptedException:  # 如果元素为不可点击状态，则等待1秒，再重试一次
+            sleep(1)
+            element_location.click()
     elif isinstance(element, list):
         for _e in element:
             #element_location = locating_element(_e, 'CLICK')
             element_location = locating_element(_e)
-            element_location.click()
+            try:
+                element_location.click()
+            except ElementClickInterceptedException:  # 如果元素为不可点击状态，则等待1秒，再重试一次
+                sleep(1)
+                element_location.click()
             sleep(0.5)
     sleep(0.5)
 
