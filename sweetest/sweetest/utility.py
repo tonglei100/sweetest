@@ -9,6 +9,7 @@ import time
 from sweetest.config import header
 from sweetest.globals import g
 
+
 path = Path('lib')
 if path.is_dir():
     from lib import *
@@ -185,14 +186,18 @@ def replace_old(data):
 
 
 def replace(data):
+    left_angle = 'dsfw4rwfdfstg43'
+    right_angle = '3dsdtgsgt43trfdf'
+    data = data.replace('\<', left_angle).replace('\>', right_angle)
     # 正则匹配出 data 中所有 <> 中的变量，返回列表
     keys = re.findall(r'<(.*?)>', data)
     _vars = {}
 
     for k in keys:
+        k = k.replace(left_angle, '<').replace(right_angle, '>')
         # 正则匹配出 k 中的 + - ** * // / % , ( ) 返回列表
         values = re.split(r'(\+|-|\*\*|\*|//|/|%|,|\(|\))', k)
-        for j, v in enumerate(values):
+        for v in values:
             #切片操作处理，正则匹配出 [] 中内容
             s = v.split('[', 1)
             index = ''
@@ -210,12 +215,15 @@ def replace(data):
                         g.var[v] = g.var[v][0]
                 else:
                     _vars[v] = g.var[v]
-        value = eval(k, globals(), _vars)
+
+        value = eval(k, globals(), _vars)              
+        
         if data == '<' + keys[0] + '>':
             data = value
         # 否则需要替换，此时变量强制转换为为字符串
         else:
             data = data.replace('<' + k + '>', str(value))
+            data = data.replace(left_angle, '<').replace(right_angle, '>')
     return data
 
 
