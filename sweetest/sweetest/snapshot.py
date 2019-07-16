@@ -105,7 +105,7 @@ class Snapshot:
             histogram2 = image2.histogram()
             differ = math.sqrt(reduce(operator.add, list(
                 map(lambda a, b: (a - b)**2, histogram1, histogram2))) / len(histogram1))
-            diff = ImageChops.difference(image1, image2)
+            diff = ImageChops.difference(image1.convert('RGB'), image2.convert('RGB'))
             if differ == 0.0:
                 # 图片间没有任何不同
                 logger.info('SnapShot: ScreenShot is the same')
@@ -130,7 +130,7 @@ class Snapshot:
             histogram2 = image2.histogram()
             differ = math.sqrt(reduce(operator.add, list(
                 map(lambda a, b: (a - b)**2, histogram1, histogram2))) / len(histogram1))
-            diff = ImageChops.difference(image1, image2)
+            diff = ImageChops.difference(image1.convert('RGB'), image2.convert('RGB'))
             if differ == 0.0:
                 logger.info('SnapShot: ElementShot is the same')
             else:
@@ -184,7 +184,7 @@ class Snapshot:
             histogram2 = image2.histogram()
             differ = math.sqrt(reduce(operator.add, list(
                 map(lambda a, b: (a - b)**2, histogram1, histogram2))) / len(histogram1))
-            diff = ImageChops.difference(image1, image2)
+            diff = ImageChops.difference(image1.convert('RGB'), image2.convert('RGB'))
             if differ == 0.0:
                 # 图片间没有任何不同
                 logger.info('SnapShot: ScreenShot is the same')
@@ -214,7 +214,7 @@ class Snapshot:
             histogram2 = image2.histogram()
             differ = math.sqrt(reduce(operator.add, list(
                 map(lambda a, b: (a - b)**2, histogram1, histogram2))) / len(histogram1))
-            diff = ImageChops.difference(image1, image2)
+            diff = ImageChops.difference(image1.convert('RGB'), image2.convert('RGB'))
             if differ == 0.0:
                 logger.info('SnapShot: ElementShot is the same')
             else:
