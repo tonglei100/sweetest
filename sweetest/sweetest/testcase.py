@@ -83,7 +83,7 @@ class TestCase:
                 step['page'], step['custom'], step['element'] = elements_format(
                     step['page'], step['element'])
             label = g.sheet_name + '.' + \
-                self.testcase['id'] + '#' + str(step['no'])
+                self.testcase['id'] + '#' + str(step['no']).replace('<', '(').replace('>', ')').replace('*', 'x')
             snap = Snapshot()
             try:
                 after_function = step['data'].pop('AFTER_FUNCTION', '')
