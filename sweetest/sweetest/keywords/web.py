@@ -147,7 +147,10 @@ def input(step):
             elif element_location:
                 element_location.send_keys(data[key])
             sleep(0.5)
-
+        if key == 'word':  #逐字输入
+            for d in data[key]:
+                element_location.send_keys(d)
+                sleep(0.3)
     return element_location
 
 
