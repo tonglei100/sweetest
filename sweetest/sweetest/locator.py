@@ -24,8 +24,13 @@ def locating_element(element, action=''):
     if el['by'].lower() in ('title', 'url', 'current_url'):
         return None
     else:
-        el_location = wait.until(EC.presence_of_element_located(
-            (getattr(By, el['by'].upper()), value)))
+        try:
+            el_location = wait.until(EC.presence_of_element_located(
+                (getattr(By, el['by'].upper()), value)))
+        except:
+            sleep(3)
+            el_location = wait.until(EC.presence_of_element_located(
+                (getattr(By, el['by'].upper()), value)))            
 
     try:
         if g.driver.name in ('chrome', 'safari'):
@@ -37,12 +42,15 @@ def locating_element(element, action=''):
     except:
         pass
 
-    if action == 'CLICK':
-        el_location = wait.until(EC.element_to_be_clickable(
-            (getattr(By, el['by'].upper()), value)))
-    else:
-        el_location = wait.until(EC.visibility_of_element_located(
-            (getattr(By, el['by'].upper()), value)))
+    try:
+        if action == 'CLICK':
+            el_location = wait.until(EC.element_to_be_clickable(
+                (getattr(By, el['by'].upper()), value)))
+        else:
+            el_location = wait.until(EC.visibility_of_element_located(
+                (getattr(By, el['by'].upper()), value)))
+    except:
+        pass
 
     return el_location
 
