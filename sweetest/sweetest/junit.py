@@ -70,6 +70,8 @@ class TestSuite():
             self.high_failures = 0
             self.medium_failures = 0
             self.low_failures = 0
+            self.skipped = 0
+            self.disabled = 0
             for case in self.cases:
                 if case.state == None:
                     case.error(
@@ -91,6 +93,10 @@ class TestSuite():
                         self.medium_errors += 1
                     if case.priority == 'L':
                         self.low_errors += 1
+                elif status == "skipped":
+                    self.skipped += 1                          
+                elif status == "blocked":
+                    self.disabled += 1              
                 else:
                     pass
             self.tests = len(self.cases)
@@ -113,6 +119,8 @@ class TestSuite():
         node.setAttribute("errors_detail", "H:%s M:%s L:%s" % (
             self.high_errors, self.medium_errors, self.low_errors))
         node.setAttribute("time", "%s" % self.time)
+        node.setAttribute("skipped", "%s" % self.skipped)         
+        node.setAttribute("disabled", "%s" % self.disabled)        
         for case in self.cases:
             node.appendChild(case.to_xml(doc))
 
