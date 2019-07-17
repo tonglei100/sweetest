@@ -63,13 +63,18 @@ class Snapshot:
         for data in (step['data'], step['expected']):
             if '#ScreenShot' in data:
                 self.screen_flag = True
+                p = Path(data['#ScreenShot']).stem
+                self.expected['#ScreenName'] = p.split('[')[1].split(']')[0] if '[' in p else p
                 if Path(data['#ScreenShot']).is_file():
+                                     
                     self.expected['#ScreenShot'] = data.pop('#ScreenShot')
-                else:
+                else:                  
                     self.expected['#ScreenShot'] = str(self.expected_folder / data.pop('#ScreenShot'))
 
             if '#ElementShot' in data:
                 self.element_flag = True
+                p = Path(data['#ElementShot']).stem
+                self.expected['#ElementName'] = p.split('[')[1].split(']')[0] if '[' in p else p
                 if Path(data['#ElementShot']).is_file():
                     self.expected['#ElementShot'] = data.pop('#ElementShot')
                 else:
@@ -83,7 +88,16 @@ class Snapshot:
         if g.snapshot or self.screen_flag or self.element_flag:
             from selenium.webdriver.support import expected_conditions as EC
             if not EC.alert_is_present()(g.driver):
-                file_name = self.label + now() + '.png'
+                if self.expected.get('#ScreenName'):
+                    screen_name = self.expected['#ScreenName']
+                elif screen_v:
+                    screen_name = screen_v
+                else:
+                    screen_name = ''
+                if screen_name:
+                    file_name = self.label + now() + '#Screen' + '[' + screen_name + ']' + '.png'
+                else:
+                    file_name = self.label + now() + '#Screen' + '.png'                                        
                 step['#ScreenShot'] = str(
                     Path(self.snapshot_folder) / file_name)
                 get_screenshot(step['#ScreenShot'])
@@ -91,7 +105,7 @@ class Snapshot:
                     g.var[screen_v] = step['#ScreenShot']
 
         if element_v:
-            file_name = self.label + now() + '#Element' + '.png'
+            file_name = self.label + now() + '#Element' + '[' + element_v + ']' + '.png'
             step['#ElementShot'] = str(Path(self.snapshot_folder) / file_name)
             crop(element, step['#ScreenShot'], step['#ElementShot'])
             g.var[element_v] = step['#ElementShot']
@@ -119,7 +133,7 @@ class Snapshot:
             get_screenshot(self.expected['#ScreenShot'])
 
         if Path(self.expected.get('#ElementShot', '')).is_file():
-            file_name = self.label + now() + '#Element' + '.png'
+            file_name = self.label + now() + '#Element' + '[' + self.expected['#ElementName'] + ']' + '.png'
             step['#ElementShot'] = str(Path(self.snapshot_folder) / file_name)
             crop(element, step['#ScreenShot'], step['#ElementShot'])
 
@@ -154,7 +168,16 @@ class Snapshot:
         element_v = self.output.get('#ElementShot', '')
 
         if g.snapshot or self.screen_flag:
-            file_name = self.label + now() + '.png'
+            if self.expected.get('#ScreenName'):
+                screen_name = self.expected['#ScreenName']
+            elif screen_v:
+                screen_name = screen_v
+            else:
+                screen_name = ''
+            if screen_name:
+                file_name = self.label + now() + '#Screen' + '[' + screen_name + ']' + '.png'
+            else:
+                file_name = self.label + now() + '#Screen' + '.png'               
             step['#ScreenShot'] = str(Path(self.snapshot_folder) / file_name)
             pic = dialog.capture_as_image()
             pic.save(step['#ScreenShot'])	
@@ -162,7 +185,7 @@ class Snapshot:
                 g.var[screen_v] = step['#ScreenShot']
 
         if element_v:
-            file_name = self.label + now() + '#Element' + '.png'
+            file_name = self.label + now() + '#Element' + '[' + element_v + ']' + '.png'
             step['#ElementShot'] = str(Path(self.snapshot_folder) / file_name)
 
             element = step['element']
