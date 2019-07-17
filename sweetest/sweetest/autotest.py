@@ -25,6 +25,7 @@ class Autotest:
         self.server_url = server_url
         self.conditions = {}
         g.plan_name = file_name.split('-')[0]
+        g.init(self.desired_caps, self.server_url)
 
         for p in ('JUnit', 'report', 'snapshot', 'report/' + g.plan_name):
             mkdir(p)
@@ -98,7 +99,6 @@ class Autotest:
 
         # 2.初始化全局对象
         try:
-            g.init(self.desired_caps, self.server_url)
             g.set_driver()
             # 如果测试数据文件存在，则从该文件里读取数据，赋值到全局变量列表里
             data_file = Path('data') / (g.plan_name +

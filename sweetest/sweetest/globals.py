@@ -23,6 +23,7 @@ class Global:
         self.testsuite_data = {}
         self.no = 1
 
+
     def init(self, desired_caps, server_url):
         self.desired_caps = desired_caps
         self.server_url = server_url
@@ -31,6 +32,9 @@ class Global:
         self.headless = desired_caps.pop('headless', False)
         self.snapshot = desired_caps.pop('snapshot', False)
         self.executable_path = desired_caps.pop('executable_path', False)
+
+
+    def set_driver(self):
         self.var = {}
         self.snippet = {}
         self.current_page = '通用'
@@ -40,8 +44,6 @@ class Global:
         self.baseurl = {}
         self.driver = ''
         self.action = {}
-
-    def set_driver(self):
         if self.platform.lower() == 'desktop':
             if self.browserName.lower() == 'ie':
                 #capabilities = webdriver.DesiredCapabilities().INTERNETEXPLORER
