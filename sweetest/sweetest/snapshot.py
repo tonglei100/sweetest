@@ -64,7 +64,7 @@ class Snapshot:
             if '#ScreenShot' in data:
                 self.screen_flag = True
                 p = Path(data['#ScreenShot']).stem
-                self.expected['#ScreenName'] = p.split('[')[1].split(']')[0] if '[' in p else p
+                self.expected['#ScreenName'] = '('+p.split('[')[1].split(']')[0]+')' if '[' in p else p
                 if Path(data['#ScreenShot']).is_file():
                                      
                     self.expected['#ScreenShot'] = data.pop('#ScreenShot')
@@ -74,7 +74,7 @@ class Snapshot:
             if '#ElementShot' in data:
                 self.element_flag = True
                 p = Path(data['#ElementShot']).stem
-                self.expected['#ElementName'] = p.split('[')[1].split(']')[0] if '[' in p else p
+                self.expected['#ElementName'] = '('+p.split('[')[1].split(']')[0]+')' if '[' in p else p
                 if Path(data['#ElementShot']).is_file():
                     self.expected['#ElementShot'] = data.pop('#ElementShot')
                 else:

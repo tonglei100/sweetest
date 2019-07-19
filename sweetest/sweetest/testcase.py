@@ -82,7 +82,7 @@ class TestCase:
             if not (g.platform.lower() in ('windows',) and step['keyword'] in windows_keywords):
                 step['page'], step['custom'], step['element'] = elements_format(
                     step['page'], step['element'])
-            label = g.sheet_name + '.' + \
+            label = g.sheet_name + '#' + \
                 self.testcase['id'] + '#' + str(step['no']).replace('<', '(').replace('>', ')').replace('*', 'x')
             snap = Snapshot()
             try:
