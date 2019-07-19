@@ -115,7 +115,7 @@ class TestSuite():
         node.setAttribute("failures", "%s" % self.failures)
         node.setAttribute("failures_detail", "H:%s M:%s L:%s" % (
             self.high_failures, self.medium_failures, self.low_failures))
-        node.setAttribute("errors", "%s" % self.errors)
+        node.setAttribute("errors", "%s" % self.errors + self.skipped + self.disabled)
         node.setAttribute("errors_detail", "H:%s M:%s L:%s" % (
             self.high_errors, self.medium_errors, self.low_errors))
         node.setAttribute("time", "%s" % self.time)
