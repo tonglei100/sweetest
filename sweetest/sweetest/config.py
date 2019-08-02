@@ -12,8 +12,9 @@ web_keywords = {
     'CLICK': 'CLICK',
     '选择': 'SELECT',
     'SELECT': 'SELECT',
-    '移动到': 'MOVE',
-    'MOVE': 'MOVE',
+    '移动到': 'HOVER',
+    '悬停': 'HOVER',
+    'HOVER': 'HOVER',
     '右击': 'CONTEXT_CLICK',
     'CONTEXT_CLICK': 'CONTEXT_CLICK',
     '双击': 'DOUBLE_CLICK',
@@ -117,8 +118,37 @@ windows_keywords = {
     'WINDOW': 'WINDOW'
 }
 
+files_keywords = {
+'复制': 'COPY',    
+'COPY': 'COPY',
+'移动': 'MOVE',
+'MOVE': 'MOVE',
+'删除文件': 'REMOVE',
+'REMOVE': 'REMOVE',
+'删除目录': 'RMDIR',
+'RMDIR': 'RMDIR',
+'创建目录': 'MKDIR',
+'MKDIR': 'MKDIR',
+'路径存在': 'EXISTS',
+'EXISTS': 'EXISTS',
+'路径不存在': 'NOT_EXISTS',
+'NOT_EXISTS': 'NOT_EXISTS',
+'是文件': 'IS_FILE',
+'IS_FILE': 'IS_FILE',
+'是目录': 'IS_DIR',
+'IS_DIR': 'IS_DIR',
+'不是文件': 'NOT_FILE',
+'NOT_FILE': 'NOT_FILE',
+'不是目录': 'NOT_DIR',
+'NOT_DIR': 'NOT_DIR',
+'命令行': 'COMMAND',
+'COMMAND': 'COMMAND',
+'SHELL': 'SHELL',
+'CMD': 'CMD'
+}
+
 all_keywords = {}
-for keywords in (web_keywords, common_keywords, http_keywords, mobile_keywords, windows_keywords):
+for keywords in (web_keywords, common_keywords, http_keywords, mobile_keywords, windows_keywords, files_keywords):
     all_keywords = dict(all_keywords, **keywords)
 
 # 文件名后缀

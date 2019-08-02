@@ -7,8 +7,8 @@ from sweetest.elements import e
 from sweetest.windows import w
 from sweetest.snapshot import Snapshot
 from sweetest.locator import locating_elements, locating_data, locating_element
-from sweetest.keywords import web, common, mobile, http
-from sweetest.config import web_keywords, common_keywords, mobile_keywords, http_keywords, windows_keywords
+from sweetest.keywords import web, common, mobile, http, files
+from sweetest.config import web_keywords, common_keywords, mobile_keywords, http_keywords, windows_keywords, files_keywords
 from sweetest.utility import replace_dict, replace
 
 
@@ -79,7 +79,7 @@ class TestCase:
             logger.info('Run the Step: %s|%s|%s' %
                         (step['no'], step['keyword'], step['element']))
 
-            if not (g.platform.lower() in ('windows',) and step['keyword'] in windows_keywords):
+            if not (g.platform.lower() in ('windows',) and step['keyword'].upper() in windows_keywords):
                 step['page'], step['custom'], step['element'] = elements_format(
                     step['page'], step['element'])
             label = g.sheet_name + '#' + \
@@ -108,11 +108,11 @@ class TestCase:
 
                 step['vdata'] = v_data(step['data'])
 
-                if g.platform.lower() in ('desktop',) and step['keyword'] in web_keywords:
+                if g.platform.lower() in ('desktop',) and step['keyword'].upper() in web_keywords:
                     # 处理截图数据
                     snap.pre(step, label)
 
-                    if step['keyword'] not in ('MESSAGE', '对话框'):
+                    if step['keyword'].upper() not in ('MESSAGE', '对话框'):
                         # 判断页面是否已和窗口做了关联，如果没有，就关联当前窗口，如果已关联，则判断是否需要切换
                         w.switch_window(step['page'])
                         # 切换 frame 处理，支持变量替换
@@ -123,7 +123,7 @@ class TestCase:
                     element = getattr(web, step['keyword'].lower())(step)
                     snap.web_shot(step, element)
 
-                elif g.platform.lower() in ('ios', 'android') and step['keyword'] in mobile_keywords:
+                elif g.platform.lower() in ('ios', 'android') and step['keyword'].upper() in mobile_keywords:
                     # 切換 context 處理
                     context = replace(step['custom']).strip()
                     w.switch_context(context)
@@ -140,7 +140,7 @@ class TestCase:
                     # 根据关键字调用关键字实现
                     getattr(mobile, step['keyword'].lower())(step)
 
-                elif g.platform.lower() in ('windows',) and step['keyword'] in windows_keywords:
+                elif g.platform.lower() in ('windows',) and step['keyword'].upper() in windows_keywords:
                     from sweetest.keywords import windows
                     _page = ''
                     if step['page'].startswith('#'):
@@ -161,9 +161,13 @@ class TestCase:
                     getattr(windows, step['keyword'].lower())(dialog, step)
                     snap.windows_shot(dialog, step)
 
-                elif step['keyword'] in http_keywords:
+                elif step['keyword'].upper() in http_keywords:
                     # 根据关键字调用关键字实现
                     getattr(http, step['keyword'].lower())(step)
+
+                elif step['keyword'].upper() in files_keywords:
+                    # 根据关键字调用关键字实现
+                    getattr(files, step['keyword'].lower())(step)
 
                 elif step['keyword'].lower() == 'execute':
                     result, steps = getattr(
@@ -202,7 +206,7 @@ class TestCase:
                 file_name = '^' + label + now() + '.png'
                 step['snapshot'] = str(snap.snapshot_folder / file_name)
 
-                if g.platform.lower() in ('desktop',) and step['keyword'] in web_keywords:
+                if g.platform.lower() in ('desktop',) and step['keyword'].upper() in web_keywords:
                     try:
                         if w.frame != 0:
                             g.driver.switch_to.default_content()
@@ -212,7 +216,7 @@ class TestCase:
                         logger.exception(
                             '*** save the screenshot is failure ***')
 
-                elif g.platform.lower() in ('ios', 'android') and step['keyword'] in mobile_keywords:
+                elif g.platform.lower() in ('ios', 'android') and step['keyword'].upper() in mobile_keywords:
                     try:
                         g.driver.switch_to_default_content()
                         w.current_context = 'NATIVE_APP'

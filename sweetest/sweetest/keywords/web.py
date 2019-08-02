@@ -201,7 +201,7 @@ def select(step):
     pass
 
 
-def move(step):
+def hover(step):
     actions = ActionChains(g.driver)
     element = step['element']
     element_location = locating_element(element)
