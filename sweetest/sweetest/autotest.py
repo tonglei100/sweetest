@@ -27,11 +27,13 @@ class Autotest:
         g.plan_name = file_name.split('-')[0]
         g.init(self.desired_caps, self.server_url)
 
-        for p in ('JUnit', 'report', 'snapshot', 'report/' + g.plan_name):
-            mkdir(p)
-            
-        set_log(logger)
+        log_path = Path('snapshot') / g.plan_name / g.start_time[1:] 
 
+        for p in ('JUnit', 'report', 'snapshot', log_path, 'report/' + g.plan_name):
+            mkdir(p)
+                  
+        g.plan_data['log'] = set_log(logger, log_path)
+        
         self.testcase_file = str(
             Path('testcase') / (file_name + '-' + _testcase + '.xlsx'))
         self.elements_file = str(
@@ -89,8 +91,8 @@ class Autotest:
         try:
             data = self.testcase_workbook.read(sheet_name)
             testsuite = testsuite_format(data)
-            logger.info('Testsuite imported from Excel:\n' +
-                        json.dumps(testsuite, ensure_ascii=False, indent=4))
+            # logger.info('Testsuite imported from Excel:\n' +
+            #             json.dumps(testsuite, ensure_ascii=False, indent=4))
             logger.info('From Excel import testsuite success')
         except:
             logger.exception('*** From Excel import testsuite failure ***')
