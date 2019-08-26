@@ -16,10 +16,13 @@ class Common():
     def title(cls, data, output):
         logger.info('DATA:%s' % repr(data['text']))
         logger.info('REAL:%s' % repr(g.driver.title))
-        if data['text'].startswith('*'):
-            assert data['text'][1:] in g.driver.title
-        else:
-            assert data['text'] == g.driver.title
+        try:
+            if data['text'].startswith('*'):
+                assert data['text'][1:] in g.driver.title
+            else:
+                assert data['text'] == g.driver.title
+        except:
+            raise Exception(f'Check Failure, DATA:{data["text"]}, REAL:{g.driver.title}')
         # 只能获取到元素标题
         for key in output:
             g.var[key] = g.driver.title
@@ -28,10 +31,13 @@ class Common():
     def current_url(cls, data, output):
         logger.info('DATA:%s' % repr(data['text']))
         logger.info('REAL:%s' % repr(g.driver.current_url))
-        if data['text'].startswith('*'):
-            assert data['text'][1:] in g.driver.current_url
-        else:
-            assert data['text'] == g.driver.current_url
+        try:
+            if data['text'].startswith('*'):
+                assert data['text'][1:] in g.driver.current_url
+            else:
+                assert data['text'] == g.driver.current_url
+        except:
+            raise Exception(f'Check Failure, DATA:{data["text"]}, REAL:{g.driver.current_url}')            
         # 只能获取到元素 url
         for key in output:
             g.var[key] = g.driver.current_url
@@ -101,7 +107,10 @@ def check(step):
 
             logger.info('DATA:%s' % repr(expected))
             logger.info('REAL:%s' % repr(real))
-            compare(expected, real)
+            try:
+                compare(expected, real)
+            except:
+                raise Exception(f'Check Failure, DATA:{repr(expected)}, REAL:{repr(real)}')
 
         # 获取元素其他属性
         for key in output:
@@ -156,6 +165,7 @@ def input(step):
 
 def click(step):
     element = step['element']
+    data = step['data']
     if isinstance(element, str):
         element_location = locating_element(element, 'CLICK')
         if element_location:
@@ -163,7 +173,10 @@ def click(step):
                 element_location.click()
             except ElementClickInterceptedException:  # 如果元素为不可点击状态，则等待1秒，再重试一次
                 sleep(1)
-                element_location.click()
+                if data.get('model'):
+                    g.driver.execute_script("arguments[0].click();", element_location)
+                else:
+                    element_location.click()
     elif isinstance(element, list):
         for _e in element:
             element_location = locating_element(_e, 'CLICK')
@@ -171,7 +184,10 @@ def click(step):
                 element_location.click()
             except ElementClickInterceptedException:  # 如果元素为不可点击状态，则等待1秒，再重试一次
                 sleep(1)
-                element_location.click()            
+                if data.get('model'):
+                    g.driver.execute_script("arguments[0].click();", element_location)
+                else:
+                    element_location.click()        
             sleep(0.5)
     sleep(0.5)
 

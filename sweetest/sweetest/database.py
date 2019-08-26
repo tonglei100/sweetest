@@ -68,14 +68,3 @@ class DB:
 
     def __del__(self):
         self.connect.close()
-
-
-if __name__ == '__main__':
-    arg = {'type': 'Oracle', 'host': '10.1.50.125', 'port': '3306',
-           'user': 'kims', 'password': '123456', 'dbname': 'test', 'sid': 'jzdb'}
-    db = DB(arg)
-    sql = "select STKPOOLID,STKID,STKNAME,MARKETID,STARTDAY,ENDDAY,ISLOCK,\
-        LOCKSTARTDAY,LOCKENDDAY,INVESTTYPE,UPDATER,UPDATETIME,REMARK,CREATER,\
-        CREATETIME,SN from ir_stkpool_member_etl where stkpoolid = 'STR_GSYL'"
-    result = db.fetchone(sql)
-    print(result)

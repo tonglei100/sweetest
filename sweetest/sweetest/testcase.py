@@ -53,8 +53,8 @@ class TestCase:
         self.testcase = testcase
         self.snippet_steps = {}
 
-    def run(self):
-        logger.info('Run the TestCase: %s|%s' %
+    def run(self):          
+        logger.info('>>> Run the TestCase: %s|%s' %
                     (self.testcase['id'], self.testcase['title']))
         self.testcase['result'] = 'success'
         self.testcase['report'] = ''
@@ -63,6 +63,7 @@ class TestCase:
         for index, step in enumerate(self.testcase['steps']):
             # 统计开始时间
             step['start_timestamp'] = timestamp()
+            step['snapshot'] = {}
 
             # if 为否，不执行 then 语句
             if step['control'] == '>' and not if_result:
@@ -203,24 +204,26 @@ class TestCase:
                 # 操作后，等待0.2秒
                 sleep(0.2)
             except Exception as exception:
-                file_name = '^' + label + now() + '.png'
-                step['snapshot'] = str(snap.snapshot_folder / file_name)
 
                 if g.platform.lower() in ('desktop',) and step['keyword'].upper() in web_keywords:
+                    file_name = label + now() + '#Failure' +'.png'
+                    step['snapshot']['Failure'] = str(snap.snapshot_folder / file_name)                    
                     try:
                         if w.frame != 0:
                             g.driver.switch_to.default_content()
                             w.frame = 0
-                        g.driver.get_screenshot_as_file(step['snapshot'])
+                        g.driver.get_screenshot_as_file(step['snapshot']['Failure'])
                     except:
                         logger.exception(
                             '*** save the screenshot is failure ***')
 
                 elif g.platform.lower() in ('ios', 'android') and step['keyword'].upper() in mobile_keywords:
+                    file_name = label + now() + '#Failure' +'.png'
+                    step['snapshot']['Failure'] = str(snap.snapshot_folder / file_name)                      
                     try:
                         g.driver.switch_to_default_content()
                         w.current_context = 'NATIVE_APP'
-                        g.driver.get_screenshot_as_file(snapshot_file)
+                        g.driver.get_screenshot_as_file(step['snapshot']['Failure'])
                     except:
                         logger.exception(
                             '*** save the screenshot is failure ***')

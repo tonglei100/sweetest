@@ -28,10 +28,12 @@ def locating_element(element, action=''):
             el_location = wait.until(EC.presence_of_element_located(
                 (getattr(By, el['by'].upper()), value)))
         except:
-            sleep(3)
-            el_location = wait.until(EC.presence_of_element_located(
-                (getattr(By, el['by'].upper()), value)))            
-
+            sleep(5)
+            try:
+                el_location = wait.until(EC.presence_of_element_located(
+                    (getattr(By, el['by'].upper()), value)))            
+            except :
+                raise Exception('Locating the element:%s is Failure: Timeout' % element)                
     try:
         if g.driver.name in ('chrome', 'safari'):
             g.driver.execute_script(

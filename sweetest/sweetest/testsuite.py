@@ -39,7 +39,8 @@ class TestSuite:
         g.testsuite_data[self.sheet_name] = self.result
 
     def setup(self, testcase, case):
-        logger.info('Start running the SETUP testcase...')
+        logger.info('-'*50) 
+        logger.info('...Start running the SETUP testcase...')
         # setup 执行成功标记
 
         def run_setup(testcase):
@@ -94,7 +95,7 @@ class TestSuite:
                     testcase['result'] = 'skipped'
                     flag = True
             if flag:
-                continue
+                continue     
             # 统计开始时间
             testcase['start_timestamp'] = timestamp()
             # xml 测试报告-测试用例初始化
@@ -109,8 +110,8 @@ class TestSuite:
             else:
                 testcase['result'] = 'skipped'
                 # case.skip('Skip', 'Autotest Flag is N')
-                logger.info('Run the testcase: %s|%s skipped, because the flag=N or the condition=snippet' % (
-                    testcase['id'], testcase['title']))
+                # logger.info('Run the testcase: %s|%s skipped, because the flag=N or the condition=snippet' % (
+                #     testcase['id'], testcase['title']))
                 # 统计结束时间
                 testcase['end_timestamp'] = timestamp()
                 continue
@@ -139,6 +140,7 @@ class TestSuite:
 
             try:
                 tc = TestCase(testcase)
+                logger.info('-'*50)
                 tc.run()
 
                 # 统计结束时间
