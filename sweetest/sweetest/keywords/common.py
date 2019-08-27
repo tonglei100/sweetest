@@ -36,12 +36,16 @@ def execute(step):
 
     if len(_element) >= 2:
         element = _element[0]
-        times = int(_element[1])
+        if _element[1].upper() == 'N':
+            times = 999
+        else:
+            times = int(_element[1])
 
     # 初始化测试片段执行结果
     result = 'success'
     steps = []
     if element != '变量赋值':
+        g.var['_last_'] = False
         for t in range(times):
             if t > 0:
                 _data = data_format(str(step['_data']))
@@ -69,6 +73,10 @@ def execute(step):
                 # 如果循环退出条件是成功，则直接返回，返回结果是 success
                 if condition == 'success':
                     return 'success', testcase['steps']
+            
+            if g.var['_last_']:
+                g.var['_last_'] = False
+                break
         # 执行结束，还没有触发循环退出条件，则返回结果为 failure
         if condition:
             return 'failure', testcase['steps']
