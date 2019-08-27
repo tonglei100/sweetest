@@ -39,9 +39,11 @@ class TestSuite:
         g.testsuite_data[self.sheet_name] = self.result
 
     def setup(self, testcase, case):
-        logger.info('-'*50) 
-        logger.info('...Start running the SETUP testcase...')
-        # setup 执行成功标记
+        logger.info('='*50)         
+        if self.setup_testcase:
+            logger.info('*** SETUP testcase ***')
+        else:
+            logger.info('...No SETUP testcase need to run...')
 
         def run_setup(testcase):
             if testcase:
