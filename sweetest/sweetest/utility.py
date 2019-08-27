@@ -6,6 +6,7 @@ import csv
 import re
 import json
 import time
+import random
 from sweetest.config import header
 from sweetest.globals import g
 
@@ -146,11 +147,11 @@ def replace_old(data):
                         # list 切片取值（值应该是动态赋值的变量，如自定义脚本的返回值）
                         values[j] = eval('g.var[v]' + index)
                     else:
-                        # 是测试数据文件中的值，则 pop 第一个值
-                        values[j] = g.var[v].pop(0)
-                        # 再判断一下此 list 是否只有一个值了，如果是，则从 list 变为该值
                         if len(g.var[v]) == 1:
-                            g.var[v] = g.var[v][0]
+                            values[j] = g.var[v][0]
+                            g.var['_last_'] = True
+                        else:
+                            values[j] = g.var[v].pop(0)
                 elif isinstance(g.var[v], dict) and index:
                     # 如果是 dict 取键值
                     values[j] = eval('g.var[v]' + index)
@@ -209,10 +210,14 @@ def replace(data):
                 # 如果在 var 中是 list
                 if isinstance(g.var[v], list) and not index:
                     # 是测试数据文件中的值，则 pop 第一个值
-                    _vars[v] = g.var[v].pop(0)
-                    # 再判断一下此 list 是否只有一个值了，如果是，则从 list 变为该值
-                    if len(g.var[v]) == 1:
-                        g.var[v] = g.var[v][0]
+                    if len(g.var[v]) == 0:
+                        raise Exception('The key:%s is no value in data csv' %v)
+                    elif len(g.var[v]) == 1:
+                        _vars[v] = g.var[v][0]
+                        g.var['_last_'] = True
+                    else:
+                        _vars[v] = g.var[v].pop(0)
+
                 else:
                     _vars[v] = g.var[v]
 

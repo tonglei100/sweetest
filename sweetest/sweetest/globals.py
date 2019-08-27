@@ -35,7 +35,7 @@ class Global:
 
 
     def set_driver(self):
-        self.var = {}
+        self.var = {'_last_': False}
         self.snippet = {}
         self.current_page = '通用'
         self.db = {}

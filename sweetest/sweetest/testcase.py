@@ -53,7 +53,7 @@ class TestCase:
         self.testcase = testcase
         self.snippet_steps = {}
 
-    def run(self):          
+    def run(self):         
         logger.info('>>> Run the TestCase: %s|%s' %
                     (self.testcase['id'], self.testcase['title']))
         self.testcase['result'] = 'success'
@@ -77,14 +77,15 @@ class TestCase:
                 step['end_timestamp'] = timestamp()
                 continue
 
-            logger.info('Run the Step: %s|%s|%s' %
-                        (step['no'], step['keyword'], step['element']))
-
             if not (g.platform.lower() in ('windows',) and step['keyword'].upper() in windows_keywords):
                 step['page'], step['custom'], step['element'] = elements_format(
                     step['page'], step['element'])
             label = g.sheet_name + '#' + \
                 self.testcase['id'] + '#' + str(step['no']).replace('<', '(').replace('>', ')').replace('*', 'x')
+
+            logger.info('Run the Step: %s|%s|%s|%s' %
+                        (step['no'], step['page'], step['keyword'], step['element']))
+
             snap = Snapshot()
             try:
                 after_function = step['data'].pop('AFTER_FUNCTION', '')
@@ -93,12 +94,6 @@ class TestCase:
                 t = step['data'].pop('等待时间', 0)
                 sleep(float(t))
 
-                # 变量替换
-                replace_dict(step['data'])
-                replace_dict(step['expected'])
-
-                step['data'].pop('BEFORE_FUNCTION', '')
-
                 if isinstance(step['element'], str):
                     step['element'] = replace(step['element'])
                     step['_element'] = step['element']
@@ -106,6 +101,12 @@ class TestCase:
                     for i in range(len(step['element'])):
                         step['element'][i] = replace(step['element'][i])
                     step['_element'] = '|'.join(step['element'])
+
+                # 变量替换
+                replace_dict(step['data'])
+                replace_dict(step['expected'])
+
+                step['data'].pop('BEFORE_FUNCTION', '')
 
                 step['vdata'] = v_data(step['data'])
 
@@ -170,7 +171,7 @@ class TestCase:
                     # 根据关键字调用关键字实现
                     getattr(files, step['keyword'].lower())(step)
 
-                elif step['keyword'].lower() == 'execute':
+                elif step['keyword'].lower() == 'execute':                  
                     result, steps = getattr(
                         common, step['keyword'].lower())(step)
                     self.testcase['result'] = result
@@ -191,8 +192,7 @@ class TestCase:
                 else:
                     # 根据关键字调用关键字实现
                     getattr(common, step['keyword'].lower())(step)
-                logger.info('Run the Step: %s|%s|%s is success' %
-                            (step['no'], step['keyword'], step['element']))
+                logger.info('--- success ---')
                 step['score'] = 'OK'
 
                 # if 语句结果赋值
@@ -225,24 +225,22 @@ class TestCase:
                         w.current_context = 'NATIVE_APP'
                         g.driver.get_screenshot_as_file(step['snapshot']['Failure'])
                     except:
-                        logger.exception(
-                            '*** save the screenshot is failure ***')
+                        logger.exception('*** save the screenshot is failure ***')
 
-                logger.exception('Run the Step: %s|%s|%s is failure' %
-                                 (step['no'], step['keyword'], step['element']))
+                logger.exception('+++ failure +++')
                 step['score'] = 'NO'
+
+                step['remark'] += str(exception)
+                step['end_timestamp'] = timestamp()
 
                 # if 语句结果赋值
                 if step['control'] == '^':
                     if_result = False
-                    step['end_timestamp'] = timestamp()
                     continue
 
                 self.testcase['result'] = 'failure'
                 self.testcase['report'] = 'step-%s|%s|%s: %s' % (
                     step['no'], step['keyword'], step['element'], exception)
-                step['remark'] += str(exception)
-                step['end_timestamp'] = timestamp()
                 break
 
             # 统计结束时间
