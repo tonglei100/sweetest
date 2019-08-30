@@ -173,7 +173,7 @@ def click(step):
                 element_location.click()
             except ElementClickInterceptedException:  # 如果元素为不可点击状态，则等待1秒，再重试一次
                 sleep(1)
-                if data.get('model'):
+                if data.get('mode'):
                     g.driver.execute_script("arguments[0].click();", element_location)
                 else:
                     element_location.click()
@@ -184,7 +184,7 @@ def click(step):
                 element_location.click()
             except ElementClickInterceptedException:  # 如果元素为不可点击状态，则等待1秒，再重试一次
                 sleep(1)
-                if data.get('model'):
+                if data.get('mode'):
                     g.driver.execute_script("arguments[0].click();", element_location)
                 else:
                     element_location.click()        
