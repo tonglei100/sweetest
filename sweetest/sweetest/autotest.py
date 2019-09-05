@@ -27,12 +27,13 @@ class Autotest:
         g.plan_name = file_name.split('-')[0]
         g.init(self.desired_caps, self.server_url)
 
-        log_path = Path('snapshot') / g.plan_name / g.start_time[1:] 
+        plan_path = Path('snapshot') / g.plan_name
+        task_path = plan_path / g.start_time[1:] 
 
-        for p in ('JUnit', 'report', 'snapshot', log_path, 'report/' + g.plan_name):
+        for p in ('JUnit', 'report', 'snapshot', plan_path, task_path, 'report/' + g.plan_name):
             mkdir(p)
                   
-        g.plan_data['log'] = set_log(logger, log_path)
+        g.plan_data['log'] = set_log(logger, task_path)
         
         self.testcase_file = str(
             Path('testcase') / (file_name + '-' + _testcase + '.xlsx'))
