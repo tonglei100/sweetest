@@ -36,16 +36,26 @@ def elements_format(page, element):
         return page, custom, els
 
 
-def v_data(d):
+def v_data(d, _d):
     data = ''
+    if ',,' in _d:
+        s = ',,'
+    else:
+        s = ','
+
     for k, v in d.items():
-        data += k + '=' + str(v) + ','
-    return data[:-1]
+        data += k + '=' + str(v) + s
+
+    if s ==',,':
+        return data[:-2]
+    else:
+        return data[:-1]
 
 
 def test_v_data():
     data = {'a': 1, 'b': 'b'}
-    v_data(data)
+    _data = "{'a': 1,, 'b': 'b'}"
+    return v_data(data, _data)
 
 
 class TestCase:
@@ -108,7 +118,7 @@ class TestCase:
 
                 step['data'].pop('BEFORE_FUNCTION', '')
 
-                step['vdata'] = v_data(step['data'])
+                step['vdata'] = v_data(step['data'], step['_data'])
 
                 if g.platform.lower() in ('desktop',) and step['keyword'].upper() in web_keywords:
                     # 处理截图数据
