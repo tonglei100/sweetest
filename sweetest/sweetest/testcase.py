@@ -38,7 +38,7 @@ def elements_format(page, element):
 
 def v_data(d, _d):
     data = ''
-    if ',,' in _d:
+    if ',,' in str(_d):
         s = ',,'
     else:
         s = ','
