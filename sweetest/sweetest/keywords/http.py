@@ -93,6 +93,8 @@ def request(kw, step):
     expected['json'] = json2dict(expected.get('json', '{}'))
     expected['cookies'] = json2dict(expected.get('cookies', '{}'))
     expected['headers'] = json2dict(expected.get('headers', '{}'))
+    timeout = float(expected.get('timeout', 10))
+    expected['time'] = float(expected.get('time', 0))
 
     if not g.http.get(step['page']):
         g.http[step['page']] = Http(step)
@@ -123,15 +125,15 @@ def request(kw, step):
 
     if kw == 'get':
         r = getattr(http.r, kw)(http.baseurl + url,
-                                params=_data['params'], **data)
+                                params=_data['params'], timeout=timeout, **data)
     elif kw == 'post':
         r = getattr(http.r, kw)(http.baseurl + url,
-                                data=_data['data'], json=_data['json'], files=_data['files'], **data)
+                                data=_data['data'], json=_data['json'], files=_data['files'], timeout=timeout, **data)
     elif kw in ('put', 'patch'):
         r = getattr(http.r, kw)(http.baseurl + url,
-                                data=_data['data'], **data)
+                                data=_data['data'], timeout=timeout, **data)
     elif kw in ('delete', 'options'):
-        r = getattr(http.r, kw)(http.baseurl + url, **data)
+        r = getattr(http.r, kw)(http.baseurl + url, timeout=timeout, **data)
 
     logger.info('status_code: %s' % repr(r.status_code))
     try:  # json 响应
@@ -161,35 +163,39 @@ def request(kw, step):
         response = getattr(http_handle, 'after_receive')(response)
 
     if expected['status_code']:
-        assert str(expected['status_code']) == str(response['status_code'])
+        if str(expected['status_code']) != str(response['status_code']):
+            raise Exception(f'status_code | EXPECTED:{repr(expected["status_code"])}, REAL:{repr(response["status_code"])}')
 
     if expected['text']:
         if expected['text'].startswith('*'):
-            assert expected['text'][1:] in response['text']
+            if expected['text'][1:] not in response['text']:
+                raise Exception(f'text | EXPECTED:{repr(expected["text"])}, REAL:{repr(response["text"])}')
         else:
-            assert expected['text'] == response['text']
+            if expected['text'] == response['text']:
+                raise Exception(f'text | EXPECTED:{repr(expected["text"])}, REAL:{repr(response["text"])}')
 
     if expected['headers']:
         result = check(expected['headers'], response['headers'])
-        if result['result']:
-            step['remark'] += str(result['result'])
         logger.info('headers check result: %s' % result)
-        assert result['code'] == 0
+        if result['code'] != 0:
+            raise Exception(f'headers | EXPECTED:{repr(expected["headers"])}, REAL:{repr(response["headers"])}, RESULT: {result}')
 
     if expected['cookies']:
         logger.info('response cookies: %s' % response['cookies'])
         result = check(expected['cookies'], response['cookies'])
-        if result['result']:
-            step['remark'] += str(result['result'])
         logger.info('cookies check result: %s' % result)
-        assert result['code'] == 0
+        if result['code'] != 0:
+            raise Exception(f'cookies | EXPECTED:{repr(expected["cookies"])}, REAL:{repr(response["cookies"])}, RESULT: {result}')
 
     if expected['json']:
         result = check(expected['json'], response['json'])
-        if result['result']:
-            step['remark'] += str(result['result'])
         logger.info('json check result: %s' % result)
-        assert result['code'] == 0
+        if result['code'] != 0:
+            raise Exception(f'json | EXPECTED:{repr(expected["json"])}, REAL:{repr(response["json"])}, RESULT: {result}')
+
+    if expected['time']:
+        if expected['time'] < r.elapsed.total_seconds():
+            raise Exception(f'time | EXPECTED:{repr(expected["time"])}, REAL:{repr(r.elapsed.total_seconds())}')
 
     output = step['output']
     # if output:
