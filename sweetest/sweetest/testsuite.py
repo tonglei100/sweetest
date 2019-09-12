@@ -23,7 +23,7 @@ class TestSuite:
                 self.base_testcase = testcase
             elif testcase['condition'].lower() == 'setup':
                 self.setup_testcase = testcase
-                testcase['flag'] = 'N'
+                testcase['flag'] = 'N'  # setup 用例只在执行其他普通用例之前执行
             elif testcase['condition'].lower() == 'snippet':
                 g.snippet[testcase['id']] = testcase
                 testcase['flag'] = 'N'
@@ -86,6 +86,9 @@ class TestSuite:
         # 上一个测试用例
         previous = {}
 
+        # 前置条件执行失败标志，即未执行用例阻塞标志
+        blcoked_flag = False
+
         # 1.执行用例
         for testcase in self.testsuite:
             # 根据筛选条件，把不需要执行的测试用例跳过
@@ -97,17 +100,25 @@ class TestSuite:
                     testcase['result'] = 'skipped'
                     flag = True
             if flag:
-                continue     
+                continue
+
             # 统计开始时间
             testcase['start_timestamp'] = timestamp()
             # xml 测试报告-测试用例初始化
             if testcase['flag'] != 'N':
+                # 如果前置条件失败了，直接设置为阻塞
+                if blcoked_flag:
+                    testcase['result'] = 'blocked'
+                    testcase['end_timestamp'] = timestamp()
+                    continue
+
                 case = self.report.create_case(
                     testcase['title'], testcase['id'])
                 case.start()
                 case.priority = testcase['priority']
                 # 用例上下文
                 previous = current
+                
                 current = testcase
             else:
                 testcase['result'] = 'skipped'
@@ -155,11 +166,13 @@ class TestSuite:
                     if testcase['condition'].lower() == 'base':
                         logger.warn('Run the testcase: %s|%s Failure, BASE is not success. Break the AutoTest' % (
                             testcase['id'], testcase['title']))
-                        break
+                        blcoked_flag = True
+                        continue
                     if testcase['condition'].lower() == 'setup':
                         logger.warn('Run the testcase: %s|%s failure, SETUP is not success. Break the AutoTest' % (
                             testcase['id'], testcase['title']))
-                        break
+                        blcoked_flag = True
+                        continue
             except Exception as exception:
                 case.error('Error', 'Remark:%s |||Exception:%s' %
                            (testcase['remark'], exception))
@@ -168,11 +181,13 @@ class TestSuite:
                 if testcase['condition'].lower() == 'base':
                     logger.warn('Run the testcase: %s|%s error, BASE is not success. Break the AutoTest' % (
                         testcase['id'], testcase['title']))
-                    break
+                    blcoked_flag = True
+                    continue
                 if testcase['condition'].lower() == 'setup':
                     logger.warn('Run the testcase: %s|%s error, SETUP is not success. Break the AutoTest' % (
                         testcase['id'], testcase['title']))
-                    break
+                    blcoked_flag = True
+                    continue
 
         self.report.finish()
 
