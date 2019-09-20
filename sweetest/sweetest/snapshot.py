@@ -22,6 +22,21 @@ def crop(element, src, target):
     im.save(target)
 
 
+def blank(src, boxs):
+    white = Image.new('RGB',(5000, 5000), 'white')   
+    im = Image.open(src)
+    for box in boxs:
+        w = white.crop(box)
+        im.paste(w, box[:2])
+    im.save(src)
+
+
+def cut(src, target, box):
+    im = Image.open(src)
+    im = im.crop(box)
+    im.save(target)
+
+
 def get_screenshot(file_path):
     if g.headless:
         width = g.driver.execute_script("return Math.max(document.body.scrollWidth, document.documentElement.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth);")
@@ -46,6 +61,7 @@ class Snapshot:
         self.label = label
         self.screen_flag = False
         self.element_flag = False
+
         # 处理输出数据中的截图设置
         self.output = {}
         for k, v in dict(step['output'].items()).items():
@@ -80,6 +96,11 @@ class Snapshot:
                 else:
                     step['snapshot']['Expected_Element'] = str(self.expected_folder / data.pop('#ElementShot'))
 
+            if '#cut' in data:
+                self.expected['#cut'] = data.pop('#cut')
+            if '#blank' in data:
+                self.expected['#blank'] = data.pop('#blank')
+
     def web_screen(self, step, element):
         # 截图
         screen_v = self.output.get('#ScreenShot', '')
@@ -111,10 +132,20 @@ class Snapshot:
             g.var[element_v] = step['snapshot']['Real_Element']
 
     def web_check(self, step, element):
+
+        def deep(src):
+            # 把不需要比较的部分贴白
+            if self.expected.get('#blank'):
+                blank(src, eval(self.expected.get('#blank')))
+            # 裁剪需要比较的部分
+            if self.expected.get('#cut'):
+                cut(src, src, eval(self.expected.get('#cut')))
+
         if Path(step['snapshot'].get('Expected_Screen', '')).is_file():
             # 屏幕截图比较
             image1 = Image.open(step['snapshot']['Expected_Screen'])
             image2 = Image.open(step['snapshot']['Real_Screen'])
+            deep(step['snapshot']['Real_Screen'])
             histogram1 = image1.histogram()
             histogram2 = image2.histogram()
             differ = math.sqrt(reduce(operator.add, list(
@@ -131,11 +162,13 @@ class Snapshot:
                 raise Exception('SnapShot: ScreenShot is diff: %s' % differ)
         elif step['snapshot'].get('Expected_Screen'):
             get_screenshot(step['snapshot']['Expected_Screen'])
+            deep(step['snapshot']['Expected_Screen'])
 
         if Path(step['snapshot'].get('Expected_Element', '')).is_file():
             file_name = self.label + now() + '#Element' + '[' + self.expected['#ElementName'] + ']' + '.png'
             step['snapshot']['Real_Element'] = str(Path(self.snapshot_folder) / file_name)
             crop(element, step['snapshot']['Real_Screen'], step['snapshot']['Real_Element'])
+            deep(step['snapshot']['Real_Element'])
 
             # 屏幕截图比较
             image1 = Image.open(step['snapshot']['Expected_Element'])
@@ -155,7 +188,7 @@ class Snapshot:
                 raise Exception('SnapShot: ElementShot is diff: %s' % differ)
         elif step['snapshot'].get('Expected_Element'):
             crop(element, step['snapshot']['Real_Screen'], step['snapshot']['Expected_Element'])
-
+            deep(step['snapshot']['Expected_Element'])
 
     def web_shot(self, step, element):
         self.web_screen(step, element)
