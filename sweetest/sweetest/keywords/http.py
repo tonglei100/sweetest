@@ -65,6 +65,10 @@ def request(kw, step):
         url = url[1:]
 
     data = step['data']
+    # 测试数据解析时，会默认添加一个 text 键，需要删除
+    if 'text'in data:
+        data.pop('text')
+
     _data = {}
     _data['headers'] = json2dict(data.pop('headers', '{}'))
     if data.get('cookies'):
@@ -78,6 +82,7 @@ def request(kw, step):
         _data['files'] = eval(data.pop('files', 'None'))
     elif kw in ('put', 'patch'):
         _data['data'] = json2dict(data.pop('data', '{}'))
+
 
     for k in data:
         for s in ('{', '[', 'False', 'True'):
