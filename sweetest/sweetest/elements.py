@@ -1,4 +1,4 @@
-from sweetest.utility import Excel, data2dict
+from sweetest.utility import Excel, data2dict, replace
 from sweetest.log import logger
 
 
@@ -75,7 +75,7 @@ class Elements:
         for v in _v:
             v = '#' if v=='^' else v  # 当 value 中的 # 无需替换时，用例中的元素使用 ^ 表示
             value = value.replace('#', v, 1)
-        return el, value
+        return el, replace(value)
 
 
 e = Elements()
