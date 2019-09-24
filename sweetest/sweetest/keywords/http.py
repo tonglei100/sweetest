@@ -131,12 +131,19 @@ def request(kw, step):
     if kw == 'get':
         r = getattr(http.r, kw)(http.baseurl + url,
                                 params=_data['params'], timeout=timeout, **data)
+        if _data['params']:
+            logger.info(f'PARAMS: {_data["params"]}')
+
     elif kw == 'post':
         r = getattr(http.r, kw)(http.baseurl + url,
                                 data=_data['data'], json=_data['json'], files=_data['files'], timeout=timeout, **data)
+        logger.info(f'BODY: {r.request.body}')
+
     elif kw in ('put', 'patch'):
         r = getattr(http.r, kw)(http.baseurl + url,
                                 data=_data['data'], timeout=timeout, **data)
+        logger.info(f'BODY: {r.request.body}')
+                                
     elif kw in ('delete', 'options'):
         r = getattr(http.r, kw)(http.baseurl + url, timeout=timeout, **data)
 

@@ -65,9 +65,10 @@ def execute(step):
                 # 循环退出条件为失败，则直接返回，返回结果是 success
                 if condition == 'failure':
                     return 'success', testcase['steps']
-                # 如果没有结束条件，且失败直接退出标志位真，则返回结果
+                # 如果没有结束条件，且直接退出标志位为真，则返回结果
                 if not condition and flag:
                     return result, steps
+
             # 用例片段执行成功时
             else:
                 # 如果循环退出条件是成功，则直接返回，返回结果是 success

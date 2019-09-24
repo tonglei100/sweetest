@@ -221,7 +221,10 @@ def replace(data):
                 else:
                     _vars[v] = g.var[v]
 
-        value = eval(k, globals(), _vars)              
+        try:
+            value = eval(k, globals(), _vars)              
+        except:
+            value = '<' + k + '>'             
         
         if data == '<' + keys[0] + '>':
             data = value
