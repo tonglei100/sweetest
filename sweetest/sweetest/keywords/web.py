@@ -26,6 +26,8 @@ class Common():
         # 只能获取到元素标题
         for key in output:
             g.var[key] = g.driver.title
+        return g.driver.title
+
 
     @classmethod
     def current_url(cls, data, output):
@@ -41,6 +43,7 @@ class Common():
         # 只能获取到元素 url
         for key in output:
             g.var[key] = g.driver.current_url
+        return g.driver.current_url
 
 
 def open(step):
@@ -84,9 +87,10 @@ def check(step):
         e_name = element
     by = e.elements[e_name]['by']
     output = step['output']
+    var = {}
 
     if by in ('title', 'current_url'):
-        getattr(Common, by)(data, output)
+        var[by] = getattr(Common, by)(data, output)
 
     else:
         for key in data:
@@ -115,15 +119,16 @@ def check(step):
         # 获取元素其他属性
         for key in output:
             if output[key] == 'text':
-                g.var[key] = element_location.text
+                var[key] = g.var[key] = element_location.text
             elif output[key] in ('text…', 'text...'):
                 if element_location.text.endswith('...'):
-                    g.var[key] = element_location.text[:-3]
+                    var[key] = g.var[key] = element_location.text[:-3]
                 else:
-                    g.var[key] = element_location.text
+                    var[key] = g.var[key] = element_location.text
             else:
-                g.var[key] = element_location.get_attribute(output[key])
-
+                var[key] = g.var[key] = element_location.get_attribute(output[key])
+    if var:
+        step['_output'] += '||output=' + str(var)
     return element_location
 
 

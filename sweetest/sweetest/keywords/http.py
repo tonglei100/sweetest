@@ -174,6 +174,8 @@ def request(kw, step):
     else:
         response = getattr(http_handle, 'after_receive')(response)
 
+    var = {}  # 存储所有输出变量
+
     if expected['status_code']:
         if str(expected['status_code']) != str(response['status_code']):
             raise Exception(f'status_code | EXPECTED:{repr(expected["status_code"])}, REAL:{repr(response["status_code"])}')
@@ -191,6 +193,10 @@ def request(kw, step):
         logger.info('headers check result: %s' % result)
         if result['code'] != 0:
             raise Exception(f'headers | EXPECTED:{repr(expected["headers"])}, REAL:{repr(response["headers"])}, RESULT: {result}')
+        elif result['var']:
+            var = dict(var, **result['var'])
+            g.var = dict(g.var, **result['var'])
+            logger.info('headers var: %s' % (repr(result['var']))) 
 
     if expected['cookies']:
         logger.info('response cookies: %s' % response['cookies'])
@@ -198,12 +204,20 @@ def request(kw, step):
         logger.info('cookies check result: %s' % result)
         if result['code'] != 0:
             raise Exception(f'cookies | EXPECTED:{repr(expected["cookies"])}, REAL:{repr(response["cookies"])}, RESULT: {result}')
+        elif result['var']:
+            var = dict(var, **result['var'])
+            g.var = dict(g.var, **result['var'])
+            logger.info('cookies var: %s' % (repr(result['var']))) 
 
     if expected['json']:
         result = check(expected['json'], response['json'])
         logger.info('json check result: %s' % result)
         if result['code'] != 0:
             raise Exception(f'json | EXPECTED:{repr(expected["json"])}, REAL:{repr(response["json"])}, RESULT: {result}')
+        elif result['var']:
+            var = dict(var, **result['var'])
+            g.var = dict(g.var, **result['var'])
+            logger.info('json var: %s' % (repr(result['var'])))            
 
     if expected['time']:
         if expected['time'] < r.elapsed.total_seconds():
@@ -224,11 +238,15 @@ def request(kw, step):
             sub = json2dict(output.get('json', '{}'))
             result = check(sub, response['json'])
             # logger.info('Compare json result: %s' % result)
+            var = dict(var, **result['var'])
             g.var = dict(g.var, **result['var'])
             logger.info('json var: %s' % (repr(result['var'])))
         elif k == 'cookies':
             sub = json2dict(output.get('cookies', '{}'))
             result = check(sub, response['cookies'])
             # logger.info('Compare json result: %s' % result)
+            var = dict(var, **result['var'])
             g.var = dict(g.var, **result['var'])
             logger.info('cookies var: %s' % (repr(result['var'])))
+    if var:
+        step['_output'] += '||output=' + str(var)
