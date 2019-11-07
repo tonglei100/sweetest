@@ -266,10 +266,9 @@ def get_record(data_file):
     except:
         data = read_csv(data_file)
 
-    record = {}
-    if data[0][-1].lower() != 'flag':
-        for d in data[1:]:
-            for i in range(len(data[0])):
+    def read_data(record, data):
+        for i in range(len(data[0]) - 1):
+            if d[i]:
                 k = data[0][i]
                 if record.get(k, None):
                     if isinstance(record[k], str):
@@ -277,21 +276,24 @@ def get_record(data_file):
                     record[k].append(d[i])
                 else:
                     record[k] = d[i]
+                if record[k][-1] == '&quot;':  # 空字符转换
+                    record[k][-1] = ''
 
-    else:
-        for d in data[1:]:
-            if d[-1] != 'Y':
-                for i in range(len(data[0][:-1])):
-                    k = data[0][i]
-                    if record.get(k, None):
-                        if isinstance(record[k], str):
-                            record[k] = [record[k]]
-                        record[k].append(d[i])
-                    else:
-                        record[k] = d[i]
-                d[-1] = 'Y'
-                write_csv(data_file, data, encoding=encoding)
-                break
+    record = {}
+    flag = False
+    if data[0][-1].lower() == 'flag':
+        flag = True
+
+    for d in data[1:]:
+        if not flag:
+            read_data(record, data)
+        elif d[-1] == 'N':
+            read_data(record, data)    
+        elif d[-1] != 'Y':
+            read_data(record, data)
+            d[-1] = 'Y'
+            write_csv(data_file, data, encoding=encoding)
+            break
     return record
 
 
