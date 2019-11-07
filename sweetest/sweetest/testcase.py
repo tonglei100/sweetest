@@ -231,9 +231,9 @@ class TestCase:
                     file_name = label + now() + '#Failure' +'.png'
                     step['snapshot']['Failure'] = str(snap.snapshot_folder / file_name)                      
                     try:
-                        g.driver.switch_to_default_content()
+                        g.driver.switch_to.context('NATIVE_APP')
                         w.current_context = 'NATIVE_APP'
-                        g.driver.get_screenshot_as_file(step['snapshot']['Failure'])
+                        g.driver.get_screenshot_as_file(u'%s' %step['snapshot']['Failure'])
                     except:
                         logger.exception('*** save the screenshot is failure ***')
 
