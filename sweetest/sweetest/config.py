@@ -92,7 +92,15 @@ mobile_keywords = {
     '隐藏键盘': 'HIDE_KEYBOARD',  # iOS 专用
     'HIDE_KEYBOARD': 'HIDE_KEYBOARD',
     '命名标签页': 'TAB_NAME',
-    'TAB_NAME': 'TAB_NAME'
+    'TAB_NAME': 'TAB_NAME',
+    '重启': 'LAUNCH_APP',
+    'LAUNCH_APP': 'LAUNCH_APP',
+    '锁屏状态': 'IS_LOCKED',
+    'IS_LOCKED': 'IS_LOCKED',
+    '锁屏': 'LOCK',
+    'LOCK': 'LOCK',
+    '解锁': 'UNLOCK',
+    'UNLOCK': 'UNLOCK',         
 }
 
 windows_keywords = {

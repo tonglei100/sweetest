@@ -79,12 +79,14 @@ class TestCase:
             if step['control'] == '>' and not if_result:
                 step['score'] = '-'
                 step['end_timestamp'] = timestamp()
+                logger.info('Skipped the <then> Step: %s|%s|%s|%s' %(step['no'], step['page'], step['keyword'], step['element']))
                 continue
 
             # if 为真，不执行 else 语句
             if step['control'] == '<' and if_result:
                 step['score'] = '-'
                 step['end_timestamp'] = timestamp()
+                logger.info('Skipped the <else> Step: %s|%s|%s|%s' %(step['no'], step['page'], step['keyword'], step['element']))
                 continue
 
             if not (g.platform.lower() in ('windows',) and step['keyword'].upper() in windows_keywords):

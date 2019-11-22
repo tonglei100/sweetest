@@ -22,6 +22,7 @@ class Global:
         self.plan_data = {}
         self.testsuite_data = {}
         self.no = 1
+        self.driver = ''
 
 
     def init(self, desired_caps, server_url):
@@ -42,7 +43,6 @@ class Global:
         self.http = {}
         self.windows = {}
         self.baseurl = {}
-        self.driver = ''
         self.action = {}
         if self.platform.lower() == 'desktop':
             if self.browserName.lower() == 'ie':
@@ -107,11 +107,13 @@ class Global:
 
         elif self.platform.lower() == 'ios':
             from appium import webdriver as appdriver
-            self.driver = appdriver.Remote(self.server_url, self.desired_caps)
+            if not self.driver:
+                self.driver = appdriver.Remote(self.server_url, self.desired_caps)
 
         elif self.platform.lower() == 'android':
             from appium import webdriver as appdriver
-            self.driver = appdriver.Remote(self.server_url, self.desired_caps)
+            if not self.driver:
+                self.driver = appdriver.Remote(self.server_url, self.desired_caps)
 
         elif self.platform.lower() == 'windows':
             from pywinauto.application import Application

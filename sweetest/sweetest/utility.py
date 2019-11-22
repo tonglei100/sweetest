@@ -266,8 +266,9 @@ def get_record(data_file):
     except:
         data = read_csv(data_file)
 
-    def read_data(record, data):
-        for i in range(len(data[0]) - 1):
+    def read_data():
+        num = len(data[0])-1 if flag else len(data[0])
+        for i in range(num):
             if d[i]:
                 k = data[0][i]
                 if record.get(k, None):
@@ -286,11 +287,11 @@ def get_record(data_file):
 
     for d in data[1:]:
         if not flag:
-            read_data(record, data)
+            read_data()
         elif d[-1] == 'N':
-            read_data(record, data)    
+            read_data()    
         elif d[-1] != 'Y':
-            read_data(record, data)
+            read_data()
             d[-1] = 'Y'
             write_csv(data_file, data, encoding=encoding)
             break

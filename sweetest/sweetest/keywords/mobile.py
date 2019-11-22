@@ -427,6 +427,23 @@ def shake(step):
     g.driver.shake()
 
 
+def launch_app(step):
+    g.driver.launch_app()
+
+
+def is_locked(step):
+    status = g.driver.is_locked()
+    assert status, "it's not locked"
+
+
+def lock(step):
+    g.driver.lock()
+
+
+def unlock(step):
+    g.driver.unlock()
+
+
 def tab_name(step):
     element = step['element']
     name = step['data']['text']
@@ -456,3 +473,4 @@ def tab_name(step):
     if not flag:
         raise Exception(
             'Tab Name failure: the element:%s in all tab is not found' % element)
+
