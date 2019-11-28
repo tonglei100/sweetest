@@ -181,8 +181,8 @@ def tap(step):
     element = step['element']
     if isinstance(element, str):
 
-        if ',' in element or '，' in element:
-            position = element.replace('，', ',').split(',')
+        if ',' in element:
+            position = element.split(',')
             x = int(position[0])
             y = int(position[1])
             position = (x, y)
@@ -191,9 +191,14 @@ def tap(step):
             element_location = locating_element(element, 'CLICK')
             action.tap(element_location).perform()
     elif isinstance(element, list):
-        if ',' in element[0] or '，' in element[0]:
-            positions = [eval('(' + _e + ')') for _e in element]
-            g.driver.tap([positions])
+        if ',' in element[0]:
+            for el in element:
+                position = el.split(',')
+                x = int(position[0])
+                y = int(position[1])
+                position = (x, y)
+                g.driver.tap([position])
+                sleep(0.5)
         else:
             for _e in element:
                 element_location = locating_element(_e, 'CLICK')
