@@ -66,7 +66,7 @@ def request(kw, step):
 
     data = step['data']
     # 测试数据解析时，会默认添加一个 text 键，需要删除
-    if 'text'in data:
+    if 'text' in data and not data['text']:
         data.pop('text')
 
     _data = {}
@@ -77,7 +77,10 @@ def request(kw, step):
         _data['params'] = json2dict(
             data.pop('params', '{}')) or json2dict(data.pop('data', '{}'))
     elif kw == 'post':
-        _data['data'] = json2dict(data.pop('data', '{}'))
+        if data.get('text'):
+            _data['data'] = data.pop('text')
+        else:
+            _data['data'] = json2dict(data.pop('data', '{}'))
         _data['json'] = json2dict(data.pop('json', '{}'))
         _data['files'] = eval(data.pop('files', 'None'))
     elif kw in ('put', 'patch'):

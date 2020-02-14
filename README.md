@@ -4,7 +4,7 @@
 
 ## 介绍
 
-Sweetest 是一款小而美的自动化测试解决方案，同时支持 Web UI，Http 接口，DB 操作测试，Android App 测试，小程序测试，Windows GUI 测试，文件操作；由于开始只支持 Web UI 测试，名字取自 Selenium，Web UI，Excel，Element， Test 含义。
+Sweetest 是一款小而美的自动化测试解决方案，同时支持 Web UI，Http 接口，DB 操作测试，Android/iOS App 测试，小程序测试，Windows GUI 测试，文件操作；由于开始只支持 Web UI 测试，名字取自 Selenium，Web UI，Excel，Element， Test 含义。
 特点:
 
 1.  简单快速，轻松上手

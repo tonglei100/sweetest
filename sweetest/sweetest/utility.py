@@ -187,11 +187,22 @@ def replace_old(data):
 
 
 def replace(data):
+    
+    if data.startswith("'''") and data.endswith("'''"):
+        return data[3:-3]
+
     left_angle = 'dsfw4rwfdfstg43'
     right_angle = '3dsdtgsgt43trfdf'
-    data = data.replace('\<', left_angle).replace('\>', right_angle)
+    left_delimiter = '<'
+    right_delimiter = '>'
+    data = data.replace(r'\<', left_angle).replace(r'\>', right_angle)
+    
+    if '<<' in data and '>>' in data:
+        left_delimiter = '<<'
+        right_delimiter = '>>'           
+        
     # 正则匹配出 data 中所有 <> 中的变量，返回列表
-    keys = re.findall(r'<(.*?)>', data)
+    keys = re.findall(r'%s' %(left_delimiter+'(.*?)'+right_delimiter), data)
     _vars = {}
 
     for k in keys:
@@ -208,7 +219,7 @@ def replace(data):
 
             if v in g.var and v not in _vars:
                 # 如果在 var 中是 list
-                if isinstance(g.var[v], list) and not index:
+                if v.startswith('_') and isinstance(g.var[v], list) and not index:
                     # 是测试数据文件中的值，则 pop 第一个值
                     if len(g.var[v]) == 0:
                         raise Exception('The key:%s is no value in data csv' %v)
@@ -222,16 +233,16 @@ def replace(data):
                     _vars[v] = g.var[v]
 
         try:
-            value = eval(k, globals(), _vars)              
-        except:
-            value = '<' + k + '>'             
-        
-        if data == '<' + keys[0] + '>':
+            value = eval(k, globals(), _vars)    
+        except NameError:                  
+            value = left_delimiter+ k + right_delimiter              
+
+        if data == left_delimiter+ keys[0] + right_delimiter:
             data = value
         # 否则需要替换，此时变量强制转换为为字符串
         else:
-            data = data.replace('<' + k + '>', str(value))
-            data = data.replace(left_angle, '<').replace(right_angle, '>')
+                data = data.replace(left_delimiter + k + right_delimiter, str(value))
+                data = data.replace(left_angle, '<').replace(right_angle, '>')                
     return data
 
 
