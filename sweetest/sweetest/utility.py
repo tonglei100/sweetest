@@ -2,6 +2,7 @@ from selenium.webdriver.common.keys import Keys
 from pathlib import Path
 import xlrd
 import xlsxwriter
+from openpyxl import Workbook, load_workbook
 import csv
 import re
 import json
@@ -24,6 +25,73 @@ class Excel:
             self.workbook = xlrd.open_workbook(file_name)
         elif mode == 'w':
             self.workbook = xlsxwriter.Workbook(file_name)
+        else:
+            raise Exception(
+                'Error: init Excel class with error mode: %s' % mode)
+
+    def get_sheet(self, sheet_name):
+        names = []
+        if isinstance(sheet_name, str):
+            if sheet_name.endswith('*'):
+                for name in self.workbook.sheet_names():
+                    if sheet_name[:-1] in name:
+                        names.append(name)
+            else:
+                names.append(sheet_name)
+        elif isinstance(sheet_name, list):
+            names = sheet_name
+        else:
+            raise Exception('Error: invalidity sheet_name: %s' % sheet_name)
+
+        return names
+
+    def read(self, sheet_name):
+        '''
+        sheet_name:Excel 中标签页名称
+        return：[[],[]……]
+        '''
+        sheet = self.workbook.sheet_by_name(sheet_name)
+        nrows = sheet.nrows
+        data = []
+        for i in range(nrows):
+            data.append(sheet.row_values(i))
+        return data
+
+    def write(self, data, sheet_name):
+        sheet = self.workbook.add_worksheet(sheet_name)
+
+        red = self.workbook.add_format({'bg_color': 'red', 'color': 'white'})
+        gray = self.workbook.add_format({'bg_color': 'gray', 'color': 'white'})
+        green = self.workbook.add_format(
+            {'bg_color': 'green', 'color': 'white'})
+        blue = self.workbook.add_format({'bg_color': 'blue', 'color': 'white'})
+        orange = self.workbook.add_format(
+            {'bg_color': 'orange', 'color': 'white'})
+        for i in range(len(data)):
+            for j in range(len(data[i])):
+                if str(data[i][j]) == 'failure':
+                    sheet.write(i, j, str(data[i][j]), red)
+                elif str(data[i][j]) == 'NO':
+                    sheet.write(i, j, str(data[i][j]), gray)
+                elif str(data[i][j]) == 'blocked':
+                    sheet.write(i, j, str(data[i][j]), orange)
+                elif str(data[i][j]) == 'skipped':
+                    sheet.write(i, j, str(data[i][j]), blue)
+                elif str(data[i][j]) == 'success':
+                    sheet.write(i, j, str(data[i][j]), green)
+                else:
+                    sheet.write(i, j, data[i][j])
+
+    def close(self):
+        self.workbook.close()
+
+
+class Excel_01():
+    def __init__(self, file_name, mode='r'):
+        if mode == 'r':
+            self.workbook = load_workbook(file_name)
+        elif mode == 'w':
+            self.workbook = Workbook() #.Workbook(file_name)
         else:
             raise Exception(
                 'Error: init Excel class with error mode: %s' % mode)

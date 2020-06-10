@@ -77,8 +77,7 @@ class Global:
 
                 # 如果配置了 headless 模式
                 if self.headless:
-                    options.set_headless()
-                    # options.add_argument('--headless')
+                    options.add_argument('--headless')
                     options.add_argument('--disable-gpu')
                     options.add_argument("--no-sandbox")
                     options.add_argument('window-size=1920x1080')
@@ -94,9 +93,9 @@ class Global:
                 options.add_argument('disable-infobars')
                 if self.executable_path:
                     self.driver = webdriver.Chrome(
-                        chrome_options=options, executable_path=self.executable_path)
+                        options=options, executable_path=self.executable_path)
                 else:
-                    self.driver = webdriver.Chrome(chrome_options=options)
+                    self.driver = webdriver.Chrome(options=options)
             else:
                 raise Exception(
                     'Error: this browser is not supported or mistake name：%s' % self.browserName)

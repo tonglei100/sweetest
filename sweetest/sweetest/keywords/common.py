@@ -103,6 +103,9 @@ def dedup(text):
 
 
 def sql(step):
+
+    result = {}
+
     element = step['element']
     _sql = e.get(element)[1]
 
@@ -118,10 +121,18 @@ def sql(step):
         logger.info('SQL result: %s' % repr(row))
         if not row:
             raise Exception('*** Fetch None ***')
+ 
+    elif _sql.lower().startswith('db.'):
+        _sql_ = _sql.split('.', 2)
+        collection = _sql_[1]
+        sql = _sql_[2]
+        row = g.db[step['page']].mongo(collection, sql)
+        if sql.startswith('find'):
+            result = row
+            logger.info('keys result: %s' % repr(result))
     else:
         g.db[step['page']].execute(_sql)
 
-    result = {}
     if _sql.lower().startswith('select'):
         text = _sql[6:].split('FROM')[0].split('from')[0].strip()
         keys = dedup(text).split(',')
@@ -143,6 +154,8 @@ def sql(step):
 
     output = step['output']
     if output:
-        logger.info('output: %s' % repr(output))
+        _output = {}
         for key in output:
+            _output[key] = result[output[key]]
             g.var[key] = result[output[key]]
+        logger.info('output: %s' % repr(_output))

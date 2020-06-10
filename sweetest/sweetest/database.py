@@ -6,8 +6,19 @@ class DB:
     def __init__(self, arg):
         self.connect = ''
         self.cursor = ''
+        self.db = ''
 
         try:
+            if arg['type'].lower() == 'mongodb':
+                import pymongo
+                user = arg['user'] + ':' if arg.get('user') else ''
+                password = arg['password'] + '@' if arg.get('password') else ''
+                self.connect = pymongo.MongoClient('mongodb://' + user + password + arg['host'] + ':' + arg['port'] + '/')
+                self.connect.server_info()
+                self.db = self.connect[arg['dbname']]
+                
+                return
+
             if arg['type'].lower() == 'mysql':
                 import pymysql as mysql
                 self.connect = mysql.connect(
@@ -65,6 +76,22 @@ class DB:
         except:
             logger.exception('*** Execute failure ***')
             raise
+
+
+    def mongo(self, collection, sql):
+        try:
+            cmd = 'self.db[\'' + collection + '\'].' + sql
+            result = eval(cmd)
+            if sql.startswith('find_one'):
+                return result
+            elif sql.startswith('find'):
+                for d in result:
+                    return d
+            else:
+                return {}
+        except:
+            logger.exception('*** Execute failure ***')
+            raise            
 
     def __del__(self):
         self.connect.close()
