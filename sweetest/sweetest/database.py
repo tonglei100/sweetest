@@ -87,6 +87,8 @@ class DB:
             elif sql.startswith('find'):
                 for d in result:
                     return d
+            elif 'count' in sql:
+                return {'count': result}
             else:
                 return {}
         except:

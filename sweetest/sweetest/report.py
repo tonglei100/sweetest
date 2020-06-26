@@ -1,4 +1,8 @@
 import time
+import arrow
+from pathlib import Path
+from sweetest.globals import g
+from sweetest.utility import mkdir
 
 
 def reporter(plan_data, testsuites_data, report_data, extra_data):
@@ -97,3 +101,129 @@ def summary(plan_data, testsuites_data, report_data, extra_data):
         data.append(['********'])
         data += failures
     return data
+
+def markdown(plan, testsuites, testcases, md_path='markdown'):
+    success = OK = '<font color=#00BB00>通过</font>'
+    failure = NO = '<font color=#FF0000>失败</font>'
+    blocked = '<font color=#FFD306>阻塞</font>'
+    skipped = '<font color=#6C6C6C>-</font>'
+
+    md = '| 测试套件名称 | 开始时间 | 结束时间 | 耗时 | 成功个数 | 失败个数 | 阻塞个数 | 总个数 | 结果 |\n'
+    md +='| ----------- | ------- | ------- | ---- | ------- | ------- | -------- | ----- | ---- |\n'
+
+    result = success
+    sc, fc, bc, tc = 0, 0, 0, 0
+    for v in testsuites.values():
+        sc += v['success']
+        fc += v['failure'] 
+        bc += v['blocked']
+        tc += v['total']
+        re = success
+        if v['result'] == 'failure':
+            re = failure
+        cost = round((v['end_timestamp'] - v['start_timestamp'])/1000, 1)  
+        md += f'| {v["testsuite"]} | {tm(v["start_timestamp"])} | {tm(v["end_timestamp"])} | {cost} | '
+        md += f'{v["success"]} | {v["failure"]} | {v["blocked"]} | {v["total"]} | {re} |\n'
+        if v['result'] == 'failure':
+            result = failure
+    cost = round((plan['end_timestamp'] - plan['start_timestamp'])/1000, 1)
+    md += f'| **共计** | {tm(plan["start_timestamp"])} | {tm(plan["end_timestamp"])}  | {cost} | '
+    md += f'{sc} | {fc} | {bc} | {tc} | {result} |\n'
+    title = f'# 「{plan["plan"]}」自动化测试执行报告 {result} #\n\n[历史记录](/{plan["plan"]}/)\n\n'
+    md = title + f'## 测试计划执行结果\n\n{md}\n\n## 测试套件执行结果\n\n'
+
+    if result == success:
+        icon = '✔️'
+    else:
+        icon = '❌'
+
+    message = f'- {icon} <font color=#9D9D9D size=2>{tm(plan["start_timestamp"])} - {tm(plan["end_timestamp"])}</font> 测试计划'
+    message +=f'「[{plan["plan"]}]({plan["plan"]}/{plan["plan"]}_{tm(plan["start_timestamp"], "_")})」执行完成，测试结果：{result}，成功：{sc}，失败：{fc}，阻塞：{bc}\n\n'
+
+    # 测试套件 - 测试用例结果
+    txt = ''
+    for k,v in testcases.items():
+        txt += f'\n- ### {k}\n\n'
+        txt += '| 用例id  | 用例名称 |   前置条件   |开始时间         | 结束时间       | 耗时   | 结果    |\n'
+        txt += '| ------- | ------- | ----------- | -------------- | -------------- | ----- | ------- |\n'         
+        for case in v:
+            if case['flag'] == 'N':
+                continue
+            cost = round((case['end_timestamp'] - case['start_timestamp'])/1000, 1)
+            result = eval(case['result'])
+            txt += f'| [{case["id"]}](#{case["id"]}) | {case["title"]} | {case["condition"]} | {tm(case["start_timestamp"])} | {tm(case["end_timestamp"])} | {cost} | {result} |\n'
+            
+    md += f'{txt}\n\n## 测试用例执行结果\n'
+    txt = ''
+    for k,v in testcases.items():    
+        txt += f'\n- ### {k}\n'
+        for case in v:
+            if case['flag'] == 'N':
+                continue               
+            txt += f'\n#### {case["id"]}\n\n**{case["title"]}** | {case["condition"]} | {case["designer"]} | {eval(case["result"])}\n\n'
+            txt += '| 步骤  | 操作  | 页面  | 元素  | 测试数据  | 预期结果 | 输出数据  | 耗时 | 测试结果 | 备注 |\n'
+            txt += '|------|-------|-------|------|-----------|---------|-----------|-----|---------|------|\n'
+            for step in case['steps']:
+                cost = round((step.get('end_timestamp', 0) - step.get('start_timestamp', 0))/1000, 1)
+                if cost == 0:
+                    cost = '-'
+                if not step['score']:
+                    result = skipped
+                else:
+                    result = eval(step['score'])
+                txt += f'| {step["no"]} | {step["keyword"]} | {step["page"]} | {escape(step["element"])} | {escape(step["data"])} | {escape(step["expected"])} | {escape(step["output"])} | {cost} | {result} | {step["remark"]} |\n'
+            result = eval(case['result'])            
+    md += txt            
+
+
+    p = Path(md_path) / 'report'
+    latest = p / 'latest'
+    report = p  / g.plan_name
+    mkdir(p)
+    mkdir(report)
+
+
+    with open(p / 'README.md', 'r', encoding='UTF-8') as f:
+        txt = f.read()
+        if '恭喜你安装成功' in txt:
+            txt = ''
+    with open(p / f'README.md', 'w', encoding='UTF-8') as f:      
+        f.write(message + txt)
+    with open(latest / f'{g.plan_name}.md','w', encoding='UTF-8') as f:
+        f.write(md)
+    readme = report / 'README.md'
+    if readme.is_file():
+        with open(report / 'README.md', 'r', encoding='UTF-8') as f:
+            txt = f.read()
+    else:
+        txt = ''        
+    with open(report / 'README.md','w', encoding='UTF-8') as f:
+        f.write(message + txt)        
+    with open(report / f'{plan["plan"]}_{tm(plan["start_timestamp"], "_")}.md','w',encoding='UTF-8') as f:
+        f.write(md)
+    with open(p / '_sidebar.md', 'r', encoding='UTF-8') as f:
+        txt = f.read()
+    if f'[{g.plan_name}]' not in txt:        
+        with open(p / '_sidebar.md', 'a',encoding='UTF-8') as f:
+            f.write(f'\n	* [{g.plan_name}](latest/{g.plan_name})')
+
+    files = []
+    for f in report.iterdir():
+        if f.stem not in ['_sidebar', 'README']:
+            files.append(f.stem)
+    files.sort(reverse=True)
+    with open(report / '_sidebar.md', 'w',encoding='UTF-8') as f:
+        txt = f'* 「{g.plan_name}」测试结果\n'
+        for stem in files: 
+            txt +=f'\n    * [{stem}]({g.plan_name}/{stem})'
+        f.write(txt)
+
+
+def escape(data):
+    return data.replace('|', '\|').replace('<', '\<').replace('>', '\>').replace('\n', '<br>')
+
+def tm(stamp, dot=' '):
+    if dot == ' ':
+        return arrow.get(stamp/1000).to('local').format(f'YYYY-MM-DD{dot}HH:mm:ss').replace(':', '&#58;')
+    elif dot == '_':
+        return arrow.get(stamp/1000).to('local').format(f'YYYYMMDD{dot}HH:mm:ss').replace(':', '')

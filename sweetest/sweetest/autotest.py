@@ -11,7 +11,7 @@ from sweetest.testsuite import TestSuite
 from sweetest.utility import Excel, get_record, mkdir
 from sweetest.log import logger, set_log
 from sweetest.junit import JUnit
-from sweetest.report import summary
+from sweetest.report import summary, markdown
 from sweetest.config import _testcase, _elements, _report
 
 
@@ -140,3 +140,7 @@ class Autotest:
             self.report_data[sheet_name] = testsuite2report(testsuite)
         except:
             logger.exception('*** Save the report is failure ***')
+
+
+    def md(self, md_path):
+        markdown(self.plan_data, self.testsuite_data, self.report_data, md_path)

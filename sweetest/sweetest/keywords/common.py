@@ -5,6 +5,8 @@ from sweetest.log import logger
 from sweetest.parse import data_format
 from sweetest.database import DB
 from sweetest.utility import replace_dict, compare
+from injson import check
+from sweetest.utility import json2dict
 
 
 def execute(step):
@@ -104,7 +106,7 @@ def dedup(text):
 
 def sql(step):
 
-    result = {}
+    response = {}
 
     element = step['element']
     _sql = e.get(element)[1]
@@ -118,7 +120,7 @@ def sql(step):
         g.db[step['page']] = DB(arg)
     if _sql.lower().startswith('select'):
         row = g.db[step['page']].fetchone(_sql)
-        logger.info('SQL result: %s' % repr(row))
+        logger.info('SQL response: %s' % repr(row))
         if not row:
             raise Exception('*** Fetch None ***')
  
@@ -126,10 +128,9 @@ def sql(step):
         _sql_ = _sql.split('.', 2)
         collection = _sql_[1]
         sql = _sql_[2]
-        row = g.db[step['page']].mongo(collection, sql)
-        if sql.startswith('find'):
-            result = row
-            logger.info('keys result: %s' % repr(result))
+        response = g.db[step['page']].mongo(collection, sql)
+        if response:
+            logger.info('find result: %s' % repr(response))
     else:
         g.db[step['page']].execute(_sql)
 
@@ -138,15 +139,26 @@ def sql(step):
         keys = dedup(text).split(',')
         for i, k in enumerate(keys):
             keys[i] = k.split(' ')[-1]
-        result = dict(zip(keys, row))
-        logger.info('keys result: %s' % repr(result))
+        response = dict(zip(keys, row))
+        logger.info('select result: %s' % repr(response))
 
-    data = step['data']
-    if not data:
-        data = step['expected']
-    if data:
-        for key in data:
-            sv, pv = data[key], result[key]
+    expected = step['data']
+    if not expected:
+        expected = step['expected']
+    if 'json' in expected:
+        expected['json'] = json2dict(expected.get('json', '{}'))
+        result = check(expected.pop('json'), response['json'])
+        logger.info('json check result: %s' % result)
+        if result['code'] != 0:
+            raise Exception(f'json | EXPECTED:{repr(expected["json"])}, REAL:{repr(response["json"])}, RESULT: {result}')
+        elif result['var']:
+            var = dict(var, **result['var'])
+            g.var = dict(g.var, **result['var'])
+            logger.info('json var: %s' % (repr(result['var']))) 
+
+    if expected:
+        for key in expected:
+            sv, pv = expected[key], response[key]
             logger.info('key: %s, expect: %s, real: %s' %
                         (repr(key), repr(sv), repr(pv)))
 
@@ -155,7 +167,15 @@ def sql(step):
     output = step['output']
     if output:
         _output = {}
-        for key in output:
-            _output[key] = result[output[key]]
-            g.var[key] = result[output[key]]
+        for k, v in output.items():
+            if k == 'json':
+                sub = json2dict(output.get('json', '{}'))
+                result = check(sub, response['json'])
+                # logger.info('Compare json result: %s' % result)
+                var = dict(var, **result['var'])
+                g.var = dict(g.var, **result['var'])
+                logger.info('json var: %s' % (repr(result['var'])))
+            else:
+                _output[k] = response[v]
+                g.var[k] = response[v]
         logger.info('output: %s' % repr(_output))
