@@ -252,4 +252,4 @@ def request(kw, step):
             g.var = dict(g.var, **result['var'])
             logger.info('cookies var: %s' % (repr(result['var'])))
     if var:
-        step['_output'] += '||output=' + str(var)
+        step['_output'] += '\n||output=' + str(var)

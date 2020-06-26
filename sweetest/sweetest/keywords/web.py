@@ -128,7 +128,7 @@ def check(step):
             else:
                 var[key] = g.var[key] = element_location.get_attribute(output[key])
     if var:
-        step['_output'] += '||output=' + str(var)
+        step['_output'] += '\n||output=' + str(var)
     return element_location
 
 
