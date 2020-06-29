@@ -142,5 +142,5 @@ class Autotest:
             logger.exception('*** Save the report is failure ***')
 
 
-    def md(self, md_path):
+    def report(self, md_path):
         markdown(self.plan_data, self.testsuite_data, self.report_data, md_path)
