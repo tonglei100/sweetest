@@ -1,5 +1,5 @@
 from sweetest.log import logger
-from sweetest.config import all_keywords, comma_lower, comma_upper, equals, vertical
+from sweetest.config import all_keywords, comma_lower, comma_upper, equals, vertical, zh_en
 from sweetest.elements import e
 from sweetest.globals import g
 
@@ -45,6 +45,7 @@ def data_format(data):
                 data_dict['text'] = d[0]
         elif len(d) == 2:
             d[0] = d[0].strip()  # 清除 <元素属性> 2边的空格，如果有的话
+            d[0] = zh_en.get(d[0], d[0])
             data_dict[d[0]] = d[1]
         else:
             raise Exception(

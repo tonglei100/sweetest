@@ -63,7 +63,8 @@ class TestCase:
         self.testcase = testcase
         self.snippet_steps = {}
 
-    def run(self):         
+    def run(self):
+        self.testcase['title'] = replace(self.testcase['title'])         
         logger.info('>>> Run the TestCase: %s|%s' %
                     (self.testcase['id'], self.testcase['title']))
         self.testcase['result'] = 'success'
@@ -103,8 +104,14 @@ class TestCase:
                 after_function = step['data'].pop('AFTER_FUNCTION', '')
 
                 # 处理强制等待时间
-                t = step['data'].pop('等待时间', 0)
-                sleep(float(t))
+                if '#wait_time' in step['data']:
+                    t = step['data'].pop('#wait_time', 0)
+                    sleep(float(t))                
+                else:
+                    if '#wait_times' in step['data']:
+                        g.wait_times = float(step['data'].pop('#wait_times', 0))
+                    if g.wait_times:
+                        sleep(g.wait_times)
 
                 if isinstance(step['element'], str):
                     step['element'] = replace(step['element'])
@@ -186,10 +193,10 @@ class TestCase:
                 elif step['keyword'].lower() == 'execute':                  
                     result, steps = getattr(
                         common, step['keyword'].lower())(step)
-                    self.testcase['result'] = result
                     if step['page'] in ('SNIPPET', '用例片段'):
-                        self.snippet_steps[index + 1] = steps
+                        self.snippet_steps[index + 1] = steps                        
                     if result != 'success':
+                        self.testcase['result'] = result
                         step['end_timestamp'] = timestamp()
                         break
 
@@ -204,7 +211,7 @@ class TestCase:
                 else:
                     # 根据关键字调用关键字实现
                     getattr(common, step['keyword'].lower())(step)
-                logger.info('--- success ---')
+                logger.info('>>>>>>>>>>>>>>>>>>>> success <<<<<<<<<<<<<<<<<<<<')
                 step['score'] = 'OK'
 
                 # if 语句结果赋值
@@ -239,7 +246,8 @@ class TestCase:
                     except:
                         logger.exception('*** save the screenshot is failure ***')
 
-                logger.exception('+++ failure +++')
+                logger.exception('Exception:')
+                logger.error('>>>>>>>>>>>>>>>>>>>> failure <<<<<<<<<<<<<<<<<<<<')
                 step['score'] = 'NO'
 
                 step['remark'] += str(exception)

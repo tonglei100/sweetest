@@ -23,6 +23,8 @@ class Global:
         self.testsuite_data = {}
         self.no = 1
         self.driver = ''
+        self.snippet = {}
+        self.caseset = {}
 
 
     def init(self, desired_caps, server_url):
@@ -36,14 +38,17 @@ class Global:
 
 
     def set_driver(self):
-        self.var = {'_last_': False}
-        self.snippet = {}
+        self.test_data = {'_last_': False}        
+        self.var = {}
+        self.casesets = []  # 用例组合执行容器
         self.current_page = '通用'
         self.db = {}
         self.http = {}
         self.windows = {}
         self.baseurl = {}
         self.action = {}
+        self.wait_times = 0
+
         if self.platform.lower() == 'desktop':
             if self.browserName.lower() == 'ie':
                 #capabilities = webdriver.DesiredCapabilities().INTERNETEXPLORER
@@ -91,6 +96,7 @@ class Global:
                 prefs["profile.password_manager_enabled"] = False
                 options.add_experimental_option("prefs", prefs)
                 options.add_argument('disable-infobars')
+                options.add_experimental_option("excludeSwitches", ['load-extension', 'enable-automation'])
                 if self.executable_path:
                     self.driver = webdriver.Chrome(
                         options=options, executable_path=self.executable_path)

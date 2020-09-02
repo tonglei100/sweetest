@@ -107,7 +107,7 @@ class Autotest:
             data_file = Path('data') / (g.plan_name +
                                         '-' + sheet_name + '.csv')
             if data_file.is_file():
-                g.var = get_record(str(data_file))
+                g.test_data = get_record(str(data_file))
             w.init()
         except:
             logger.exception('*** Init global object failure ***')
@@ -124,9 +124,9 @@ class Autotest:
             sys.exit(self.code)
 
         # 4.执行测试套件
-        ts = TestSuite(testsuite, sheet_name,
+        g.ts = TestSuite(testsuite, sheet_name,
                        self.junit_suite[sheet_name], self.conditions)
-        ts.run()
+        g.ts.run()
 
         # 5.判断测试结果
         if self.junit_suite[sheet_name].high_errors + self.junit_suite[sheet_name].medium_errors + \

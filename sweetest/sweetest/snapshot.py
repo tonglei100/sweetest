@@ -65,36 +65,36 @@ class Snapshot:
         # 处理输出数据中的截图设置
         self.output = {}
         for k, v in dict(step['output'].items()).items():
-            if v == '#ScreenShot':
-                self.output['#ScreenShot'] = k
+            if v in ('#screen_shot','#ScreenShot'):
+                self.output['#screen_shot'] = k
                 step['output'].pop(k)
                 self.screen_flag = True
-            if v == '#ElementShot':
-                self.output['#ElementShot'] = k
+            if v == ('#element_shot', '#ElementShot'):
+                self.output['#element_shot'] = k
                 step['output'].pop(k)
                 self.element_flag = True
 
         # 处理图片比较
         self.expected = {}
         for data in (step['data'], step['expected']):
-            if '#ScreenShot' in data:
+            if '#screen_shot' in data:
                 self.screen_flag = True
-                p = Path(data['#ScreenShot']).stem
-                self.expected['#ScreenName'] = '('+p.split('[')[1].split(']')[0]+')' if '[' in p else p
-                if Path(data['#ScreenShot']).is_file():
+                p = Path(data['#screen_shot']).stem
+                self.expected['#screen_name'] = '('+p.split('[')[1].split(']')[0]+')' if '[' in p else p
+                if Path(data['#screen_shot']).is_file():
                                      
-                    step['snapshot']['Expected_Screen'] = data.pop('#ScreenShot')
+                    step['snapshot']['expected_screen'] = data.pop('#screen_shot')
                 else:                  
-                    step['snapshot']['Expected_Screen'] = str(self.expected_folder / data.pop('#ScreenShot'))
+                    step['snapshot']['expected_screen'] = str(self.expected_folder / data.pop('#screen_shot'))
 
-            if '#ElementShot' in data:
+            if '#element_shot' in data:
                 self.element_flag = True
-                p = Path(data['#ElementShot']).stem
-                self.expected['#ElementName'] = '('+p.split('[')[1].split(']')[0]+')' if '[' in p else p
-                if Path(data['#ElementShot']).is_file():
-                    step['snapshot']['Expected_Element'] = data.pop('#ElementShot')
+                p = Path(data['#element_shot']).stem
+                self.expected['#element_name'] = '('+p.split('[')[1].split(']')[0]+')' if '[' in p else p
+                if Path(data['#element_shot']).is_file():
+                    step['snapshot']['expected_element'] = data.pop('#element_shot')
                 else:
-                    step['snapshot']['Expected_Element'] = str(self.expected_folder / data.pop('#ElementShot'))
+                    step['snapshot']['expected_element'] = str(self.expected_folder / data.pop('#element_shot'))
 
             if '#cut' in data:
                 self.expected['#cut'] = data.pop('#cut')
@@ -103,33 +103,33 @@ class Snapshot:
 
     def web_screen(self, step, element):
         # 截图
-        screen_v = self.output.get('#ScreenShot', '')
-        element_v = self.output.get('#ElementShot', '')
+        screen_v = self.output.get('#screen_shot', '')
+        element_v = self.output.get('#element_shot', '')
 
         if g.snapshot or self.screen_flag or self.element_flag:
             from selenium.webdriver.support import expected_conditions as EC
             if not EC.alert_is_present()(g.driver):
-                if self.expected.get('#ScreenName'):
-                    screen_name = self.expected['#ScreenName']
+                if self.expected.get('#screen_name'):
+                    screen_name = self.expected['#screen_name']
                 elif screen_v:
                     screen_name = screen_v
                 else:
                     screen_name = ''
                 if screen_name:
-                    file_name = self.label + now() + '#Screen' + '[' + screen_name + ']' + '.png'
+                    file_name = self.label + now() + '#screen' + '[' + screen_name + ']' + '.png'
                 else:
-                    file_name = self.label + now() + '#Screen' + '.png'                                        
-                step['snapshot']['Real_Screen'] = str(
+                    file_name = self.label + now() + '#screen' + '.png'                                        
+                step['snapshot']['real_screen'] = str(
                     Path(self.snapshot_folder) / file_name)
-                get_screenshot(step['snapshot']['Real_Screen'])
+                get_screenshot(step['snapshot']['real_screen'])
                 if screen_v:
-                    g.var[screen_v] = step['snapshot']['Real_Screen']
+                    g.var[screen_v] = step['snapshot']['real_screen']
 
         if element_v:
-            file_name = self.label + now() + '#Element' + '[' + element_v + ']' + '.png'
-            step['snapshot']['Real_Element'] = str(Path(self.snapshot_folder) / file_name)
-            crop(element, step['snapshot']['Real_Screen'], step['snapshot']['Real_Element'])
-            g.var[element_v] = step['snapshot']['Real_Element']
+            file_name = self.label + now() + '#element' + '[' + element_v + ']' + '.png'
+            step['snapshot']['real_element'] = str(Path(self.snapshot_folder) / file_name)
+            crop(element, step['snapshot']['real_screen'], step['snapshot']['real_element'])
+            g.var[element_v] = step['snapshot']['real_element']
 
     def web_check(self, step, element):
 
@@ -141,11 +141,11 @@ class Snapshot:
             if self.expected.get('#cut'):
                 cut(src, src, eval(self.expected.get('#cut')))
 
-        if Path(step['snapshot'].get('Expected_Screen', '')).is_file():
+        if Path(step['snapshot'].get('expected_screen', '')).is_file():
             # 屏幕截图比较
-            image1 = Image.open(step['snapshot']['Expected_Screen'])
-            image2 = Image.open(step['snapshot']['Real_Screen'])
-            deep(step['snapshot']['Real_Screen'])
+            image1 = Image.open(step['snapshot']['expected_screen'])
+            image2 = Image.open(step['snapshot']['real_screen'])
+            deep(step['snapshot']['real_screen'])
             histogram1 = image1.histogram()
             histogram2 = image2.histogram()
             differ = math.sqrt(reduce(operator.add, list(
@@ -153,42 +153,42 @@ class Snapshot:
             diff = ImageChops.difference(image1.convert('RGB'), image2.convert('RGB'))
             if differ == 0.0:
                 # 图片间没有任何不同
-                logger.info('SnapShot: ScreenShot is the same')
+                logger.info('SnapShot: screen_shot is the same')
             else:
-                file_name = self.label + now() + 'Diff_Screen' + '.png'
-                step['snapshot']['Diff_Screen'] = str(
+                file_name = self.label + now() + 'diff_screen' + '.png'
+                step['snapshot']['diff_screen'] = str(
                     Path(self.snapshot_folder) / file_name)
-                diff.save(step['snapshot']['Diff_Screen'])
-                raise Exception('SnapShot: ScreenShot is diff: %s' % differ)
-        elif step['snapshot'].get('Expected_Screen'):
-            get_screenshot(step['snapshot']['Expected_Screen'])
-            deep(step['snapshot']['Expected_Screen'])
+                diff.save(step['snapshot']['diff_screen'])
+                raise Exception('SnapShot: screen_shot is diff: %s' % differ)
+        elif step['snapshot'].get('expected_screen'):
+            get_screenshot(step['snapshot']['expected_screen'])
+            deep(step['snapshot']['expected_screen'])
 
-        if Path(step['snapshot'].get('Expected_Element', '')).is_file():
-            file_name = self.label + now() + '#Element' + '[' + self.expected['#ElementName'] + ']' + '.png'
-            step['snapshot']['Real_Element'] = str(Path(self.snapshot_folder) / file_name)
-            crop(element, step['snapshot']['Real_Screen'], step['snapshot']['Real_Element'])
-            deep(step['snapshot']['Real_Element'])
+        if Path(step['snapshot'].get('expected_element', '')).is_file():
+            file_name = self.label + now() + '#element' + '[' + self.expected['#element_name'] + ']' + '.png'
+            step['snapshot']['real_element'] = str(Path(self.snapshot_folder) / file_name)
+            crop(element, step['snapshot']['real_screen'], step['snapshot']['real_element'])
+            deep(step['snapshot']['real_element'])
 
             # 屏幕截图比较
-            image1 = Image.open(step['snapshot']['Expected_Element'])
-            image2 = Image.open(step['snapshot']['Real_Element'])
+            image1 = Image.open(step['snapshot']['expected_element'])
+            image2 = Image.open(step['snapshot']['real_element'])
             histogram1 = image1.histogram()
             histogram2 = image2.histogram()
             differ = math.sqrt(reduce(operator.add, list(
                 map(lambda a, b: (a - b)**2, histogram1, histogram2))) / len(histogram1))
             diff = ImageChops.difference(image1.convert('RGB'), image2.convert('RGB'))
             if differ == 0.0:
-                logger.info('SnapShot: ElementShot is the same')
+                logger.info('SnapShot: element_shot is the same')
             else:
-                file_name = self.label + now() + 'Diff_Element' + '.png'
-                step['snapshot']['Diff_Element'] = str(
+                file_name = self.label + now() + 'diff_element' + '.png'
+                step['snapshot']['diff_element'] = str(
                     Path(self.snapshot_folder) / file_name)
-                diff.save(step['snapshot']['Diff_Element'])
-                raise Exception('SnapShot: ElementShot is diff: %s' % differ)
-        elif step['snapshot'].get('Expected_Element'):
-            crop(element, step['snapshot']['Real_Screen'], step['snapshot']['Expected_Element'])
-            deep(step['snapshot']['Expected_Element'])
+                diff.save(step['snapshot']['diff_element'])
+                raise Exception('SnapShot: element_shot is diff: %s' % differ)
+        elif step['snapshot'].get('expected_element'):
+            crop(element, step['snapshot']['real_screen'], step['snapshot']['expected_element'])
+            deep(step['snapshot']['expected_element'])
 
     def web_shot(self, step, element):
         self.web_screen(step, element)
@@ -197,45 +197,45 @@ class Snapshot:
 
     def windwos_capture(self, dialog, step):
         # 截图
-        screen_v = self.output.get('#ScreenShot', '')
-        element_v = self.output.get('#ElementShot', '')
+        screen_v = self.output.get('#screen_shot', '')
+        element_v = self.output.get('#element_shot', '')
 
         if g.snapshot or self.screen_flag:
-            if self.expected.get('#ScreenName'):
-                screen_name = self.expected['#ScreenName']
+            if self.expected.get('#screen_name'):
+                screen_name = self.expected['#screen_name']
             elif screen_v:
                 screen_name = screen_v
             else:
                 screen_name = ''
             if screen_name:
-                file_name = self.label + now() + '#Screen' + '[' + screen_name + ']' + '.png'
+                file_name = self.label + now() + '#screen' + '[' + screen_name + ']' + '.png'
             else:
-                file_name = self.label + now() + '#Screen' + '.png'               
-            step['snapshot']['Real_Screen'] = str(Path(self.snapshot_folder) / file_name)
+                file_name = self.label + now() + '#screen' + '.png'               
+            step['snapshot']['real_screen'] = str(Path(self.snapshot_folder) / file_name)
             pic = dialog.capture_as_image()
-            pic.save(step['snapshot']['Real_Screen'])	
+            pic.save(step['snapshot']['real_screen'])	
             if screen_v:
-                g.var[screen_v] = step['snapshot']['Real_Screen']
+                g.var[screen_v] = step['snapshot']['real_screen']
 
         if element_v:
-            file_name = self.label + now() + '#Element' + '[' + element_v + ']' + '.png'
-            step['snapshot']['Real_Element'] = str(Path(self.snapshot_folder) / file_name)
+            file_name = self.label + now() + '#element' + '[' + element_v + ']' + '.png'
+            step['snapshot']['real_element'] = str(Path(self.snapshot_folder) / file_name)
 
             element = step['element']
             if dialog.backend.name == 'win32':
                 pic = dialog.window(best_match=element).capture_as_image()
             elif dialog.backend.name == 'uia':
                 pic = dialog.child_window(best_match=element).capture_as_image()       
-            pic.save(step['snapshot']['Real_Screen'])	            
-            g.var[element_v] = step['snapshot']['Real_Element']
+            pic.save(step['snapshot']['real_screen'])	            
+            g.var[element_v] = step['snapshot']['real_element']
 
 
     def windwos_check(self, dialog, step):
         element = step['element']        
-        if Path(step['snapshot'].get('Expected_Screen', '')).is_file():
+        if Path(step['snapshot'].get('expected_screen', '')).is_file():
             # 屏幕截图比较
-            image1 = Image.open(step['snapshot']['Expected_Screen'])
-            image2 = Image.open(step['snapshot']['Real_Screen'])
+            image1 = Image.open(step['snapshot']['expected_screen'])
+            image2 = Image.open(step['snapshot']['real_screen'])
             histogram1 = image1.histogram()
             histogram2 = image2.histogram()
             differ = math.sqrt(reduce(operator.add, list(
@@ -243,48 +243,48 @@ class Snapshot:
             diff = ImageChops.difference(image1.convert('RGB'), image2.convert('RGB'))
             if differ == 0.0:
                 # 图片间没有任何不同
-                logger.info('SnapShot: ScreenShot is the same')
+                logger.info('SnapShot: screen_shot is the same')
             else:
-                file_name = self.label + now() + 'Diff_Screen' + '.png'
-                step['snapshot']['Diff_Screen'] = str(
+                file_name = self.label + now() + 'diff_screen' + '.png'
+                step['snapshot']['diff_screen'] = str(
                     Path(self.snapshot_folder) / file_name)
-                diff.save(step['snapshot']['Diff_Screen'])
-                raise Exception('SnapShot: ScreenShot is diff: %s' % differ)
-        elif step['snapshot'].get('Expected_Screen'):
+                diff.save(step['snapshot']['diff_screen'])
+                raise Exception('SnapShot: screen_shot is diff: %s' % differ)
+        elif step['snapshot'].get('expected_screen'):
             pic = dialog.capture_as_image()
-            pic.save(step['snapshot']['Expected_Screen'])	            
+            pic.save(step['snapshot']['expected_screen'])	            
 
-        if Path(step['snapshot'].get('Expected_Element', '')).is_file():
-            file_name = self.label + now() + '#Element' + '.png'
-            step['snapshot']['Real_Element'] = str(Path(self.snapshot_folder) / file_name)
+        if Path(step['snapshot'].get('expected_element', '')).is_file():
+            file_name = self.label + now() + '#element' + '.png'
+            step['snapshot']['real_element'] = str(Path(self.snapshot_folder) / file_name)
             if dialog.backend.name == 'win32':
                 pic = dialog.window(best_match=element).capture_as_image()
             elif dialog.backend.name == 'uia':
                 pic = dialog.child_window(best_match=element).capture_as_image() 
-            pic.save(step['snapshot']['Real_Element'])	            
+            pic.save(step['snapshot']['real_element'])	            
 
             # 屏幕截图比较
-            image1 = Image.open(step['snapshot']['Expected_Element'])
-            image2 = Image.open(step['snapshot']['Real_Element'])
+            image1 = Image.open(step['snapshot']['expected_element'])
+            image2 = Image.open(step['snapshot']['real_element'])
             histogram1 = image1.histogram()
             histogram2 = image2.histogram()
             differ = math.sqrt(reduce(operator.add, list(
                 map(lambda a, b: (a - b)**2, histogram1, histogram2))) / len(histogram1))
             diff = ImageChops.difference(image1.convert('RGB'), image2.convert('RGB'))
             if differ == 0.0:
-                logger.info('SnapShot: ElementShot is the same')
+                logger.info('SnapShot: element_shot is the same')
             else:
-                file_name = self.label + now() + 'Diff_Element' + '.png'
-                step['snapshot']['Diff_Element'] = str(
+                file_name = self.label + now() + 'diff_element' + '.png'
+                step['snapshot']['diff_element'] = str(
                     Path(self.snapshot_folder) / file_name)
-                diff.save(step['snapshot']['Diff_Element'])
-                raise Exception('SnapShot: ElementShot is diff: %s' % differ)
-        elif step['snapshot'].get('Expected_Element'):
+                diff.save(step['snapshot']['diff_element'])
+                raise Exception('SnapShot: element_shot is diff: %s' % differ)
+        elif step['snapshot'].get('expected_element'):
             if dialog.backend.name == 'win32':
                 pic = dialog.window(best_match=element).capture_as_image()
             elif dialog.backend.name == 'uia':
                 pic = dialog.child_window(best_match=element).capture_as_image()       
-            pic.save(step['snapshot']['Expected_Element'])	            
+            pic.save(step['snapshot']['expected_element'])	            
 
 
     def windows_shot(self, dialog, step):

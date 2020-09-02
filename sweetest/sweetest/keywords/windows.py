@@ -82,34 +82,34 @@ def double_click(dialog,step):
 
 def input(dialog, step):
     element = step['element']
-    vaule = step['data']['text']
+    value = step['data']['text']
     if dialog.backend.name == 'win32':
-        dialog.window(best_match=element).type_keys(vaule, with_spaces=True, with_newlines='\r\n')
+        dialog.window(best_match=element).type_keys(value, with_spaces=True, with_newlines='\r\n')
     elif dialog.backend.name == 'uia':
-        dialog.child_window(best_match=element).type_keys(vaule, with_spaces=True, with_newlines='\r\n')
+        dialog.child_window(best_match=element).type_keys(value, with_spaces=True, with_newlines='\r\n')
 
 
 def set_text(dialog, step):
     element = step['element']
-    vaule = step['data']['text']
+    value = step['data']['text']
     if dialog.backend.name == 'win32':
-        dialog.window(best_match=element).set_edit_text(vaule)
+        dialog.window(best_match=element).set_edit_text(value)
     elif dialog.backend.name == 'uia':
-        dialog.child_window(best_match=element).set_edit_text(vaule)
+        dialog.child_window(best_match=element).set_edit_text(value)
 
 
 def send_keys(dialog, step):
     element = step['element']
-    vaule = step['data'].get('text')
+    value = step['data'].get('text')
     dialog.set_focus()
     if element:
         if dialog.backend.name == 'win32':
             dialog.window(best_match=element).set_focus()
         elif dialog.backend.name == 'uia':
             dialog.child_window(best_match=element).set_focus()
-        sendkeys(vaule)
+        sendkeys(value)
     else:
-        sendkeys(vaule)
+        sendkeys(value)
 
 
 def check(dialog, step):

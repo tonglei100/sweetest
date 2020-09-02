@@ -1,5 +1,6 @@
 from selenium.webdriver.common.action_chains import ActionChains
 from selenium.common.exceptions import ElementClickInterceptedException
+from selenium.webdriver.support.select import Select
 from time import sleep
 import re
 from sweetest.globals import g
@@ -51,7 +52,7 @@ def open(step):
     value = e.get(element)[1]
     if step['data'].get('清理缓存', '') or step['data'].get('clear', ''):
         g.driver.delete_all_cookies()
-    if step['data'].get('打开方式', '') == '新标签页' or step['data'].get('mode', '').lower() == 'tab':
+    if step['data'].get('#open_type', '') in ('新标签页', 'tab'):
         js = "window.open('%s')" % value
         g.driver.execute_script(js)
         # 判断是否打开了新的窗口，并将新窗口添加到所有窗口列表里
@@ -60,7 +61,7 @@ def open(step):
             if handle not in w.windows.values():
                 w.register(step, handle)
     else:
-        if step['data'].get('打开方式', '') == '新浏览器' or step['data'].get('mode', '').lower() == 'browser':
+        if step['data'].get('#open_type', '') in ('新浏览器' , 'browser'):
             w.close()
             g.set_driver()
             w.init()
@@ -219,7 +220,31 @@ def click(step):
 
 
 def select(step):
-    pass
+    data = step['data']
+    element = step['element']
+    element_location = locating_element(element)
+    for key in data:
+        if key.startswith('index'):
+            Select(element_location).select_by_index(data[key])
+        elif key.startswith('value'):
+            Select(element_location).select_by_value(data[key])
+        elif key.startswith('text') or key.startswith('visible_text'):
+            Select(element_location).select_by_visible_text(data[key])                    
+
+
+def deselect(step):
+    data = step['data']
+    element = step['element']
+    element_location = locating_element(element)
+    for key in data:
+        if key.startswith('all'):
+            Select(element_location).deselect_all()        
+        elif key.startswith('index'):
+            Select(element_location).deselect_by_index(data[key])
+        elif key.startswith('value'):
+            Select(element_location).deselect_by_value(data[key])
+        elif key.startswith('text') or key.startswith('visible_text'):
+            Select(element_location).deselect_by_visible_text(data[key]) 
 
 
 def hover(step):

@@ -94,7 +94,7 @@ class Windows:
         #new_window = step['data'].get('新窗口', 'HOME')
         # 新窗口 变为 标签页名，兼容原有格式
         new_window = 'HOME'
-        for k in ('新窗口', '标签页名', 'tabname'):
+        for k in ('新窗口', '标签页名', 'tabname', '#tab_name'):
             if step['data'].get(k):
                 new_window = step['data'].get(k)
         # 已存在同名的窗口，则

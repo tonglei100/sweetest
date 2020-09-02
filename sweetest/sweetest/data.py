@@ -46,6 +46,9 @@ def testsuite_format(data):
                 testcase = {'testsuite': '', 'no': 0}
             for key in ('id', 'title', 'condition', 'designer', 'flag', 'result', 'remark'):
                 testcase[key] = d[key]
+            if '#' in d['id']:
+                testcase['set'] = d['id'].split('#')[0]
+                testcase['flag'] = 'N'
             testcase['priority'] = d['priority'] if d['priority'] else 'M'
             testcase['steps'] = []
         # 如果测试步骤不为空，则为有效步骤，否则用例解析结束

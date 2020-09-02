@@ -285,20 +285,19 @@ def replace(data):
                 v = s[0]
                 index = '[' + s[1]
 
-            if v in g.var and v not in _vars:
-                # 如果在 var 中是 list
-                if v.startswith('_') and isinstance(g.var[v], list) and not index:
-                    # 是测试数据文件中的值，则 pop 第一个值
-                    if len(g.var[v]) == 0:
-                        raise Exception('The key:%s is no value in data csv' %v)
-                    elif len(g.var[v]) == 1:
-                        _vars[v] = g.var[v][0]
-                        g.var['_last_'] = True
-                    else:
-                        _vars[v] = g.var[v].pop(0)
-
-                else:
+            if v not in _vars:
+                if v in g.var:
+                    # 如果在 g.var 中是值，则直接赋值
                     _vars[v] = g.var[v]
+                elif v in g.test_data:
+                        # 是测试数据文件中的值
+                        if len(g.test_data[v]) == 0:    # 为空 list 报错
+                            raise Exception('The key:%s is no value in data csv' %v)
+                        elif len(g.test_data[v]) == 1:  # 最后一个 list 元素，赋值
+                            _vars[v] = g.test_data[v][0]
+                            g.var['_last_'] = True  # 处理循环次数为 N 的情况，此标志标明循环到最后一个变量
+                        else:                           # 大于 1 个元素，pop 赋值
+                            _vars[v] = g.test_data[v].pop(0)
 
         try:
             value = eval(k, globals(), _vars)    
@@ -351,11 +350,11 @@ def get_record(data_file):
             if d[i]:
                 k = data[0][i]
                 if record.get(k, None):
-                    if isinstance(record[k], str):
-                        record[k] = [record[k]]
+                    # if isinstance(record[k], str):
+                    #    record[k] = [record[k]]
                     record[k].append(d[i])
                 else:
-                    record[k] = d[i]
+                    record[k] = [d[i]]
                 if record[k][-1] == '&quot;':  # 空字符转换
                     record[k][-1] = ''
 

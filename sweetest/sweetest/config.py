@@ -12,6 +12,8 @@ web_keywords = {
     'CLICK': 'CLICK',
     '选择': 'SELECT',
     'SELECT': 'SELECT',
+    '取消选择': 'DESELECT',
+    'DESELECT': 'DESELECT',    
     '移动到': 'HOVER',
     '悬停': 'HOVER',
     'HOVER': 'HOVER',
@@ -158,6 +160,16 @@ files_keywords = {
 all_keywords = {}
 for keywords in (web_keywords, common_keywords, http_keywords, mobile_keywords, windows_keywords, files_keywords):
     all_keywords = dict(all_keywords, **keywords)
+
+
+zh_en = {
+    '等待时间': '#wait_time',
+    '标签页名': '#tab_name',
+    '打开方式': '#open_type',
+    '#ScreenShot': '#screen_shot',
+    '#ElementShot': '#element_shot',
+    '循环结束条件': '#break'
+}
 
 # 文件名后缀
 _testcase = 'TestCase'  # '测试用例'

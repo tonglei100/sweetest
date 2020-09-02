@@ -27,6 +27,12 @@ class TestSuite:
             elif testcase['condition'].lower() == 'snippet':
                 g.snippet[testcase['id']] = testcase
                 testcase['flag'] = 'N'
+            elif testcase.get('set'):
+                testcase['flag'] = 'N'
+                if testcase['set'] not in g.caseset:
+                    g.caseset[testcase['set']] = [testcase]
+                else:
+                    g.caseset[testcase['set']].append(testcase)
 
     def testsuite_start(self):
         self.result['no'] = g.no
@@ -65,131 +71,140 @@ class TestSuite:
                 if setup_flag == 'N':
                     testcase['result'] = 'blocked'
                     case.block('Blocked', 'SETUP is not success')
-                    logger.warn('Run the testcase: %s|%s blocked, SETUP is not success' % (
-                        testcase['id'], testcase['title']))
+                    logger.info('-'*50)
+                    logger.info(f'>>> Run the testcase: {testcase["id"]}|{testcase["title"]}')
+                    logger.warn('>>>>>>>>>>>>>>>>>>>> blocked <<<<<<<<<<<<<<<<<<<< SETUP is not success')
                     return False
             elif base_flag == 'O':
                 testcase['result'] = 'blocked'
                 case.block('Blocked', 'SETUP is not success')
-                logger.warn('Run the testcase: %s|%s blocked, SETUP is not success' % (
-                    testcase['id'], testcase['title']))
+                logger.info('-'*50)
+                logger.info(f'>>> Run the testcase: {testcase["id"]}|{testcase["title"]}')
+                logger.warn('>>>>>>>>>>>>>>>>>>>> blocked <<<<<<<<<<<<<<<<<<<< SETUP is not success')
                 return False
 
         return True
+
+    def run_testcase(self, testcase):
+        # 根据筛选条件，把不需要执行的测试用例跳过
+        flag = False
+        for k, v in self.conditions.items():
+            if not isinstance(v, list):
+                v = [v]
+            if testcase[k] not in v:
+                testcase['result'] = 'skipped'
+                flag = True
+        if flag:
+            return
+
+        if testcase['condition'].lower() in ('base', 'setup'):
+            return
+
+        # 统计开始时间
+        testcase['start_timestamp'] = timestamp()
+        # xml 测试报告-测试用例初始化
+        if testcase['flag'] != 'N':
+            # 如果前置条件失败了，直接设置为阻塞
+            #-- if self.blcoked_flag:
+            #--     testcase['result'] = 'blocked'
+            #--     testcase['end_timestamp'] = timestamp()
+            #--     continue
+
+            case = self.report.create_case(
+                testcase['title'], testcase['id'])
+            case.start()
+            case.priority = testcase['priority']
+            # 用例上下文
+            self.previous = self.current
+            self.current = testcase
+        else:
+            testcase['result'] = 'skipped'
+            # case.skip('Skip', 'Autotest Flag is N')
+            # logger.info('Run the testcase: %s|%s skipped, because the flag=N or the condition=snippet' % (
+            #     testcase['id'], testcase['title']))
+            # 统计结束时间
+            testcase['end_timestamp'] = timestamp()
+            return
+
+        if testcase['condition'].lower() not in ('base', 'setup'):
+            if testcase['condition'].lower() == 'sub':
+                if self.previous['result'] != 'success':
+                    testcase['result'] = 'blocked'
+                    case.block(
+                        'Blocked', 'Main or pre Sub testcase is not success')
+                    logger.info('-'*50)
+                    logger.info(f'>>> Run the testcase: {testcase["id"]}|{testcase["title"]}')                        
+                    logger.warn('>>>>>>>>>>>>>>>>>>>> blocked <<<<<<<<<<<<<<<<<<<< Main or pre Sub TestCase is not success')
+                    # 统计结束时间
+                    testcase['end_timestamp'] = timestamp()
+                    return
+            # 如果前置条件为 skip，则此用例不执行前置条件
+            elif testcase['condition'].lower() == 'skip':
+                pass
+            else:
+                result = self.setup(testcase, case)
+                # if result == 'N':
+                if not result:
+                    # 统计结束时间
+                    testcase['end_timestamp'] = timestamp()
+                    return
+
+        try:
+            tc = TestCase(testcase)
+            logger.info('-'*50)
+            tc.run()
+
+            # 统计结束时间
+            testcase['end_timestamp'] = timestamp()
+
+            if testcase['result'] == 'success':
+                case.succeed()
+            elif testcase['result'] == 'failure':
+                case.fail('Failure', testcase['report'])
+                # if testcase['condition'].lower() == 'base':
+                #     logger.warn('Run the testcase: %s|%s Failure, BASE is not success. Break the AutoTest' % (
+                #         testcase['id'], testcase['title']))
+                #     self.blcoked_flag = True
+                #     continue
+                # if testcase['condition'].lower() == 'setup':
+                #     logger.warn('Run the testcase: %s|%s failure, SETUP is not success. Break the AutoTest' % (
+                #         testcase['id'], testcase['title']))
+                #     self.blcoked_flag = True
+                #     continue
+        except Exception as exception:
+            case.error('Error', 'Remark:%s |||Exception:%s' %
+                        (testcase['remark'], exception))
+            logger.exception('Run the testcase: %s|%s failure' %
+                                (testcase['id'], testcase['title']))
+            # if testcase['condition'].lower() == 'base':
+            #     logger.warn('Run the testcase: %s|%s error, BASE is not success. Break the AutoTest' % (
+            #         testcase['id'], testcase['title']))
+            #     self.blcoked_flag = True
+            #     continue
+            # if testcase['condition'].lower() == 'setup':
+            #     logger.warn('Run the testcase: %s|%s error, SETUP is not success. Break the AutoTest' % (
+            #         testcase['id'], testcase['title']))
+            #     self.blcoked_flag = True
+            #     continue
+
 
     def run(self):
 
         self.testsuite_start()
 
         # 当前测试用例
-        current = {'result': 'success'}
+        self.current = {'result': 'success'}
         # 上一个测试用例
-        previous = {}
+        self.previous = {}
 
         # 前置条件执行失败标志，即未执行用例阻塞标志
-        blcoked_flag = False
+        #-- self.blcoked_flag = False
 
-        # 1.执行用例
         for testcase in self.testsuite:
-            # 根据筛选条件，把不需要执行的测试用例跳过
-            flag = False
-            for k, v in self.conditions.items():
-                if not isinstance(v, list):
-                    v = [v]
-                if testcase[k] not in v:
-                    testcase['result'] = 'skipped'
-                    flag = True
-            if flag:
-                continue
-
-            # 统计开始时间
-            testcase['start_timestamp'] = timestamp()
-            # xml 测试报告-测试用例初始化
-            if testcase['flag'] != 'N':
-                # 如果前置条件失败了，直接设置为阻塞
-                if blcoked_flag:
-                    testcase['result'] = 'blocked'
-                    testcase['end_timestamp'] = timestamp()
-                    continue
-
-                case = self.report.create_case(
-                    testcase['title'], testcase['id'])
-                case.start()
-                case.priority = testcase['priority']
-                # 用例上下文
-                previous = current
-                
-                current = testcase
-            else:
-                testcase['result'] = 'skipped'
-                # case.skip('Skip', 'Autotest Flag is N')
-                # logger.info('Run the testcase: %s|%s skipped, because the flag=N or the condition=snippet' % (
-                #     testcase['id'], testcase['title']))
-                # 统计结束时间
-                testcase['end_timestamp'] = timestamp()
-                continue
-
-            if testcase['condition'].lower() not in ('base', 'setup'):
-                if testcase['condition'].lower() == 'sub':
-                    if previous['result'] != 'success':
-                        testcase['result'] = 'blocked'
-                        case.block(
-                            'Blocked', 'Main or pre Sub testcase is not success')
-                        logger.warn('Run the testcase: %s|%s blocked, Main or pre Sub TestCase is not success' % (
-                            testcase['id'], testcase['title']))
-                        # 统计结束时间
-                        testcase['end_timestamp'] = timestamp()
-                        continue
-                # 如果前置条件为 skip，则此用例不执行前置条件
-                elif testcase['condition'].lower() == 'skip':
-                    pass
-                else:
-                    result = self.setup(testcase, case)
-                    # if result == 'N':
-                    if not result:
-                        # 统计结束时间
-                        testcase['end_timestamp'] = timestamp()
-                        continue
-
-            try:
-                tc = TestCase(testcase)
-                logger.info('-'*50)
-                tc.run()
-
-                # 统计结束时间
-                testcase['end_timestamp'] = timestamp()
-
-                if testcase['result'] == 'success':
-                    case.succeed()
-                elif testcase['result'] == 'failure':
-                    case.fail('Failure', testcase['report'])
-                    if testcase['condition'].lower() == 'base':
-                        logger.warn('Run the testcase: %s|%s Failure, BASE is not success. Break the AutoTest' % (
-                            testcase['id'], testcase['title']))
-                        blcoked_flag = True
-                        continue
-                    if testcase['condition'].lower() == 'setup':
-                        logger.warn('Run the testcase: %s|%s failure, SETUP is not success. Break the AutoTest' % (
-                            testcase['id'], testcase['title']))
-                        blcoked_flag = True
-                        continue
-            except Exception as exception:
-                case.error('Error', 'Remark:%s |||Exception:%s' %
-                           (testcase['remark'], exception))
-                logger.exception('Run the testcase: %s|%s failure' %
-                                 (testcase['id'], testcase['title']))
-                if testcase['condition'].lower() == 'base':
-                    logger.warn('Run the testcase: %s|%s error, BASE is not success. Break the AutoTest' % (
-                        testcase['id'], testcase['title']))
-                    blcoked_flag = True
-                    continue
-                if testcase['condition'].lower() == 'setup':
-                    logger.warn('Run the testcase: %s|%s error, SETUP is not success. Break the AutoTest' % (
-                        testcase['id'], testcase['title']))
-                    blcoked_flag = True
-                    continue
+            self.run_testcase(testcase)
 
         self.report.finish()
+        self.testsuite += g.casesets   # 把用例组合执行结果添加到末尾
 
         # 2.清理环境
         try:
@@ -201,3 +216,5 @@ class TestSuite:
             logger.exception('Clear the env is fail')
 
         self.testsuite_end()
+
+

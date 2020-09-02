@@ -161,8 +161,8 @@ def markdown(plan, testsuites, testcases, md_path='markdown'):
             if case['flag'] == 'N':
                 continue               
             txt += f'\n#### {case["id"]}\n\n**{case["title"]}** | {case["condition"]} | {case["designer"]} | {eval(case["result"])}\n\n'
-            txt += '| 步骤  | 操作  | 页面  | 元素  | 测试数据  | 预期结果 | 输出数据  | 耗时 | 测试结果 | 备注 |\n'
-            txt += '|------|-------|-------|------|-----------|---------|-----------|-----|---------|------|\n'
+            txt += '| 步骤  | 操作  | 页面  | 元素  | 测试数据  | 预期结果 | 输出数据  | 耗时 | 测试结果 | 备注 | 截图   |\n'
+            txt += '|------|-------|-------|------|-----------|---------|-----------|-----|---------|------|--------|\n'
             for step in case['steps']:
                 cost = round((step.get('end_timestamp', 0) - step.get('start_timestamp', 0))/1000, 1)
                 if cost == 0:
@@ -171,7 +171,11 @@ def markdown(plan, testsuites, testcases, md_path='markdown'):
                     result = skipped
                 else:
                     result = eval(step['score'])
-                txt += f'| {step["no"]} | {step["keyword"]} | {step["page"]} | {escape(step["element"])} | {escape(step["data"])} | {escape(step["expected"])} | {escape(step["output"])} | {cost} | {result} | {step["remark"]} |\n'
+                snapshot = ''
+                if 'snapshot' in step:
+                    for k,v in step['snapshot'].items():
+                        snapshot += f"[{k}](/report/{v} ':ignore')\n"
+                txt += f'| {step["no"]} | {step["keyword"]} | {step["page"]} | {escape(step["element"])} | {escape(step["data"])} | {escape(step["expected"])} | {escape(step["output"])} | {cost} | {result} | {step["remark"]} | {escape(snapshot, "%23")} |\n'
             result = eval(case['result'])            
     md += txt            
 
@@ -219,8 +223,10 @@ def markdown(plan, testsuites, testcases, md_path='markdown'):
         f.write(txt)
 
 
-def escape(data):
-    return data.replace('|', '\|').replace('<', '\<').replace('>', '\>').replace('\n', '<br>')
+
+
+def escape(data, well='#'):
+    return data.replace('|', '\|').replace('<', '\<').replace('>', '\>').replace('\n', '<br>').replace('#', well)
 
 def tm(stamp, dot=' '):
     if dot == ' ':

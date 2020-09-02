@@ -12,7 +12,7 @@ from sweetest.utility import json2dict
 def execute(step):
     # 先处理循环结束条件
     condition = ''
-    for k in ('循环结束条件', 'condition'):
+    for k in ('循环结束条件', 'condition', '#break'):
         if step['data'].get(k):
             condition = step['data'].get(k)
             del step['data'][k]
@@ -42,11 +42,11 @@ def execute(step):
             times = 999
         else:
             times = int(_element[1])
-
-    # 初始化测试片段执行结果
+            
+    # 初始化测试片段执行结果 
     result = 'success'
     steps = []
-    if element != '变量赋值':
+    if step['page'] in ('用例片段', 'SNIPPET'):
         g.var['_last_'] = False
         for t in range(times):
             if t > 0:
@@ -83,6 +83,21 @@ def execute(step):
         # 执行结束，还没有触发循环退出条件，则返回结果为 failure
         if condition:
             return 'failure', testcase['steps']
+    elif step['page'] in ('用例组合', 'CASESET'):
+        caseset = element
+        for t in range(times):
+            if t > 0:
+                _data = data_format(str(step['_data']))
+                replace_dict(_data)
+                for k, v in _data.items():
+                    g.var[k] = v
+            for testcase in g.caseset[caseset]:
+                testcase = deepcopy(testcase)
+                testcase['flag'] = ''
+                g.ts.run_testcase(testcase)
+                g.casesets.append(testcase)
+                # if testcase['result'] != 'success':
+                #     result = testcase['result']
     return result, steps
 
 

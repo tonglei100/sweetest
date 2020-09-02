@@ -11,9 +11,15 @@ class DB:
         try:
             if arg['type'].lower() == 'mongodb':
                 import pymongo
-                user = arg['user'] + ':' if arg.get('user') else ''
-                password = arg['password'] + '@' if arg.get('password') else ''
-                self.connect = pymongo.MongoClient('mongodb://' + user + password + arg['host'] + ':' + arg['port'] + '/')
+                host = arg.pop('host') if arg.get('host') else 'localhost:27017'
+                host = host.split(',') if ',' in host else host
+                port = int(arg.pop('port')) if arg.get('port') else 27017
+                if arg.get('user'):
+                    arg['username'] = arg.pop('user')
+                # username = arg['user'] if arg.get('user') else ''
+                # password = arg['password'] if arg.get('password') else ''
+                # self.connect = pymongo.MongoClient('mongodb://' + username + password + arg['host'] + ':' + arg['port'] + '/')
+                self.connect = pymongo.MongoClient(host=host, port=port, **arg)
                 self.connect.server_info()
                 self.db = self.connect[arg['dbname']]
                 
