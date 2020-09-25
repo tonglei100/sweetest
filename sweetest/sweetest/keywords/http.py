@@ -78,7 +78,7 @@ def request(kw, step):
             data.pop('params', '{}')) or json2dict(data.pop('data', '{}'))
     elif kw == 'post':
         if data.get('text'):
-            _data['data'] = data.pop('text')
+            _data['data'] = data.pop('text').encode('utf-8')
         else:
             _data['data'] = json2dict(data.pop('data', '{}'))
         _data['json'] = json2dict(data.pop('json', '{}'))

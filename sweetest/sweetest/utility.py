@@ -309,7 +309,10 @@ def replace(data):
         # 否则需要替换，此时变量强制转换为为字符串
         else:
                 data = data.replace(left_delimiter + k + right_delimiter, str(value))
-                data = data.replace(left_angle, '<').replace(right_angle, '>')                
+
+    if isinstance(data, str):            
+        data = data.replace(left_angle, '<').replace(right_angle, '>')
+                        
     return data
 
 
