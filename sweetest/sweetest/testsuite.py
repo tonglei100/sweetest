@@ -44,10 +44,10 @@ class TestSuite:
         self.result['end_timestamp'] = timestamp()
         g.testsuite_data[self.sheet_name] = self.result
 
-    def setup(self, testcase, case):
-        logger.info('='*50)         
+    def setup(self, testcase, case):       
         if self.setup_testcase:
-            logger.info('*** SETUP testcase ***')
+            logger.info('*** SETUP testcase ↓ ***')
+            logger.info('-'*50)
         else:
             logger.info('...No SETUP testcase need to run...')
 
@@ -97,7 +97,10 @@ class TestSuite:
         if flag:
             return
 
-        if testcase['condition'].lower() in ('base', 'setup'):
+        if testcase['condition'].lower() == 'base':
+            logger.info('*** BASE testcase ↓ ***')
+
+        if testcase['condition'].lower() == 'setup':
             return
 
         # 统计开始时间

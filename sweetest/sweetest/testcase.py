@@ -67,6 +67,7 @@ class TestCase:
         self.testcase['title'] = replace(self.testcase['title'])         
         logger.info('>>> Run the TestCase: %s|%s' %
                     (self.testcase['id'], self.testcase['title']))
+        logger.info('-'*50)
         self.testcase['result'] = 'success'
         self.testcase['report'] = ''
         if_result = ''
