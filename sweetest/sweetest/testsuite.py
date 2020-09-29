@@ -108,10 +108,10 @@ class TestSuite:
         # xml 测试报告-测试用例初始化
         if testcase['flag'] != 'N':
             # 如果前置条件失败了，直接设置为阻塞
-            #-- if self.blcoked_flag:
-            #--     testcase['result'] = 'blocked'
-            #--     testcase['end_timestamp'] = timestamp()
-            #--     continue
+            if self.blocked_flag:
+                testcase['result'] = 'blocked'
+                testcase['end_timestamp'] = timestamp()
+                return
 
             case = self.report.create_case(
                 testcase['title'], testcase['id'])
@@ -164,31 +164,31 @@ class TestSuite:
                 case.succeed()
             elif testcase['result'] == 'failure':
                 case.fail('Failure', testcase['report'])
-                # if testcase['condition'].lower() == 'base':
-                #     logger.warn('Run the testcase: %s|%s Failure, BASE is not success. Break the AutoTest' % (
-                #         testcase['id'], testcase['title']))
-                #     self.blcoked_flag = True
-                #     continue
-                # if testcase['condition'].lower() == 'setup':
-                #     logger.warn('Run the testcase: %s|%s failure, SETUP is not success. Break the AutoTest' % (
-                #         testcase['id'], testcase['title']))
-                #     self.blcoked_flag = True
-                #     continue
+                if testcase['condition'].lower() == 'base':
+                    logger.warn('Run the testcase: %s|%s Failure, BASE is not success. Break the AutoTest' % (
+                        testcase['id'], testcase['title']))
+                    self.blocked_flag = True
+                    return
+                if testcase['condition'].lower() == 'setup':
+                    logger.warn('Run the testcase: %s|%s failure, SETUP is not success. Break the AutoTest' % (
+                        testcase['id'], testcase['title']))
+                    self.blocked_flag = True
+                    return
         except Exception as exception:
             case.error('Error', 'Remark:%s |||Exception:%s' %
                         (testcase['remark'], exception))
             logger.exception('Run the testcase: %s|%s failure' %
                                 (testcase['id'], testcase['title']))
-            # if testcase['condition'].lower() == 'base':
-            #     logger.warn('Run the testcase: %s|%s error, BASE is not success. Break the AutoTest' % (
-            #         testcase['id'], testcase['title']))
-            #     self.blcoked_flag = True
-            #     continue
-            # if testcase['condition'].lower() == 'setup':
-            #     logger.warn('Run the testcase: %s|%s error, SETUP is not success. Break the AutoTest' % (
-            #         testcase['id'], testcase['title']))
-            #     self.blcoked_flag = True
-            #     continue
+            if testcase['condition'].lower() == 'base':
+                logger.warn('Run the testcase: %s|%s error, BASE is not success. Break the AutoTest' % (
+                    testcase['id'], testcase['title']))
+                self.blocked_flag = True
+                return
+            if testcase['condition'].lower() == 'setup':
+                logger.warn('Run the testcase: %s|%s error, SETUP is not success. Break the AutoTest' % (
+                    testcase['id'], testcase['title']))
+                self.blocked_flag = True
+                return
 
 
     def run(self):
@@ -201,7 +201,7 @@ class TestSuite:
         self.previous = {}
 
         # 前置条件执行失败标志，即未执行用例阻塞标志
-        #-- self.blcoked_flag = False
+        self.blocked_flag = False
 
         for testcase in self.testsuite:
             self.run_testcase(testcase)
