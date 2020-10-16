@@ -114,6 +114,9 @@ class TestCase:
                     if g.wait_times:
                         sleep(g.wait_times)
 
+                if step['page']:
+                    step['page'] = replace(step['page'])
+                    
                 if isinstance(step['element'], str):
                     step['element'] = replace(step['element'])
                     step['_element'] = step['element']
