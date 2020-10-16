@@ -36,16 +36,20 @@ def execute(step):
     if element[-1] == '*':
         flag = False
 
+    # 循环次数为 N 标志
+    n_flag = False
     if len(_element) >= 2:
         element = _element[0]
         if _element[1].upper() == 'N':
             times = 999
+            n_flag = True
         else:
             times = int(_element[1])
             
     # 初始化测试片段执行结果 
     result = 'success'
     steps = []
+    testcase = {}
     if step['page'] in ('用例片段', 'SNIPPET'):
         g.var['_last_'] = False
         for t in range(times):
@@ -77,7 +81,7 @@ def execute(step):
                 if condition == 'success':
                     return 'success', testcase['steps']
             
-            if g.var['_last_']:
+            if n_flag and g.var['_last_']:  # 只有循环次数为 N 时，才判断是否是变量最后一个值
                 g.var['_last_'] = False
                 break
         # 执行结束，还没有触发循环退出条件，则返回结果为 failure
