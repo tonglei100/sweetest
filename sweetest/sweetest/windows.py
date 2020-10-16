@@ -22,6 +22,12 @@ class Windows:
         self.current_context = 'NATIVE_APP'
 
     def switch_window(self, page):
+        all_handles = g.driver.window_handles
+        for key in list(self.windows.keys()):
+            if self.windows[key] not in all_handles:
+                  self.current_window = ''
+                  self.windows.pop(key)
+
         if self.new_window_flag:
             if page in list(self.pages):
                 page = '通用'
