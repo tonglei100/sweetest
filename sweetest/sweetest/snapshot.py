@@ -10,6 +10,9 @@ from sweetest.log import logger
 from sweetest.utility import mkdir
 
 
+# 解决打开图片大于 20M 的限制
+Image.MAX_IMAGE_PIXELS = None
+
 def crop(element, src, target):
     location = element.location
     size = element.size
