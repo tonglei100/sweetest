@@ -160,7 +160,7 @@ class TestCase():
         self.custom("error", type, message)
 
     def block(self, type, message):
-        self.custom("blocked", type, message)
+        self.custom("skipped", type, message)  # Azure Devops 不识别 blocked，改为 skipped
 
     def succeed(self):
         if self.state != None:
