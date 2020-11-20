@@ -206,6 +206,12 @@ class TestSuite:
         for testcase in self.testsuite:
             self.run_testcase(testcase)
 
+        for key in g.db:
+            try:
+                g.db[key].connect.close()
+            except:
+                pass
+
         self.report.finish()
         self.testsuite += g.casesets   # 把用例组合执行结果添加到末尾
 
