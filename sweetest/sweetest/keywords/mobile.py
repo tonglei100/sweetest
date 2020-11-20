@@ -479,3 +479,8 @@ def tab_name(step):
         raise Exception(
             'Tab Name failure: the element:%s in all tab is not found' % element)
 
+def activity(step):
+
+    appPackage = step['data']['appPackage']
+    appActivity = step['data']['appActivity']
+    g.driver.start_activity(appPackage, appActivity)
