@@ -102,7 +102,9 @@ mobile_keywords = {
     '锁屏': 'LOCK',
     'LOCK': 'LOCK',
     '解锁': 'UNLOCK',
-    'UNLOCK': 'UNLOCK',         
+    'UNLOCK': 'UNLOCK',
+    '启动页面': 'ACTIVITY',
+    'ACTIVITY': 'ACTIVITY'         
 }
 
 windows_keywords = {
