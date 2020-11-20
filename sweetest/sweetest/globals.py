@@ -40,6 +40,7 @@ class Global:
     def set_driver(self):
         self.test_data = {'_last_': False}        
         self.var = {}
+        self.caseset = {}
         self.casesets = []  # 用例组合执行容器
         self.current_page = '通用'
         self.db = {}
