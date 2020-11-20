@@ -91,9 +91,14 @@ class TestCase:
                 logger.info('Skipped the <else> Step: %s|%s|%s|%s' %(step['no'], step['page'], step['keyword'], step['element']))
                 continue
 
-            if not (g.platform.lower() in ('windows',) and step['keyword'].upper() in windows_keywords):
+            if g.platform.lower() in ('windows',) and step['keyword'].upper() in windows_keywords:
+                pass
+            elif step['keyword'].upper() in files_keywords:
+                pass
+            else:
                 step['page'], step['custom'], step['element'] = elements_format(
                     step['page'], step['element'])
+                    
             label = g.sheet_name + '#' + \
                 self.testcase['id'] + '#' + str(step['no']).replace('<', '(').replace('>', ')').replace('*', 'x')
 
