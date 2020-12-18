@@ -63,8 +63,7 @@ class TestCase:
         self.testcase = testcase
         self.snippet_steps = {}
 
-    def run(self):
-        self.testcase['title'] = replace(self.testcase['title'])         
+    def run(self):       
         logger.info('>>> Run the TestCase: %s|%s' %
                     (self.testcase['id'], self.testcase['title']))
         logger.info('-'*50)

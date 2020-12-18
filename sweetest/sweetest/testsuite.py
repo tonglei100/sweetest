@@ -4,6 +4,7 @@ from sweetest.globals import g, timestamp
 from sweetest.windows import w
 from sweetest.testcase import TestCase
 from sweetest.log import logger
+from sweetest.utility import replace
 
 
 class TestSuite:
@@ -153,6 +154,8 @@ class TestSuite:
                     return
 
         try:
+            testcase['title'] = replace(testcase['title'])  # 在多次跑用例集合时，可以在用例标题中使用变量区分
+            testcase['id'] = replace(testcase['id'])  # 在多次跑用例集合时，可以在用例 id 中使用变量区分           
             tc = TestCase(testcase)
             logger.info('-'*50)
             tc.run()
